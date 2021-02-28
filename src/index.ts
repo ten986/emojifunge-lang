@@ -8,11 +8,11 @@ const path = argv[2]
 const board = fs.readFileSync(path).toString()
 
 // 入力
-const input = '' + fs.readFileSync(0)
+const input: string = '' + fs.readFileSync(0)
 
 // 実行
 const interpreter = new Interpreter(board, input)
-for (let i = 0; i < 10; ++i) {
+for (let i = 0; i < 100; ++i) {
   interpreter.step()
   if (interpreter.isEnd()) {
     break
