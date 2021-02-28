@@ -88,6 +88,8 @@ emojiがなければ、(dx, dy) = (-dy, dx) として試す。
 |💕| dup| `a` を pop し、`a`, `a` を push する。 |stack `[7, 4, 6] -> [7, 7, 4, 6]`|
 |💞| swap| (top)`a`, `b` を pop し、(top)`b`, `a` を push する。|stack `[7, 4, 6] -> [4, 7, 6]`|
 |♻️| swap3| (top)`a`, `b`, `c` を pop し、(top)`c`, `a`, `b` を push する。|stack `[7, 4, 6] -> [6, 7, 4]`|
+|🙃| reverse| stackを反転する。 |stack `[7, 4, 6] -> [6, 4, 7]`|
+
 
 ### 移動
 
@@ -105,3 +107,18 @@ emojiがなければ、(dx, dy) = (-dy, dx) として試す。
 |⏪| fast-right | dx-- ||
 |⏫| fast-right | dy-- ||
 |⏬| fast-right | dy++ ||
+|🔃| turn-clockwise | (dx, dy) = (-dy, dx) ||
+|🔄| turn-counterclockwise | (dx, dy) = (dy, -dx) ||
+
+### 条件分岐
+
+| emoji | name | action | example |
+|---|---|---|---|
+|↪️| right-if-true| `a` を pop し、`a > 0` なら right||
+|↩️| left-if-true| `a` を pop し、`a > 0` なら left||
+|⤴️| up-if-true| `a` を pop し、`a > 0` なら up||
+|⤵️| down-if-true| `a` を pop し、`a > 0` なら down||
+|📏| equal-to | (top)`a`, `b` を pop し、 `a == b ? 1 : 0` を push|stack `[7, 4, 6] -> [0, 6]`|
+|📈| greater-than | (top)`a`, `b` を pop し、 `a > b ? 1 : 0` を push|stack `[7, 4, 6] -> [1, 6]`|
+|📉| less-than | (top)`a`, `b` を pop し、 `a < b ? 1 : 0` を push|stack `[7, 4, 6] -> [0, 6]`|
+|🔞| R-18| `a` を pop し、 `a >= 18 ? 1 : 0` を push|stack `[7, 4, 6] -> [0, 4, 6]`|

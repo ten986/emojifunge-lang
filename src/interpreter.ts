@@ -262,6 +262,10 @@ class Interpreter {
       this.stack.push(c)
       return
     }
+    if (emoji.eq('🙃')) {
+      this.stack.reverse()
+      return
+    }
 
     // 移動 -----
 
@@ -319,6 +323,74 @@ class Interpreter {
     }
     if (emoji.eq('⏬')) {
       this.dirY++
+      return
+    }
+    if (emoji.eq('🔃')) {
+      // 右回転
+      ;[this.dirX, this.dirY] = [-this.dirY, this.dirX]
+      return
+    }
+    if (emoji.eq('🔄')) {
+      // 左回転
+      ;[this.dirX, this.dirY] = [this.dirY, -this.dirX]
+      return
+    }
+
+    // 条件分岐 -----
+
+    if (emoji.eq('↪️')) {
+      const a = this.stack.pop()
+      if (a > 0) {
+        this.dirX = 1
+        this.dirY = 0
+      }
+      return
+    }
+    if (emoji.eq('↩️')) {
+      const a = this.stack.pop()
+      if (a > 0) {
+        this.dirX = -1
+        this.dirY = 0
+      }
+      return
+    }
+    if (emoji.eq('⤵️')) {
+      const a = this.stack.pop()
+      if (a > 0) {
+        this.dirX = 0
+        this.dirY = -1
+      }
+      return
+    }
+    if (emoji.eq('⤴️')) {
+      const a = this.stack.pop()
+      if (a > 0) {
+        this.dirX = 0
+        this.dirY = 1
+      }
+      return
+    }
+    if (emoji.eq('📏')) {
+      const a = this.stack.pop()
+      const b = this.stack.pop()
+      this.stack.push(a > b ? 1 : 0)
+      return
+    }
+    if (emoji.eq('📈')) {
+      const a = this.stack.pop()
+      const b = this.stack.pop()
+      this.stack.push(a > b ? 1 : 0)
+      return
+    }
+    if (emoji.eq('📉')) {
+      const a = this.stack.pop()
+      const b = this.stack.pop()
+      this.stack.push(a < b ? 1 : 0)
+      return
+    }
+    if (emoji.eq('🔞')) {
+      const a = this.stack.pop()
+      this.stack.push(a >= 18 ? 1 : 0)
       return
     }
 
