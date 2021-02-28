@@ -1,9 +1,11 @@
+import * as nodeEmoji from 'node-emoji'
+
 type Direction = 'up' | 'down' | 'right' | 'left'
-type State = 'normal'
+type State = 'normal' | 'end'
 
 class Interpreter {
   /** ボード */
-  board: string
+  board: string[][]
 
   /** 場所 */
   x: number
@@ -20,13 +22,17 @@ class Interpreter {
   stack: number[]
 
   constructor(board: string) {
-    this.board = board
+    this.board = board.split('\n').map((str) => this.splitEmojiStr(str))
+    console.log(this.board)
+
     this.x = 0
     this.y = 0
     this.dirX = 0
     this.dirY = 0
     this.state = 'normal'
     this.stack = []
+
+    this.setDir('right')
   }
 
   setDir(dir: Direction): void {
@@ -40,16 +46,29 @@ class Interpreter {
         this.dirY = 1
         break
       case 'right':
-        this.dirX = 0
-        this.dirY = 1
+        this.dirX = 1
+        this.dirY = 0
         break
       case 'left':
-        this.dirX = 0
-        this.dirY = -1
+        this.dirX = -1
+        this.dirY = 0
         break
-      default:
-        throw Error('setDir: invalid Direction')
     }
+  }
+
+  splitEmojiStr(str: string): string[] {
+    return nodeEmoji
+      .unemojify(str)
+      .split(/[::]+/)
+      .filter((str) => str)
+  }
+
+  isEnd(): boolean {
+    return this.state == 'end'
+  }
+
+  isEmojiEq(str: string, emo: string): boolean {
+    return str == nodeEmoji.unemojify(emo)
   }
 
   /** dir の方向に進む */
@@ -60,15 +79,33 @@ class Interpreter {
     return 'normal'
   }
 
-  /** 今いるとこのやつやる */
   exec(): State {
     // TODO: emoji の実装と合わせて実装する
-    return 'normal'
+
+    const str = ':' + (this.board?.[this.y]?.[this.x] ?? 'X') + ':'
+    console.log(str)
+    console.log(nodeEmoji.unemojify('👍'))
+    console.log(str == nodeEmoji.unemojify('👍'))
+
+    if (this.isEmojiEq(str, '👍')) {
+      this.stack.push(0)
+      return 'normal'
+    }
+    if (str == ':X:') {
+      this.stack.push(0)
+      return 'end'
+    }
+
+    this.stack.push(-1)
+    return 'end'
   }
 
   /** 1ステップ */
   step(): void {
     this.state = this.exec()
+    if (this.isEnd()) {
+      return
+    }
     this.state = this.move()
   }
 }

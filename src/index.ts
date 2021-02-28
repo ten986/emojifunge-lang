@@ -1,12 +1,16 @@
+import * as fs from 'fs'
+
 import { Interpreter } from './interpreter'
 
-export function main(): void {
-  const board = ''
+const path = './src/sample/test'
+const board = fs.readFileSync(path).toString()
 
-  const interpreter = new Interpreter(board)
-  for (let i = 0; i < 10; ++i) {
-    interpreter.step()
+const interpreter = new Interpreter(board)
+for (let i = 0; i < 10; ++i) {
+  interpreter.step()
+  if (interpreter.isEnd()) {
+    break
   }
-
-  console.log(interpreter.stack[0])
 }
+
+console.log(interpreter.stack)
