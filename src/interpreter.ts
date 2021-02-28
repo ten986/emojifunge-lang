@@ -1,7 +1,7 @@
 import { Board } from './board'
 import { Stack } from './stack'
 
-type State = 'normal' | 'end'
+type EndState = 'normal' | 'end'
 
 class Interpreter {
   /** ファイルを受け取るボード */
@@ -22,7 +22,7 @@ class Interpreter {
   dirY: number
 
   /** 状態 */
-  state: State
+  endState: EndState
 
   /** スタック */
   stack: Stack
@@ -32,7 +32,7 @@ class Interpreter {
     this.y = 0
     this.dirX = 1
     this.dirY = 0
-    this.state = 'normal'
+    this.endState = 'normal'
 
     this.input = input
     this.firstInput = input
@@ -43,7 +43,7 @@ class Interpreter {
 
   /** 終わった？ */
   isEnd(): boolean {
-    return this.state == 'end'
+    return this.endState == 'end'
   }
 
   /** 出力 */
@@ -56,8 +56,23 @@ class Interpreter {
     console.error(str)
   }
 
+  /** 1ステップ */
+  step(): void {
+    this.endState = this.exec()
+    if (this.isEnd()) {
+      return
+    }
+    this.endState = this.move()
+    if (this.isEnd()) {
+      return
+    }
+    // console.log('x:' + this.x + ', y:' + this.y)
+    // console.log('dx:' + this.dirX + ', dy:' + this.dirY)
+    // console.log(this.stack)
+  }
+
   /** dir の方向に進む */
-  move(): State {
+  move(): EndState {
     // リトライ回数
     let retryCount = 0
     const retryMax = 4
@@ -69,14 +84,13 @@ class Interpreter {
 
       // dir の方向に進む
       if (this.board.existEmoji(dx, dy)) {
-        this.x += this.dirX
-        this.y += this.dirY
+        this.x = dx
+        this.y = dy
         return 'normal'
       }
 
       // 右回転
-      this.dirY = this.dirX
-      this.dirX = -this.dirY
+      ;[this.dirX, this.dirY] = [-this.dirY, this.dirX]
       retryCount++
     }
 
@@ -84,7 +98,8 @@ class Interpreter {
     return 'end'
   }
 
-  exec(): State {
+  /** 足元のやつを実行 */
+  exec(): EndState {
     // 現在位置のemoji
     const emoji = this.board.getEmojiStr(this.x, this.y)
 
@@ -94,15 +109,25 @@ class Interpreter {
     }
 
     // 数値入力
-    if (emoji.eq('🔢')) {
+    if (emoji.eq('ℹ️')) {
       this.stack.push(+(this.input.match(/-?\d+/) || [0])[0] || 0)
       this.input = this.input.replace(/^[^]*?\d+/, '')
       return 'normal'
     }
     // 文字入力
-    if (emoji.eq('🔠')) {
+    if (emoji.eq('🔤')) {
       this.stack.push(this.input ? this.input.charCodeAt(0) : -1)
       this.input = this.input.slice(1)
+      return 'normal'
+    }
+    // 数値出力
+    if (emoji.eq('🔢')) {
+      this.output(this.stack.pop().toString())
+      return 'normal'
+    }
+    // 文字出力
+    if (emoji.eq('🔡')) {
+      this.output(String.fromCharCode(this.stack.pop()))
       return 'normal'
     }
 
@@ -114,21 +139,6 @@ class Interpreter {
     // unexpected token
     this.error('unexpected emoji')
     return 'end'
-  }
-
-  /** 1ステップ */
-  step(): void {
-    this.state = this.exec()
-    if (this.isEnd()) {
-      return
-    }
-    this.state = this.move()
-    if (this.isEnd()) {
-      return
-    }
-    console.log('x:' + this.x + ', y:' + this.y)
-    console.log('dx:' + this.dirX + ', dy:' + this.dirY)
-    console.log(this.stack)
   }
 }
 
