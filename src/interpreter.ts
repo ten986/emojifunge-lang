@@ -58,21 +58,21 @@ class Interpreter {
 
   /** 1ステップ */
   step(): void {
-    this.endState = this.exec()
+    this.exec()
     if (this.isEnd()) {
       return
     }
-    this.endState = this.move()
+    this.move()
     if (this.isEnd()) {
       return
     }
-    // console.log('x:' + this.x + ', y:' + this.y)
-    // console.log('dx:' + this.dirX + ', dy:' + this.dirY)
-    // console.log(this.stack)
+    console.log('x:' + this.x + ', y:' + this.y)
+    console.log('dx:' + this.dirX + ', dy:' + this.dirY)
+    console.log(this.stack)
   }
 
   /** dir の方向に進む */
-  move(): EndState {
+  move(): void {
     // リトライ回数
     let retryCount = 0
     const retryMax = 4
@@ -86,7 +86,7 @@ class Interpreter {
       if (this.board.existEmoji(dx, dy)) {
         this.x = dx
         this.y = dy
-        return 'normal'
+        return
       }
 
       // 右回転
@@ -95,50 +95,178 @@ class Interpreter {
     }
 
     // 移動できずに終了
-    return 'end'
+    this.endState = 'end'
   }
 
   /** 足元のやつを実行 */
-  exec(): EndState {
+  exec(): void {
     // 現在位置のemoji
     const emoji = this.board.getEmojiStr(this.x, this.y)
 
     // emoji がない
     if (emoji === undefined) {
-      return 'end'
+      this.error('emoji not found')
+      this.endState = 'end'
+      return
     }
 
+    // 入出力 -------
     // 数値入力
     if (emoji.eq('ℹ️')) {
       this.stack.push(+(this.input.match(/-?\d+/) || [0])[0] || 0)
       this.input = this.input.replace(/^[^]*?\d+/, '')
-      return 'normal'
+      return
     }
     // 文字入力
     if (emoji.eq('🔤')) {
       this.stack.push(this.input ? this.input.charCodeAt(0) : -1)
       this.input = this.input.slice(1)
-      return 'normal'
+      return
     }
     // 数値出力
     if (emoji.eq('🔢')) {
       this.output(this.stack.pop().toString())
-      return 'normal'
+      return
     }
     // 文字出力
     if (emoji.eq('🔡')) {
       this.output(String.fromCharCode(this.stack.pop()))
-      return 'normal'
+      return
     }
 
-    if (emoji.eq('👍')) {
+    // 制御 ------
+
+    // 終了
+    if (emoji.eq('⛔️')) {
+      this.endState = 'end'
+      return
+    }
+    // 通過
+    if (emoji.eq('⬜️')) {
+      return
+    }
+    // 壁の中にいる
+    if (emoji.eq('⬛️')) {
+      // pointer in wall
+      this.error('pointer in wall')
+      this.endState = 'end'
+      return
+    }
+
+    // 定数 ------
+    if (emoji.eq('0️⃣')) {
       this.stack.push(0)
-      return 'normal'
+      return
+    }
+    if (emoji.eq('1️⃣')) {
+      this.stack.push(1)
+      return
+    }
+    if (emoji.eq('2️⃣')) {
+      this.stack.push(2)
+      return
+    }
+    if (emoji.eq('3️⃣')) {
+      this.stack.push(3)
+      return
+    }
+    if (emoji.eq('4️⃣')) {
+      this.stack.push(4)
+      return
+    }
+    if (emoji.eq('5️⃣')) {
+      this.stack.push(5)
+      return
+    }
+    if (emoji.eq('6️⃣')) {
+      this.stack.push(6)
+      return
+    }
+    if (emoji.eq('7️⃣')) {
+      this.stack.push(7)
+      return
+    }
+    if (emoji.eq('8️⃣')) {
+      this.stack.push(8)
+      return
+    }
+    if (emoji.eq('9️⃣')) {
+      this.stack.push(9)
+      return
+    }
+    if (emoji.eq('🔟')) {
+      this.stack.push(10)
+      return
+    }
+    if (emoji.eq('💯')) {
+      this.stack.push(100)
+      return
+    }
+
+    // 計算 ----
+    if (emoji.eq('➕')) {
+      const a = this.stack.pop()
+      const b = this.stack.pop()
+      this.stack.push(a + b)
+      return
+    }
+    if (emoji.eq('➖')) {
+      const a = this.stack.pop()
+      const b = this.stack.pop()
+      this.stack.push(a - b)
+      return
+    }
+    if (emoji.eq('✖️')) {
+      const a = this.stack.pop()
+      const b = this.stack.pop()
+      this.stack.push(a * b)
+      return
+    }
+    if (emoji.eq('➗')) {
+      const a = this.stack.pop()
+      const b = this.stack.pop()
+      this.stack.push(Math.floor(a / b))
+      return
+    }
+    if (emoji.eq('🈹')) {
+      const a = this.stack.pop()
+      const b = this.stack.pop()
+      this.stack.push(a % b)
+      return
+    }
+
+    // スタック操作 -----
+    if (emoji.eq('🚮')) {
+      this.stack.pop()
+      return
+    }
+    if (emoji.eq('💕')) {
+      const a = this.stack.pop()
+      this.stack.push(a)
+      this.stack.push(a)
+      return
+    }
+    if (emoji.eq('💞')) {
+      const a = this.stack.pop()
+      const b = this.stack.pop()
+      this.stack.push(a)
+      this.stack.push(b)
+      return
+    }
+    if (emoji.eq('♻️')) {
+      const a = this.stack.pop()
+      const b = this.stack.pop()
+      const c = this.stack.pop()
+      this.stack.push(b)
+      this.stack.push(a)
+      this.stack.push(c)
+      return
     }
 
     // unexpected token
     this.error('unexpected emoji')
-    return 'end'
+    this.endState = 'end'
+    return
   }
 }
 

@@ -8,7 +8,7 @@ const path = argv[2]
 const board = fs.readFileSync(path).toString()
 
 // 入力
-const input: string = '' + fs.readFileSync(0)
+const input = fs.readFileSync(0).toString()
 
 // 実行
 const interpreter = new Interpreter(board, input)

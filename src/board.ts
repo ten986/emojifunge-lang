@@ -19,7 +19,8 @@ class Board {
 
   /** (x, y) にあるか */
   existEmoji(x: number, y: number): boolean {
-    return this.getEmojiStr(x, y) !== undefined
+    const emoji = this.getEmojiStr(x, y)
+    return emoji !== undefined && !emoji.eq('⬛️')
   }
 
   getEmojiStr(x: number, y: number): Emoji | undefined {
