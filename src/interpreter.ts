@@ -263,6 +263,65 @@ class Interpreter {
       return
     }
 
+    // 移動 -----
+
+    if (emoji.eq('➡️')) {
+      this.dirX = 1
+      this.dirY = 0
+      return
+    }
+    if (emoji.eq('⬅️')) {
+      this.dirX = -1
+      this.dirY = 0
+      return
+    }
+    if (emoji.eq('⬆️')) {
+      this.dirX = 0
+      this.dirY = -1
+      return
+    }
+    if (emoji.eq('⬇️')) {
+      this.dirX = 0
+      this.dirY = 1
+      return
+    }
+    if (emoji.eq('↗️')) {
+      this.dirX = 1
+      this.dirY = -1
+      return
+    }
+    if (emoji.eq('↘️')) {
+      this.dirX = 1
+      this.dirY = 1
+      return
+    }
+    if (emoji.eq('↖️')) {
+      this.dirX = -1
+      this.dirY = -1
+      return
+    }
+    if (emoji.eq('↙️')) {
+      this.dirX = -1
+      this.dirY = 1
+      return
+    }
+    if (emoji.eq('⏩')) {
+      this.dirX++
+      return
+    }
+    if (emoji.eq('⏪')) {
+      this.dirX--
+      return
+    }
+    if (emoji.eq('⏫')) {
+      this.dirY--
+      return
+    }
+    if (emoji.eq('⏬')) {
+      this.dirY++
+      return
+    }
+
     // unexpected token
     this.error('unexpected emoji')
     this.endState = 'end'
