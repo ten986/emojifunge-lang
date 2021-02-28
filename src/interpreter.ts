@@ -2,7 +2,6 @@ import * as nodeEmoji from 'node-emoji'
 
 import { Stack } from './stack'
 
-type Direction = 'up' | 'down' | 'right' | 'left'
 type State = 'normal' | 'end'
 
 class Interpreter {
@@ -58,6 +57,11 @@ class Interpreter {
 
   isEmojiEq(str: string, emo: string): boolean {
     return str == nodeEmoji.unemojify(emo)
+  }
+
+  /** */
+  output(str: string): void {
+    process.stdout.write(String(str))
   }
 
   /** dir の方向に進む */
