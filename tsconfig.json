@@ -3,7 +3,7 @@
     "target": "ES2018",
     "module": "commonjs",
     "lib": ["esnext"],
-    "types": ["node", "jest"],
+    "types": ["node"],
     "strict": true,
     "importHelpers": true,
     "experimentalDecorators": true,
@@ -13,10 +13,6 @@
     "rootDirs": [
       "./src"
     ],
-    "baseUrl": "./",
-    "paths": {
-      "@/*": ["src/*"]
-    },
   },
   "include": ["src"],
   "exclude": ["**/*.test.ts"]

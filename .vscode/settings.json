@@ -6,8 +6,5 @@
   "editor.rulers": [100],
   "eslint.validate": ["javascript", "typescript"],
   "prettier.disableLanguages": ["javascript", "typescript"],
-  "typescript.tsdk": "node_modules/typescript/lib",
-  "path-autocomplete.pathMappings": {
-    "@": "${folder}/src",
-  }
+  "typescript.tsdk": "node_modules/typescript/lib"
 }
