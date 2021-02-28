@@ -1,7 +1,15 @@
 import { Board } from './board'
 import { Stack } from './stack'
 
+// this is 最悪な sleep
+function sleep(ms: number): void {
+  const time = new Date().getTime()
+  // eslint-disable-next-line no-empty
+  while (new Date().getTime() < time + ms) {}
+}
+
 type EndState = 'normal' | 'end'
+type CommentState = 'normal' | 'commented'
 
 class Interpreter {
   /** ファイルを受け取るボード */
@@ -23,6 +31,10 @@ class Interpreter {
 
   /** 状態 */
   endState: EndState
+  commentState: CommentState
+
+  /** 回数操作 */
+  operationNum: number[]
 
   /** スタック */
   stack: Stack
@@ -33,12 +45,15 @@ class Interpreter {
     this.dirX = 1
     this.dirY = 0
     this.endState = 'normal'
+    this.commentState = 'normal'
 
     this.input = input
     this.firstInput = input
 
     this.board = new Board(file)
     this.stack = new Stack()
+
+    this.operationNum = []
   }
 
   /** 終わった？ */
@@ -58,10 +73,18 @@ class Interpreter {
 
   /** 1ステップ */
   step(): void {
-    this.exec()
-    if (this.isEnd()) {
-      return
+    // 命令実行回数
+    let op = 1
+    if (this.operationNum.length > 0) {
+      op = this.operationNum.pop() ?? 1
     }
+    for (let i = 0; i < op; ++i) {
+      this.exec()
+      if (this.isEnd()) {
+        return
+      }
+    }
+
     this.move()
     if (this.isEnd()) {
       return
@@ -107,6 +130,19 @@ class Interpreter {
     if (emoji === undefined) {
       this.error('emoji not found')
       this.endState = 'end'
+      return
+    }
+
+    if (this.commentState == 'commented') {
+      if (emoji.eq('🍚')) {
+        this.commentState = 'normal'
+      }
+      return
+    }
+
+    // コメント ---
+    if (emoji.eq('🍚')) {
+      this.commentState = 'commented'
       return
     }
 
@@ -473,6 +509,71 @@ class Interpreter {
     if (emoji.eq('🈴')) {
       const a = this.stack.pop()
       this.stack.push(60 <= a ? 1 : 0)
+      return
+    }
+
+    // 回数操作 ---
+    if (emoji.eq('🏃‍♀️')) {
+      this.operationNum.push(2)
+      return
+    }
+    if (emoji.eq('🎰')) {
+      const a = this.stack.pop()
+      const b = this.stack.pop()
+      const c = this.stack.pop()
+      if (a == b && b == c) {
+        this.operationNum.push(7)
+        this.operationNum.push(7)
+        this.operationNum.push(7)
+      }
+      return
+    }
+    if (emoji.eq('💤')) {
+      this.operationNum.push(0)
+      this.operationNum.push(0)
+      this.operationNum.push(0)
+      return
+    }
+
+    // misc------
+    // お姉さん
+    if (emoji.eq('🤖')) {
+      const a = this.stack.pop()
+      if (a <= 0) {
+        this.stack.push(1)
+      }
+      if (a == 1) {
+        this.stack.push(2)
+      }
+      if (a == 2) {
+        this.stack.push(12)
+      }
+      if (a == 3) {
+        this.stack.push(184)
+      }
+      if (a == 4) {
+        this.stack.push(8512)
+      }
+      if (a == 5) {
+        this.stack.push(1262816)
+      }
+      if (a == 6) {
+        this.stack.push(575780564)
+      }
+      if (a == 7) {
+        // 2秒
+        sleep(2 * 1000)
+        this.stack.push(789360053252)
+      }
+      if (a == 8) {
+        // 4時間
+        sleep(4 * 60 * 60 * 1000)
+        this.stack.push(3266598486981642)
+      }
+      if (a >= 9) {
+        // eslint-disable-next-line no-empty
+        for (;;) {}
+      }
       return
     }
 
