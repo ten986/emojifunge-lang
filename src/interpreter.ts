@@ -241,6 +241,17 @@ class Interpreter {
       return
     }
 
+    // 乱数 ---
+
+    if (emoji.eq('🎲')) {
+      this.stack.push(Math.floor(Math.random() * 6) + 1)
+      return
+    }
+    if (emoji.eq('🤞')) {
+      this.stack.push(Math.floor(Math.random() * 2))
+      return
+    }
+
     // 計算 ----
     if (emoji.eq('➕')) {
       const a = this.stack.pop()
@@ -270,6 +281,21 @@ class Interpreter {
       const a = this.stack.pop()
       const b = this.stack.pop()
       this.stack.push(a % b)
+      return
+    }
+    if (emoji.eq('🈹')) {
+      const a = this.stack.pop()
+      const b = this.stack.pop()
+      this.stack.push(a % b)
+      return
+    }
+    if (emoji.eq('❗️')) {
+      const a = this.stack.pop()
+      let res = 1
+      for (let i = 1; i <= a; ++i) {
+        res *= i
+      }
+      this.stack.push(res)
       return
     }
 
@@ -302,6 +328,10 @@ class Interpreter {
     }
     if (emoji.eq('🙃')) {
       this.stack.reverse()
+      return
+    }
+    if (emoji.eq('🎆')) {
+      this.stack.clear()
       return
     }
     if (emoji.eq('🔞')) {
@@ -428,6 +458,21 @@ class Interpreter {
       const a = this.stack.pop()
       const b = this.stack.pop()
       this.stack.push(a < b ? 1 : 0)
+      return
+    }
+    if (emoji.eq('❕')) {
+      const a = this.stack.pop()
+      this.stack.push(a > 0 ? 0 : 1)
+      return
+    }
+    if (emoji.eq('🉑')) {
+      const a = this.stack.pop()
+      this.stack.push(60 <= a && a < 80 ? 1 : 0)
+      return
+    }
+    if (emoji.eq('🈴')) {
+      const a = this.stack.pop()
+      this.stack.push(60 <= a ? 1 : 0)
       return
     }
 

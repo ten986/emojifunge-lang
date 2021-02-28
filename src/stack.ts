@@ -20,6 +20,10 @@ class Stack {
   r18(): void {
     this.stack = this.stack.filter((num) => num >= 18)
   }
+
+  clear(): void {
+    this.stack = []
+  }
 }
 
 export { Stack }
