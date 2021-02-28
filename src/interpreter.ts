@@ -48,7 +48,7 @@ class Interpreter {
 
   /** 出力 */
   output(str: string): void {
-    console.log(str)
+    process.stdout.write(str)
   }
 
   /** 出力 */
@@ -66,9 +66,9 @@ class Interpreter {
     if (this.isEnd()) {
       return
     }
-    console.log('x:' + this.x + ', y:' + this.y)
-    console.log('dx:' + this.dirX + ', dy:' + this.dirY)
-    console.log(this.stack)
+    // console.log('x:' + this.x + ', y:' + this.y)
+    // console.log('dx:' + this.dirX + ', dy:' + this.dirY)
+    // console.log(this.stack)
   }
 
   /** dir の方向に進む */
@@ -131,6 +131,16 @@ class Interpreter {
     // 文字出力
     if (emoji.eq('🔡')) {
       this.output(String.fromCharCode(this.stack.pop()))
+      return
+    }
+    // cat
+    if (emoji.eq('🐱')) {
+      this.output(this.firstInput)
+      return
+    }
+    // dog
+    if (emoji.eq('🐶')) {
+      this.output(this.firstInput.split('').reverse().join(''))
       return
     }
 
@@ -196,6 +206,34 @@ class Interpreter {
     }
     if (emoji.eq('🔟')) {
       this.stack.push(10)
+      return
+    }
+    if (emoji.eq('🅰️')) {
+      this.stack.push(65)
+      return
+    }
+    if (emoji.eq('🅱️')) {
+      this.stack.push(66)
+      return
+    }
+    if (emoji.eq('©️')) {
+      this.stack.push(67)
+      return
+    }
+    if (emoji.eq('🅾️')) {
+      this.stack.push(77)
+      return
+    }
+    if (emoji.eq('Ⓜ️')) {
+      this.stack.push(79)
+      return
+    }
+    if (emoji.eq('🅿️')) {
+      this.stack.push(80)
+      return
+    }
+    if (emoji.eq('®️')) {
+      this.stack.push(82)
       return
     }
     if (emoji.eq('💯')) {
@@ -264,6 +302,10 @@ class Interpreter {
     }
     if (emoji.eq('🙃')) {
       this.stack.reverse()
+      return
+    }
+    if (emoji.eq('🔞')) {
+      this.stack.r18()
       return
     }
 
@@ -386,11 +428,6 @@ class Interpreter {
       const a = this.stack.pop()
       const b = this.stack.pop()
       this.stack.push(a < b ? 1 : 0)
-      return
-    }
-    if (emoji.eq('🔞')) {
-      const a = this.stack.pop()
-      this.stack.push(a >= 18 ? 1 : 0)
       return
     }
 

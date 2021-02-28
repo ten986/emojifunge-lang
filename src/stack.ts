@@ -16,6 +16,10 @@ class Stack {
   reverse(): void {
     this.stack = this.stack.reverse()
   }
+
+  r18(): void {
+    this.stack = this.stack.filter((num) => num >= 18)
+  }
 }
 
 export { Stack }
