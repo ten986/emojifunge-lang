@@ -12,15 +12,11 @@ const input = fs.readFileSync(0).toString()
 
 // 実行
 const interpreter = new Interpreter(board, input)
-let i = 0
-for (; i < 100; ++i) {
+for (;;) {
   interpreter.step()
   if (interpreter.isEnd()) {
     break
   }
 }
-if (i == 100) {
-  console.log('infinity loop')
-}
 
-console.log(interpreter.stack)
+// console.log(interpreter.stack)

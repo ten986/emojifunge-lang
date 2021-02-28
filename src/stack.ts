@@ -1,3 +1,5 @@
+import { median } from 'mathjs'
+
 class Stack {
   stack: number[]
 
@@ -23,6 +25,19 @@ class Stack {
 
   clear(): void {
     this.stack = []
+  }
+
+  get length(): number {
+    return this.stack.length
+  }
+
+  median(): number {
+    return median(this.stack)
+  }
+
+  // 上から何番目かのやつ
+  sortRank(rank: number): number {
+    return this.stack.sort((a, b) => b - a)?.[rank] ?? -1
   }
 }
 

@@ -34,7 +34,10 @@ class Interpreter {
   commentState: CommentState
 
   /** 回数操作 */
-  operationNum: number[]
+  operationNum: Stack
+
+  /** mailbox */
+  mailBox: Stack
 
   /** スタック */
   stack: Stack
@@ -53,7 +56,8 @@ class Interpreter {
     this.board = new Board(file)
     this.stack = new Stack()
 
-    this.operationNum = []
+    this.mailBox = new Stack()
+    this.operationNum = new Stack()
   }
 
   /** 終わった？ */
@@ -183,7 +187,7 @@ class Interpreter {
     // 制御 ------
 
     // 終了
-    if (emoji.eq('⛔️')) {
+    if (emoji.eq('🔚')) {
       this.endState = 'end'
       return
     }
@@ -535,7 +539,48 @@ class Interpreter {
       return
     }
 
+    // 記憶領域操作
+    if (emoji.eq('📥')) {
+      const a = this.stack.pop()
+      this.mailBox.push(a)
+      return
+    }
+    if (emoji.eq('📤')) {
+      const a = this.mailBox.pop()
+      this.stack.push(a)
+      return
+    }
+
     // misc------
+    // ranks
+    if (emoji.eq('🥇')) {
+      this.stack.push(this.stack.sortRank(0))
+      return
+    }
+    if (emoji.eq('🥈')) {
+      this.stack.push(this.stack.sortRank(1))
+      return
+    }
+    if (emoji.eq('🥉')) {
+      this.stack.push(this.stack.sortRank(2))
+      return
+    }
+    // median
+    if (emoji.eq('🀄')) {
+      this.stack.push(this.stack.median())
+      return
+    }
+    // カレンダー
+    if (emoji.eq('📅')) {
+      const time = new Date()
+      this.stack.push(time.getSeconds())
+      this.stack.push(time.getMinutes())
+      this.stack.push(time.getHours())
+      this.stack.push(time.getDate())
+      this.stack.push(time.getMonth() + 1)
+      this.stack.push(time.getFullYear())
+      return
+    }
     // お姉さん
     if (emoji.eq('🤖')) {
       const a = this.stack.pop()
