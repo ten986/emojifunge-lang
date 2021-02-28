@@ -15,6 +15,7 @@
     "lint:type": "tsc --noEmit",
     "test:unit": "jest",
     "dev": "ts-node src/index.ts",
+    "dev:test": "ts-node src/index.ts src/sample/test src/sample/input",
     "dev:watch": "ts-node-dev --respawn src/index.ts"
   },
   "repository": {
