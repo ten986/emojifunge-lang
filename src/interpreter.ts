@@ -1,4 +1,5 @@
-import { Board } from './board'
+import { Board } from '@/board'
+
 import { Stack } from './stack'
 
 type EndState = 'normal' | 'end'
@@ -27,7 +28,11 @@ class Interpreter {
   /** スタック */
   stack: Stack
 
-  constructor(file: string, input: string) {
+  /** outputdist */
+  outputdist: 'console' | 'inner'
+  outputdistInner: string
+
+  constructor(file: string, input: string, dist: 'console' | 'inner' = 'console') {
     this.x = 0
     this.y = 0
     this.dirX = 1
@@ -36,6 +41,9 @@ class Interpreter {
 
     this.input = input
     this.firstInput = input
+
+    this.outputdist = dist
+    this.outputdistInner = ''
 
     this.board = new Board(file)
     this.stack = new Stack()
@@ -46,9 +54,18 @@ class Interpreter {
     return this.endState == 'end'
   }
 
+  getTestOutput(): string {
+    return this.outputdistInner
+  }
+
   /** 出力 */
   output(str: string): void {
-    console.log(str)
+    if (this.outputdist == 'console') {
+      console.log(str)
+    }
+    if (this.outputdist == 'inner') {
+      this.outputdistInner += str
+    }
   }
 
   /** 出力 */
@@ -139,6 +156,15 @@ class Interpreter {
     // unexpected token
     this.error('unexpected emoji')
     return 'end'
+  }
+
+  stepAll(): void {
+    for (;;) {
+      this.step()
+      if (this.isEnd()) {
+        break
+      }
+    }
   }
 }
 
