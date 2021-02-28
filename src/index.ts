@@ -5,7 +5,10 @@ import { Interpreter } from './interpreter'
 const path = './src/sample/test'
 const board = fs.readFileSync(path).toString()
 
-const interpreter = new Interpreter(board)
+const pathInput = './src/sample/input'
+const input = fs.readFileSync(pathInput).toString()
+
+const interpreter = new Interpreter(board, input)
 for (let i = 0; i < 10; ++i) {
   interpreter.step()
   if (interpreter.isEnd()) {

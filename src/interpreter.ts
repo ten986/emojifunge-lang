@@ -1,11 +1,19 @@
 import * as nodeEmoji from 'node-emoji'
 
+import { Stack } from './stack'
+
 type Direction = 'up' | 'down' | 'right' | 'left'
 type State = 'normal' | 'end'
 
 class Interpreter {
   /** ボード */
   board: string[][]
+
+  /** 入力 */
+  input: string
+
+  /** 入力（最初） */
+  firstInput: string
 
   /** 場所 */
   x: number
@@ -19,43 +27,24 @@ class Interpreter {
   state: State
 
   /** スタック */
-  stack: number[]
+  stack: Stack
 
-  constructor(board: string) {
+  constructor(board: string, input: string) {
     this.board = board.split('\n').map((str) => this.splitEmojiStr(str))
     console.log(this.board)
 
     this.x = 0
     this.y = 0
-    this.dirX = 0
+    this.dirX = 1
     this.dirY = 0
     this.state = 'normal'
-    this.stack = []
+    this.stack = new Stack()
 
-    this.setDir('right')
+    this.input = input
+    this.firstInput = input
   }
 
-  setDir(dir: Direction): void {
-    switch (dir) {
-      case 'up':
-        this.dirX = 0
-        this.dirY = -1
-        break
-      case 'down':
-        this.dirX = 0
-        this.dirY = 1
-        break
-      case 'right':
-        this.dirX = 1
-        this.dirY = 0
-        break
-      case 'left':
-        this.dirX = -1
-        this.dirY = 0
-        break
-    }
-  }
-
+  /** 絵文字変換用 */
   splitEmojiStr(str: string): string[] {
     return nodeEmoji
       .unemojify(str)
@@ -80,12 +69,23 @@ class Interpreter {
   }
 
   exec(): State {
-    // TODO: emoji の実装と合わせて実装する
+    const { stack, input } = this
 
+    // 現在位置のemoji
     const str = ':' + (this.board?.[this.y]?.[this.x] ?? 'X') + ':'
-    console.log(str)
-    console.log(nodeEmoji.unemojify('👍'))
-    console.log(str == nodeEmoji.unemojify('👍'))
+
+    // 数値入力
+    if (this.isEmojiEq(str, '🔢')) {
+      stack.push(+(input.match(/-?\d+/) || [0])[0] || 0)
+      this.input = input.replace(/^[^]*?\d+/, '')
+      return 'normal'
+    }
+    // 文字入力
+    if (this.isEmojiEq(str, '🔠')) {
+      stack.push(input ? input.charCodeAt(0) : -1)
+      this.input = input.slice(1)
+      return 'normal'
+    }
 
     if (this.isEmojiEq(str, '👍')) {
       this.stack.push(0)
@@ -107,6 +107,9 @@ class Interpreter {
       return
     }
     this.state = this.move()
+    if (this.isEnd()) {
+      return
+    }
   }
 }
 
