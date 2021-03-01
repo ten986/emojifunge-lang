@@ -42,6 +42,9 @@ class Interpreter {
   /** スタック */
   stack: Stack
 
+  /** アウトプット全体 */
+  allOutput: string
+
   constructor(file: string, input: string) {
     this.x = 0
     this.y = 0
@@ -58,6 +61,8 @@ class Interpreter {
 
     this.mailBox = new Stack()
     this.operationNum = new Stack()
+
+    this.allOutput = ''
   }
 
   /** 終わった？ */
@@ -67,6 +72,7 @@ class Interpreter {
 
   /** 出力 */
   output(str: string): void {
+    this.allOutput += str
     process.stdout.write(str)
   }
 
@@ -96,6 +102,16 @@ class Interpreter {
     // console.log('x:' + this.x + ', y:' + this.y)
     // console.log('dx:' + this.dirX + ', dy:' + this.dirY)
     // console.log(this.stack)
+  }
+
+  /** 最後まで */
+  stepAll(): void {
+    for (;;) {
+      this.step()
+      if (this.isEnd()) {
+        break
+      }
+    }
   }
 
   /** dir の方向に進む */
