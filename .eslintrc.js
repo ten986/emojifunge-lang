@@ -8,7 +8,7 @@ module.exports = {
     'prettier',
     'plugin:prettier/recommended',
   ],
-  plugins: ['simple-import-sort'],
+  plugins: ['@typescript-eslint', 'simple-import-sort'],
   env: {
     es6: true,
     node: true,
@@ -40,4 +40,9 @@ module.exports = {
       },
     },
   ],
+  settings: {
+    'import/resolver': {
+      typescript: {},
+    },
+  },
 }

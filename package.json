@@ -14,8 +14,8 @@
     "lint:prettier": "prettier -l \"**/*.{json,md,yml}\"",
     "lint:type": "tsc --noEmit",
     "test:unit": "jest",
-    "dev": "ts-node src/index.ts",
-    "dev:test": "cat src/sample/input | (./node_modules/.bin/ts-node src/index.ts src/sample/hello)",
+    "dev": "ts-node -r tsconfig-paths/register src/index.ts",
+    "dev:test": "cat src/sample/input | (./node_modules/.bin/ts-node -r tsconfig-paths/register src/index.ts src/sample/hello)",
     "dev:watch": "ts-node-dev --respawn src/index.ts"
   },
   "repository": {
@@ -37,6 +37,7 @@
     "@typescript-eslint/parser": "4.15.2",
     "eslint": "7.21.0",
     "eslint-config-prettier": "8.1.0",
+    "eslint-import-resolver-typescript": "2.4.0",
     "eslint-plugin-import": "2.22.1",
     "eslint-plugin-prettier": "3.3.1",
     "eslint-plugin-simple-import-sort": "7.0.0",
@@ -50,7 +51,8 @@
     "ts-jest": "26.5.2",
     "ts-node": "9.1.1",
     "ts-node-dev": "1.1.6",
-    "typescript": "^4.2.2"
+    "typescript": "^4.2.2",
+    "typescript-eslint-parser": "22.0.0"
   },
   "engines": {
     "node": ">= 12",

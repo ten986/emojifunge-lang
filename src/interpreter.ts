@@ -1,5 +1,5 @@
-import { Board } from './board'
-import { Stack } from './stack'
+import { Board } from '@/board'
+import { Stack } from '@/stack'
 
 // this is 最悪な sleep
 function sleep(ms: number): void {
