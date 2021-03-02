@@ -14,4 +14,9 @@ class Emoji {
   }
 }
 
-export { Emoji }
+/** 0️⃣ -> :zero: を表すEmojiクラス */
+function emojiToClass(emoji: string): Emoji {
+  return new Emoji(unemojify(emoji))
+}
+
+export { Emoji, emojiToClass }

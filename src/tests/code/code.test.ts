@@ -1,7 +1,7 @@
 import * as fs from 'fs'
 import path from 'path'
 
-import { Interpreter } from '@/interpreter'
+import { Interpreter } from '@/interpreter/interpreter'
 
 type TestCase = {
   pathCode: string

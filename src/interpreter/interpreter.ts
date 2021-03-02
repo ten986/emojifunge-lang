@@ -1,6 +1,9 @@
 import { Board } from '@/board'
 import { Stack } from '@/stack'
 
+import { Action, EmojiAction } from './action'
+import { inoutActions } from './methods/inout'
+
 // this is 最悪な sleep
 function sleep(ms: number): void {
   const time = new Date().getTime()
@@ -45,6 +48,9 @@ class Interpreter {
   /** アウトプット全体 */
   allOutput: string
 
+  /** :hoge: -> Action */
+  emojistrToAction: Map<string, Action>
+
   constructor(file: string, input: string) {
     this.x = 0
     this.y = 0
@@ -63,6 +69,19 @@ class Interpreter {
     this.operationNum = new Stack()
 
     this.allOutput = ''
+
+    this.emojistrToAction = new Map<string, Action>()
+    this.registerAction()
+  }
+
+  /** 実行できる action の登録 */
+  registerAction(): void {
+    let emojiActions: EmojiAction[] = []
+    emojiActions = emojiActions.concat(inoutActions)
+
+    emojiActions.forEach(({ emoji, action }) => {
+      this.emojistrToAction.set(emoji.emojiStr, action)
+    })
   }
 
   /** 終わった？ */
@@ -153,6 +172,13 @@ class Interpreter {
       return
     }
 
+    // action を取得
+    const action = this.emojistrToAction.get(emoji.emojiStr)
+    if (action !== undefined) {
+      action(this)
+      return
+    }
+
     if (this.commentState == 'commented') {
       if (emoji.eq('🍚')) {
         this.commentState = 'normal'
@@ -163,40 +189,6 @@ class Interpreter {
     // コメント ---
     if (emoji.eq('🍚')) {
       this.commentState = 'commented'
-      return
-    }
-
-    // 入出力 -------
-    // 数値入力
-    if (emoji.eq('ℹ️')) {
-      this.stack.push(+(this.input.match(/-?\d+/) || [0])[0] || 0)
-      this.input = this.input.replace(/^[^]*?\d+/, '')
-      return
-    }
-    // 文字入力
-    if (emoji.eq('🔤')) {
-      this.stack.push(this.input ? this.input.charCodeAt(0) : -1)
-      this.input = this.input.slice(1)
-      return
-    }
-    // 数値出力
-    if (emoji.eq('🔢')) {
-      this.output(this.stack.pop().toString())
-      return
-    }
-    // 文字出力
-    if (emoji.eq('🔡')) {
-      this.output(String.fromCharCode(this.stack.pop()))
-      return
-    }
-    // cat
-    if (emoji.eq('🐱')) {
-      this.output(this.firstInput)
-      return
-    }
-    // dog
-    if (emoji.eq('🐶')) {
-      this.output(this.firstInput.split('').reverse().join(''))
       return
     }
 
