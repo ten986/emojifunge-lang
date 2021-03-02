@@ -15,7 +15,7 @@
     "lint:type": "tsc --noEmit",
     "test:unit": "jest",
     "dev": "ts-node -r tsconfig-paths/register src/index.ts",
-    "dev:test": "cat src/code/input | (./node_modules/.bin/ts-node -r tsconfig-paths/register src/index.ts src/code/code)",
+    "dev:test": "cat code/input | (./node_modules/.bin/ts-node -r tsconfig-paths/register src/index.ts code/code)",
     "dev:watch": "ts-node-dev --respawn src/index.ts"
   },
   "repository": {
