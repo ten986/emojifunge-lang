@@ -1,6 +1,6 @@
 module.exports = {
   preset: 'ts-jest',
-  testMatch: ['<rootDir>/src/**/*.test.ts'],
+  testMatch: ['<rootDir>/**/*.test.ts'],
   collectCoverage: true,
   errorOnDeprecated: true,
   testEnvironment: 'node',

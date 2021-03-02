@@ -36,6 +36,15 @@ const cases: TestCase[] = [
       },
     ],
   },
+  {
+    pathCode: './helloworld/code',
+    pathInOuts: [
+      {
+        pathInput: './helloworld/in',
+        pathOutput: './helloworld/out',
+      },
+    ],
+  },
 ]
 
 describe.each(cases)('%p', ({ pathCode, pathInOuts }) => {
