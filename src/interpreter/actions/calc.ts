@@ -1,6 +1,6 @@
 import { emojiToClass } from '@/emoji'
 
-import { Action, EmojiAction } from '../action'
+import { Action, EmojiAction } from '../actionTypes'
 import { Interpreter } from '../interpreter'
 
 type Op2 = (a: number, b: number) => number

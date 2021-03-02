@@ -11,4 +11,6 @@ type EmojiAction = {
   action: Action
 }
 
-export type { Action, EmojiAction }
+type EmojistrToActionMap = Map<string, Action>
+
+export type { Action, EmojiAction, EmojistrToActionMap }

@@ -1,37 +1,12 @@
 import { Board } from '@/board'
 import { Stack } from '@/stack'
 
-import { Action, EmojiAction } from './action'
-import { calcActions } from './methods/calc'
-import { commentActions } from './methods/comment'
-import { conditionalActions } from './methods/conditional'
-import { inoutActions } from './methods/inout'
-import { mailboxActions } from './methods/mailbox'
-import { miscActions } from './methods/misc'
-import { moveActions, rotateClockwise } from './methods/move'
-import { operationNumActions } from './methods/operationNum'
-import { programControlActions } from './methods/programControl'
-import { pushNumberActions } from './methods/pushNumber'
-import { randomActions } from './methods/random'
-import { stackActions } from './methods/stack'
+import { rotateClockwise } from './actions/move'
+import { Action } from './actionTypes'
+import { emojistrToAction } from './emojiActions'
 
 type EndState = 'normal' | 'end'
 type CommentState = 'normal' | 'commented'
-
-const emojiActionsArray: EmojiAction[][] = [
-  inoutActions,
-  programControlActions,
-  pushNumberActions,
-  randomActions,
-  calcActions,
-  moveActions,
-  stackActions,
-  conditionalActions,
-  operationNumActions,
-  mailboxActions,
-  miscActions,
-  commentActions,
-]
 
 class Interpreter {
   /** ファイルを受け取るボード */
@@ -89,25 +64,7 @@ class Interpreter {
 
     this.allOutput = ''
 
-    this.emojistrToAction = new Map<string, Action>()
-    this.registerAction()
-  }
-
-  /** emoji action の対応を生成取得 */
-  getEmojiActions(): EmojiAction[] {
-    let emojiActions: EmojiAction[] = []
-    for (const emojiActionsElm of emojiActionsArray) {
-      emojiActions = emojiActions.concat(emojiActionsElm)
-    }
-    return emojiActions
-  }
-
-  /** 実行できる action の登録 */
-  registerAction(): void {
-    const emojiActions = this.getEmojiActions()
-    emojiActions.forEach(({ emoji, action }) => {
-      this.emojistrToAction.set(emoji.emojiStr, action)
-    })
+    this.emojistrToAction = emojistrToAction
   }
 
   /** 終わった？ */
