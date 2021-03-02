@@ -31,7 +31,7 @@ const calendar: Action = (ip: Interpreter) => {
 }
 
 const kazoeageOneesan: Action = (ip: Interpreter) => {
-  const a = ip.stack.pop()
+  const a = ip.stack.popNumber()
   if (a <= 0) {
     ip.stack.push(1)
   }

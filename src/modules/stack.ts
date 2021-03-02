@@ -1,43 +1,85 @@
 import { median } from 'mathjs'
 
+import { StackState } from '@/interpreter/interpreter'
+
+/** スタックの要素 */
+type StackElm = number | Stack
+
+// 1 -> [1]
+const convertNumberTo1ElmStack = (num: number): Stack => {
+  const stack = new Stack()
+  stack.push(num)
+  return stack
+}
+
 class Stack {
-  stack: number[]
+  innerStack: StackElm[]
 
   constructor() {
-    this.stack = []
+    this.innerStack = []
   }
 
   push(num: number): void {
-    this.stack.push(num)
+    this.innerStack.push(num)
   }
 
-  pop(): number {
-    return this.stack.pop() ?? -1
+  // 数値として pop する
+  popNumber(): number {
+    let elm: StackElm | null = null
+    // eslint-disable-next-line @typescript-eslint/no-this-alias
+    let stack: Stack | null = this
+    while (!(typeof elm === 'number')) {
+      elm = stack.innerStack.pop() ?? -1
+      if (elm instanceof Stack) {
+        stack = elm
+      }
+    }
+    return elm
+  }
+
+  // stack として pop する
+  popStack(): Stack {
+    const elm = this.innerStack.pop() ?? -1
+    if (typeof elm === 'number') {
+      return convertNumberTo1ElmStack(elm)
+    }
+    return elm
+  }
+
+  // 計算用に、スタックとして取り出す
+  pop(state: StackState): Stack {
+    if (state === 'normal') {
+      return convertNumberTo1ElmStack(this.popNumber())
+    }
+    if (state === 'stack') {
+      return this.popStack()
+    }
+    throw new Error()
   }
 
   reverse(): void {
-    this.stack = this.stack.reverse()
+    this.innerStack = this.innerStack.reverse()
   }
 
   r18(): void {
-    this.stack = this.stack.filter((num) => num >= 18)
+    this.innerStack = this.innerStack.filter((num) => num >= 18)
   }
 
   clear(): void {
-    this.stack = []
+    this.innerStack = []
   }
 
   get length(): number {
-    return this.stack.length
+    return this.innerStack.length
   }
 
   median(): number {
-    return median(this.stack)
+    return median(this.innerStack)
   }
 
   // 上から何番目かのやつ
   sortRank(rank: number): number {
-    return this.stack.sort((a, b) => b - a)?.[rank] ?? -1
+    return this.innerStack.sort((a, b) => b - a)?.[rank] ?? -1
   }
 }
 

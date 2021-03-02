@@ -6,7 +6,7 @@ import { Interpreter } from '../interpreter'
 // pop して a > 0
 const setDirIfPositive = (dirX: number, dirY: number): Action => {
   return (ip: Interpreter) => {
-    const a = ip.stack.pop()
+    const a = ip.stack.popNumber()
     if (a > 0) {
       ip.dirX = dirX
       ip.dirY = dirY
@@ -18,8 +18,8 @@ type Condition2 = (a: number, b: number) => boolean
 
 const pushCondition2 = (cond: Condition2): Action => {
   return (ip: Interpreter) => {
-    const a = ip.stack.pop()
-    const b = ip.stack.pop()
+    const a = ip.stack.popNumber()
+    const b = ip.stack.popNumber()
     ip.stack.push(cond(a, b) ? 1 : 0)
   }
 }
@@ -32,7 +32,7 @@ type Condition = (a: number) => boolean
 
 const pushCondition = (cond: Condition): Action => {
   return (ip: Interpreter) => {
-    const a = ip.stack.pop()
+    const a = ip.stack.popNumber()
     ip.stack.push(cond(a) ? 1 : 0)
   }
 }

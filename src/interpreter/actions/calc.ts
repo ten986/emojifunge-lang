@@ -7,8 +7,8 @@ type Op2 = (a: number, b: number) => number
 
 const op2 = (op: Op2): Action => {
   return (ip: Interpreter) => {
-    const a = ip.stack.pop()
-    const b = ip.stack.pop()
+    const a = ip.stack.popNumber()
+    const b = ip.stack.popNumber()
     ip.stack.push(op(a, b))
   }
 }
@@ -20,7 +20,7 @@ const div: Op2 = (a: number, b: number) => Math.floor(a / b)
 const mod: Op2 = (a: number, b: number) => a % b
 
 const factorial: Action = (ip: Interpreter) => {
-  const a = ip.stack.pop()
+  const a = ip.stack.popNumber()
   let res = 1
   for (let i = 1; i <= a; ++i) {
     res *= i

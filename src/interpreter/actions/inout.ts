@@ -14,11 +14,11 @@ const inputChar: Action = (ip: Interpreter): void => {
 }
 
 const outputNumber: Action = (ip: Interpreter): void => {
-  ip.output(ip.stack.pop().toString())
+  ip.output(ip.stack.popNumber().toString())
 }
 
 const outputChar: Action = (ip: Interpreter): void => {
-  ip.output(String.fromCharCode(ip.stack.pop()))
+  ip.output(String.fromCharCode(ip.stack.popNumber()))
 }
 
 const cat: Action = (ip: Interpreter): void => {

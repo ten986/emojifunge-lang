@@ -4,26 +4,26 @@ import { Action, EmojiAction } from '../actionTypes'
 import { Interpreter } from '../interpreter'
 
 const pop: Action = (ip: Interpreter) => {
-  ip.stack.pop()
+  ip.stack.popNumber()
 }
 
 const dup: Action = (ip: Interpreter) => {
-  const a = ip.stack.pop()
+  const a = ip.stack.popNumber()
   ip.stack.push(a)
   ip.stack.push(a)
 }
 
 const swap: Action = (ip: Interpreter) => {
-  const a = ip.stack.pop()
-  const b = ip.stack.pop()
+  const a = ip.stack.popNumber()
+  const b = ip.stack.popNumber()
   ip.stack.push(a)
   ip.stack.push(b)
 }
 
 const swap3: Action = (ip: Interpreter) => {
-  const a = ip.stack.pop()
-  const b = ip.stack.pop()
-  const c = ip.stack.pop()
+  const a = ip.stack.popNumber()
+  const b = ip.stack.popNumber()
+  const c = ip.stack.popNumber()
   ip.stack.push(b)
   ip.stack.push(a)
   ip.stack.push(c)
