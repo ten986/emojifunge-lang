@@ -1,7 +1,7 @@
 import * as fs from 'fs'
 import { argv } from 'process'
 
-import { Interpreter } from './interpreter'
+import { Interpreter } from './interpreter/interpreter'
 
 // プログラム
 const path = argv[2]
