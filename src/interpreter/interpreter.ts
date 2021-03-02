@@ -3,20 +3,35 @@ import { Stack } from '@/stack'
 
 import { Action, EmojiAction } from './action'
 import { calcActions } from './methods/calc'
+import { commentActions } from './methods/comment'
+import { conditionalActions } from './methods/conditional'
 import { inoutActions } from './methods/inout'
+import { mailboxActions } from './methods/mailbox'
+import { miscActions } from './methods/misc'
+import { moveActions, rotateClockwise } from './methods/move'
+import { operationNumActions } from './methods/operationNum'
 import { programControlActions } from './methods/programControl'
 import { pushNumberActions } from './methods/pushNumber'
 import { randomActions } from './methods/random'
-
-// this is 最悪な sleep
-function sleep(ms: number): void {
-  const time = new Date().getTime()
-  // eslint-disable-next-line no-empty
-  while (new Date().getTime() < time + ms) {}
-}
+import { stackActions } from './methods/stack'
 
 type EndState = 'normal' | 'end'
 type CommentState = 'normal' | 'commented'
+
+const emojiActionsArray: EmojiAction[][] = [
+  inoutActions,
+  programControlActions,
+  pushNumberActions,
+  randomActions,
+  calcActions,
+  moveActions,
+  stackActions,
+  conditionalActions,
+  operationNumActions,
+  mailboxActions,
+  miscActions,
+  commentActions,
+]
 
 class Interpreter {
   /** ファイルを受け取るボード */
@@ -81,11 +96,9 @@ class Interpreter {
   /** emoji action の対応を生成取得 */
   getEmojiActions(): EmojiAction[] {
     let emojiActions: EmojiAction[] = []
-    emojiActions = emojiActions.concat(inoutActions)
-    emojiActions = emojiActions.concat(programControlActions)
-    emojiActions = emojiActions.concat(pushNumberActions)
-    emojiActions = emojiActions.concat(randomActions)
-    emojiActions = emojiActions.concat(calcActions)
+    for (const emojiActionsElm of emojiActionsArray) {
+      emojiActions = emojiActions.concat(emojiActionsElm)
+    }
     return emojiActions
   }
 
@@ -165,7 +178,7 @@ class Interpreter {
       }
 
       // 右回転
-      ;[this.dirX, this.dirY] = [-this.dirY, this.dirX]
+      rotateClockwise(this)
       retryCount++
     }
 
@@ -197,225 +210,6 @@ class Interpreter {
     const action = this.emojistrToAction.get(emoji.emojiStr)
     if (action !== undefined) {
       action(this)
-      return
-    }
-
-    // コメント ---
-    if (emoji.eq('🍚')) {
-      this.commentState = 'commented'
-      return
-    }
-
-    // スタック操作 -----
-    if (emoji.eq('🚮')) {
-      this.stack.pop()
-      return
-    }
-    if (emoji.eq('💕')) {
-      const a = this.stack.pop()
-      this.stack.push(a)
-      this.stack.push(a)
-      return
-    }
-    if (emoji.eq('💞')) {
-      const a = this.stack.pop()
-      const b = this.stack.pop()
-      this.stack.push(a)
-      this.stack.push(b)
-      return
-    }
-    if (emoji.eq('♻️')) {
-      const a = this.stack.pop()
-      const b = this.stack.pop()
-      const c = this.stack.pop()
-      this.stack.push(b)
-      this.stack.push(a)
-      this.stack.push(c)
-      return
-    }
-    if (emoji.eq('🙃')) {
-      this.stack.reverse()
-      return
-    }
-    if (emoji.eq('🎆')) {
-      this.stack.clear()
-      return
-    }
-    if (emoji.eq('🔞')) {
-      this.stack.r18()
-      return
-    }
-    // 条件分岐 -----
-
-    if (emoji.eq('↪️')) {
-      const a = this.stack.pop()
-      if (a > 0) {
-        this.dirX = 1
-        this.dirY = 0
-      }
-      return
-    }
-    if (emoji.eq('↩️')) {
-      const a = this.stack.pop()
-      if (a > 0) {
-        this.dirX = -1
-        this.dirY = 0
-      }
-      return
-    }
-    if (emoji.eq('⤵️')) {
-      const a = this.stack.pop()
-      if (a > 0) {
-        this.dirX = 0
-        this.dirY = -1
-      }
-      return
-    }
-    if (emoji.eq('⤴️')) {
-      const a = this.stack.pop()
-      if (a > 0) {
-        this.dirX = 0
-        this.dirY = 1
-      }
-      return
-    }
-    if (emoji.eq('📏')) {
-      const a = this.stack.pop()
-      const b = this.stack.pop()
-      this.stack.push(a > b ? 1 : 0)
-      return
-    }
-    if (emoji.eq('📈')) {
-      const a = this.stack.pop()
-      const b = this.stack.pop()
-      this.stack.push(a > b ? 1 : 0)
-      return
-    }
-    if (emoji.eq('📉')) {
-      const a = this.stack.pop()
-      const b = this.stack.pop()
-      this.stack.push(a < b ? 1 : 0)
-      return
-    }
-    if (emoji.eq('❕')) {
-      const a = this.stack.pop()
-      this.stack.push(a > 0 ? 0 : 1)
-      return
-    }
-    if (emoji.eq('🉑')) {
-      const a = this.stack.pop()
-      this.stack.push(60 <= a && a < 80 ? 1 : 0)
-      return
-    }
-    if (emoji.eq('🈴')) {
-      const a = this.stack.pop()
-      this.stack.push(60 <= a ? 1 : 0)
-      return
-    }
-
-    // 回数操作 ---
-    if (emoji.eq('🏃‍♀️')) {
-      this.operationNum.push(2)
-      return
-    }
-    if (emoji.eq('🎰')) {
-      const a = this.stack.pop()
-      const b = this.stack.pop()
-      const c = this.stack.pop()
-      if (a == b && b == c) {
-        this.operationNum.push(7)
-        this.operationNum.push(7)
-        this.operationNum.push(7)
-      }
-      return
-    }
-    if (emoji.eq('💤')) {
-      this.operationNum.push(0)
-      this.operationNum.push(0)
-      this.operationNum.push(0)
-      return
-    }
-
-    // 記憶領域操作
-    if (emoji.eq('📥')) {
-      const a = this.stack.pop()
-      this.mailBox.push(a)
-      return
-    }
-    if (emoji.eq('📤')) {
-      const a = this.mailBox.pop()
-      this.stack.push(a)
-      return
-    }
-
-    // misc------
-    // ranks
-    if (emoji.eq('🥇')) {
-      this.stack.push(this.stack.sortRank(0))
-      return
-    }
-    if (emoji.eq('🥈')) {
-      this.stack.push(this.stack.sortRank(1))
-      return
-    }
-    if (emoji.eq('🥉')) {
-      this.stack.push(this.stack.sortRank(2))
-      return
-    }
-    // median
-    if (emoji.eq('🀄')) {
-      this.stack.push(this.stack.median())
-      return
-    }
-    // カレンダー
-    if (emoji.eq('📅')) {
-      const time = new Date()
-      this.stack.push(time.getSeconds())
-      this.stack.push(time.getMinutes())
-      this.stack.push(time.getHours())
-      this.stack.push(time.getDate())
-      this.stack.push(time.getMonth() + 1)
-      this.stack.push(time.getFullYear())
-      return
-    }
-    // お姉さん
-    if (emoji.eq('🤖')) {
-      const a = this.stack.pop()
-      if (a <= 0) {
-        this.stack.push(1)
-      }
-      if (a == 1) {
-        this.stack.push(2)
-      }
-      if (a == 2) {
-        this.stack.push(12)
-      }
-      if (a == 3) {
-        this.stack.push(184)
-      }
-      if (a == 4) {
-        this.stack.push(8512)
-      }
-      if (a == 5) {
-        this.stack.push(1262816)
-      }
-      if (a == 6) {
-        this.stack.push(575780564)
-      }
-      if (a == 7) {
-        // 2秒
-        sleep(2 * 1000)
-        this.stack.push(789360053252)
-      }
-      if (a == 8) {
-        // 4時間
-        sleep(4 * 60 * 60 * 1000)
-        this.stack.push(3266598486981642)
-      }
-      if (a >= 9) {
-        // eslint-disable-next-line no-empty
-        for (;;) {}
-      }
       return
     }
 
