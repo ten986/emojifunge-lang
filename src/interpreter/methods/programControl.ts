@@ -3,17 +3,17 @@ import { emojiToClass } from '@/emoji'
 import { Action, EmojiAction } from '../action'
 import { Interpreter } from '../interpreter'
 
-const endProgram: Action = (interpreter: Interpreter) => {
-  interpreter.endState = 'end'
+const endProgram: Action = (ip: Interpreter) => {
+  ip.endState = 'end'
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const pass: Action = (_interpreter: Interpreter) => {}
+const pass: Action = (_: Interpreter) => {}
 
 const error = (str: string): Action => {
-  return (interpreter: Interpreter) => {
-    interpreter.error(str)
-    interpreter.endState = 'end'
+  return (ip: Interpreter) => {
+    ip.error(str)
+    ip.endState = 'end'
   }
 }
 
@@ -25,12 +25,10 @@ const programControlActions: EmojiAction[] = [
     emoji: emojiToClass('🔚'),
     action: endProgram,
   },
-
   {
     emoji: emojiToClass('⬜️'),
     action: pass,
   },
-
   {
     emoji: emojiToClass('⬛️'),
     action: error('pointer in wall'),

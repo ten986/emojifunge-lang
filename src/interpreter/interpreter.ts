@@ -2,9 +2,11 @@ import { Board } from '@/board'
 import { Stack } from '@/stack'
 
 import { Action, EmojiAction } from './action'
+import { calcActions } from './methods/calc'
 import { inoutActions } from './methods/inout'
 import { programControlActions } from './methods/programControl'
 import { pushNumberActions } from './methods/pushNumber'
+import { randomActions } from './methods/random'
 
 // this is 最悪な sleep
 function sleep(ms: number): void {
@@ -82,6 +84,8 @@ class Interpreter {
     emojiActions = emojiActions.concat(inoutActions)
     emojiActions = emojiActions.concat(programControlActions)
     emojiActions = emojiActions.concat(pushNumberActions)
+    emojiActions = emojiActions.concat(randomActions)
+    emojiActions = emojiActions.concat(calcActions)
     return emojiActions
   }
 
@@ -202,58 +206,6 @@ class Interpreter {
       return
     }
 
-    // 乱数 ---
-
-    if (emoji.eq('🎲')) {
-      this.stack.push(Math.floor(Math.random() * 6) + 1)
-      return
-    }
-    if (emoji.eq('🤞')) {
-      this.stack.push(Math.floor(Math.random() * 2))
-      return
-    }
-
-    // 計算 ----
-    if (emoji.eq('➕')) {
-      const a = this.stack.pop()
-      const b = this.stack.pop()
-      this.stack.push(a + b)
-      return
-    }
-    if (emoji.eq('➖')) {
-      const a = this.stack.pop()
-      const b = this.stack.pop()
-      this.stack.push(a - b)
-      return
-    }
-    if (emoji.eq('✖️')) {
-      const a = this.stack.pop()
-      const b = this.stack.pop()
-      this.stack.push(a * b)
-      return
-    }
-    if (emoji.eq('➗')) {
-      const a = this.stack.pop()
-      const b = this.stack.pop()
-      this.stack.push(Math.floor(a / b))
-      return
-    }
-    if (emoji.eq('🈹')) {
-      const a = this.stack.pop()
-      const b = this.stack.pop()
-      this.stack.push(a % b)
-      return
-    }
-    if (emoji.eq('❗️')) {
-      const a = this.stack.pop()
-      let res = 1
-      for (let i = 1; i <= a; ++i) {
-        res *= i
-      }
-      this.stack.push(res)
-      return
-    }
-
     // スタック操作 -----
     if (emoji.eq('🚮')) {
       this.stack.pop()
@@ -293,76 +245,6 @@ class Interpreter {
       this.stack.r18()
       return
     }
-
-    // 移動 -----
-
-    if (emoji.eq('➡️')) {
-      this.dirX = 1
-      this.dirY = 0
-      return
-    }
-    if (emoji.eq('⬅️')) {
-      this.dirX = -1
-      this.dirY = 0
-      return
-    }
-    if (emoji.eq('⬆️')) {
-      this.dirX = 0
-      this.dirY = -1
-      return
-    }
-    if (emoji.eq('⬇️')) {
-      this.dirX = 0
-      this.dirY = 1
-      return
-    }
-    if (emoji.eq('↗️')) {
-      this.dirX = 1
-      this.dirY = -1
-      return
-    }
-    if (emoji.eq('↘️')) {
-      this.dirX = 1
-      this.dirY = 1
-      return
-    }
-    if (emoji.eq('↖️')) {
-      this.dirX = -1
-      this.dirY = -1
-      return
-    }
-    if (emoji.eq('↙️')) {
-      this.dirX = -1
-      this.dirY = 1
-      return
-    }
-    if (emoji.eq('⏩')) {
-      this.dirX++
-      return
-    }
-    if (emoji.eq('⏪')) {
-      this.dirX--
-      return
-    }
-    if (emoji.eq('⏫')) {
-      this.dirY--
-      return
-    }
-    if (emoji.eq('⏬')) {
-      this.dirY++
-      return
-    }
-    if (emoji.eq('🔃')) {
-      // 右回転
-      ;[this.dirX, this.dirY] = [-this.dirY, this.dirX]
-      return
-    }
-    if (emoji.eq('🔄')) {
-      // 左回転
-      ;[this.dirX, this.dirY] = [this.dirY, -this.dirX]
-      return
-    }
-
     // 条件分岐 -----
 
     if (emoji.eq('↪️')) {

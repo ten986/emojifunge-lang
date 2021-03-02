@@ -4,8 +4,8 @@ import { Action, EmojiAction } from '../action'
 import { Interpreter } from '../interpreter'
 
 const pushNumber = (num: number): Action => {
-  return (interpreter: Interpreter) => {
-    interpreter.stack.push(num)
+  return (ip: Interpreter) => {
+    ip.stack.push(num)
   }
 }
 

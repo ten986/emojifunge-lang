@@ -3,30 +3,30 @@ import { emojiToClass } from '@/emoji'
 import { Action, EmojiAction } from '../action'
 import { Interpreter } from '../interpreter'
 
-const inputNumber: Action = (interpreter: Interpreter): void => {
-  interpreter.stack.push(+(interpreter.input.match(/-?\d+/) || [0])[0] || 0)
-  interpreter.input = interpreter.input.replace(/^[^]*?\d+/, '')
+const inputNumber: Action = (ip: Interpreter): void => {
+  ip.stack.push(+(ip.input.match(/-?\d+/) || [0])[0] || 0)
+  ip.input = ip.input.replace(/^[^]*?\d+/, '')
 }
 
-const inputChar: Action = (interpreter: Interpreter): void => {
-  interpreter.stack.push(interpreter.input ? interpreter.input.charCodeAt(0) : -1)
-  interpreter.input = interpreter.input.slice(1)
+const inputChar: Action = (ip: Interpreter): void => {
+  ip.stack.push(ip.input ? ip.input.charCodeAt(0) : -1)
+  ip.input = ip.input.slice(1)
 }
 
-const outputNumber: Action = (interpreter: Interpreter): void => {
-  interpreter.output(interpreter.stack.pop().toString())
+const outputNumber: Action = (ip: Interpreter): void => {
+  ip.output(ip.stack.pop().toString())
 }
 
-const outputChar: Action = (interpreter: Interpreter): void => {
-  interpreter.output(String.fromCharCode(interpreter.stack.pop()))
+const outputChar: Action = (ip: Interpreter): void => {
+  ip.output(String.fromCharCode(ip.stack.pop()))
 }
 
-const cat: Action = (interpreter: Interpreter): void => {
-  interpreter.output(interpreter.firstInput)
+const cat: Action = (ip: Interpreter): void => {
+  ip.output(ip.firstInput)
 }
 
-const dog: Action = (interpreter: Interpreter): void => {
-  interpreter.output(interpreter.firstInput.split('').reverse().join(''))
+const dog: Action = (ip: Interpreter): void => {
+  ip.output(ip.firstInput.split('').reverse().join(''))
 }
 
 /**
