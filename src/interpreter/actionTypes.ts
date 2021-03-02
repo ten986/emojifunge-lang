@@ -1,4 +1,4 @@
-import { Emoji } from '@/emoji'
+import { Emoji } from '@/modules/emoji'
 
 import { Interpreter } from './interpreter'
 

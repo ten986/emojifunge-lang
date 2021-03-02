@@ -1,5 +1,5 @@
-import { Board } from '@/board'
-import { Stack } from '@/stack'
+import { Board } from '@/modules/board'
+import { Stack } from '@/modules/stack'
 
 import { rotateClockwise } from './actions/move'
 import { Action } from './actionTypes'

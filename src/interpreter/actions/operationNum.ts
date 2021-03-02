@@ -1,4 +1,4 @@
-import { emojiToClass } from '@/emoji'
+import { emojiToClass } from '@/modules/emoji'
 
 import { Action, EmojiAction } from '../actionTypes'
 import { Interpreter } from '../interpreter'
