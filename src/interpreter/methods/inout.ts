@@ -1,31 +1,31 @@
 import { emojiToClass } from '@/emoji'
 
-import { EmojiAction } from '../action'
+import { Action, EmojiAction } from '../action'
 import { Interpreter } from '../interpreter'
 
-function inputNumber(interpreter: Interpreter): void {
+const inputNumber: Action = (interpreter: Interpreter): void => {
   interpreter.stack.push(+(interpreter.input.match(/-?\d+/) || [0])[0] || 0)
   interpreter.input = interpreter.input.replace(/^[^]*?\d+/, '')
 }
 
-function inputChar(interpreter: Interpreter): void {
+const inputChar: Action = (interpreter: Interpreter): void => {
   interpreter.stack.push(interpreter.input ? interpreter.input.charCodeAt(0) : -1)
   interpreter.input = interpreter.input.slice(1)
 }
 
-function outputNumber(interpreter: Interpreter): void {
+const outputNumber: Action = (interpreter: Interpreter): void => {
   interpreter.output(interpreter.stack.pop().toString())
 }
 
-function outputChar(interpreter: Interpreter): void {
+const outputChar: Action = (interpreter: Interpreter): void => {
   interpreter.output(String.fromCharCode(interpreter.stack.pop()))
 }
 
-function cat(interpreter: Interpreter): void {
+const cat: Action = (interpreter: Interpreter): void => {
   interpreter.output(interpreter.firstInput)
 }
 
-function dog(interpreter: Interpreter): void {
+const dog: Action = (interpreter: Interpreter): void => {
   interpreter.output(interpreter.firstInput.split('').reverse().join(''))
 }
 

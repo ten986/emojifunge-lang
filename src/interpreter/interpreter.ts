@@ -3,6 +3,8 @@ import { Stack } from '@/stack'
 
 import { Action, EmojiAction } from './action'
 import { inoutActions } from './methods/inout'
+import { programControlActions } from './methods/programControl'
+import { pushNumberActions } from './methods/pushNumber'
 
 // this is 最悪な sleep
 function sleep(ms: number): void {
@@ -74,11 +76,18 @@ class Interpreter {
     this.registerAction()
   }
 
-  /** 実行できる action の登録 */
-  registerAction(): void {
+  /** emoji action の対応を生成取得 */
+  getEmojiActions(): EmojiAction[] {
     let emojiActions: EmojiAction[] = []
     emojiActions = emojiActions.concat(inoutActions)
+    emojiActions = emojiActions.concat(programControlActions)
+    emojiActions = emojiActions.concat(pushNumberActions)
+    return emojiActions
+  }
 
+  /** 実行できる action の登録 */
+  registerAction(): void {
+    const emojiActions = this.getEmojiActions()
     emojiActions.forEach(({ emoji, action }) => {
       this.emojistrToAction.set(emoji.emojiStr, action)
     })
@@ -163,12 +172,20 @@ class Interpreter {
   /** 足元のやつを実行 */
   exec(): void {
     // 現在位置のemoji
-    const emoji = this.board.getEmojiStr(this.x, this.y)
+    const emoji = this.board.getEmoji(this.x, this.y)
 
     // emoji がない
     if (emoji === undefined) {
       this.error('emoji not found')
       this.endState = 'end'
+      return
+    }
+
+    // コメント
+    if (this.commentState == 'commented') {
+      if (emoji.eq('🍚')) {
+        this.commentState = 'normal'
+      }
       return
     }
 
@@ -179,113 +196,9 @@ class Interpreter {
       return
     }
 
-    if (this.commentState == 'commented') {
-      if (emoji.eq('🍚')) {
-        this.commentState = 'normal'
-      }
-      return
-    }
-
     // コメント ---
     if (emoji.eq('🍚')) {
       this.commentState = 'commented'
-      return
-    }
-
-    // 制御 ------
-
-    // 終了
-    if (emoji.eq('🔚')) {
-      this.endState = 'end'
-      return
-    }
-    // 通過
-    if (emoji.eq('⬜️')) {
-      return
-    }
-    // 壁の中にいる
-    if (emoji.eq('⬛️')) {
-      // pointer in wall
-      this.error('pointer in wall')
-      this.endState = 'end'
-      return
-    }
-
-    // 定数 ------
-    if (emoji.eq('0️⃣')) {
-      this.stack.push(0)
-      return
-    }
-    if (emoji.eq('1️⃣')) {
-      this.stack.push(1)
-      return
-    }
-    if (emoji.eq('2️⃣')) {
-      this.stack.push(2)
-      return
-    }
-    if (emoji.eq('3️⃣')) {
-      this.stack.push(3)
-      return
-    }
-    if (emoji.eq('4️⃣')) {
-      this.stack.push(4)
-      return
-    }
-    if (emoji.eq('5️⃣')) {
-      this.stack.push(5)
-      return
-    }
-    if (emoji.eq('6️⃣')) {
-      this.stack.push(6)
-      return
-    }
-    if (emoji.eq('7️⃣')) {
-      this.stack.push(7)
-      return
-    }
-    if (emoji.eq('8️⃣')) {
-      this.stack.push(8)
-      return
-    }
-    if (emoji.eq('9️⃣')) {
-      this.stack.push(9)
-      return
-    }
-    if (emoji.eq('🔟')) {
-      this.stack.push(10)
-      return
-    }
-    if (emoji.eq('🅰️')) {
-      this.stack.push(65)
-      return
-    }
-    if (emoji.eq('🅱️')) {
-      this.stack.push(66)
-      return
-    }
-    if (emoji.eq('©️')) {
-      this.stack.push(67)
-      return
-    }
-    if (emoji.eq('🅾️')) {
-      this.stack.push(77)
-      return
-    }
-    if (emoji.eq('Ⓜ️')) {
-      this.stack.push(79)
-      return
-    }
-    if (emoji.eq('🅿️')) {
-      this.stack.push(80)
-      return
-    }
-    if (emoji.eq('®️')) {
-      this.stack.push(82)
-      return
-    }
-    if (emoji.eq('💯')) {
-      this.stack.push(100)
       return
     }
 
@@ -323,12 +236,6 @@ class Interpreter {
       const a = this.stack.pop()
       const b = this.stack.pop()
       this.stack.push(Math.floor(a / b))
-      return
-    }
-    if (emoji.eq('🈹')) {
-      const a = this.stack.pop()
-      const b = this.stack.pop()
-      this.stack.push(a % b)
       return
     }
     if (emoji.eq('🈹')) {
