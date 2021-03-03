@@ -1,4 +1,4 @@
-import { emojify, unemojify } from 'node-emoji'
+import { emojify, hasEmoji, unemojify } from 'node-emoji'
 
 import { spreadStack } from './operation'
 import { Stack, StackElm } from './stack'
@@ -16,16 +16,16 @@ const codeUnitToEmoji = (elm: StackElm): Emoji => {
 
   let str = ''
   for (const num of tmp) {
-    str += '%u' + num.toString(16)
+    str += '%u' + num.toString(16).padStart(4, '0')
   }
   // 🤦🏿‍♀
   const emoji = unescape(str)
   const emojiStr = unemojify(emoji)
 
   // valid かどうか
-  emojify(emojiStr, () => {
+  if (!hasEmoji(emoji)) {
     throw Error('failure to codeUnitToEmoji')
-  })
+  }
 
   return new Emoji(emojiStr)
 }

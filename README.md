@@ -94,7 +94,7 @@ https://jsprimer.net/basic/string-unicode/
 
 | emoji | name | mode | action | example |
 |---|---|---|---|---|
-|👀| pick-emoji | x | (x + dx, y + dy) の emoji の codepoint を、stackとしてpush|
+|👀| pick-emoji | x | (x + dx, y + dy) の emoji の codeunit を、stackとしてpush|
 
 ### 制御
 

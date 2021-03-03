@@ -1,6 +1,7 @@
 import { calcActions } from './actions/calc'
 import { commentActions } from './actions/comment'
 import { conditionalActions } from './actions/conditional'
+import { emojiPickActions } from './actions/emojiPick'
 import { inoutActions } from './actions/inout'
 import { mailboxActions } from './actions/mailbox'
 import { miscActions } from './actions/misc'
@@ -26,6 +27,7 @@ const emojiActionsArray: EmojiAction[][] = [
   mailboxActions,
   miscActions,
   commentActions,
+  emojiPickActions,
 ]
 
 /** emoji action の対応を生成取得 */
