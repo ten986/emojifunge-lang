@@ -12,6 +12,97 @@ const convertNumberTo1ElmStack = (num: number): Stack => {
   return stack
 }
 
+const converElmToStack = (elm: StackElm): Stack => {
+  if (typeof elm === 'number') {
+    return convertNumberTo1ElmStack(elm)
+  }
+  return elm
+}
+
+type NumOp2 = (a: number, b: number) => number
+type NumOp1 = (a: number) => number
+type IfOp1 = (a: number) => boolean
+
+// 2個受け取って1個返すやつ
+const elmOp2 = (func: NumOp2, elm1: StackElm, elm2: StackElm): StackElm => {
+  // どっちも数値の場合ただ演算
+  if (typeof elm1 === 'number' && typeof elm2 === 'number') {
+    return func(elm1, elm2)
+  }
+  // スタックに変換
+  const stack1 = converElmToStack(elm1)
+  const stack2 = converElmToStack(elm2)
+  stack1.reverse()
+  stack2.reverse()
+  const res = new Stack()
+  while (!stack1.isEmpty && !stack2.isEmpty) {
+    const elm = elmOp2(func, stack1.pop(), stack2.pop())
+    res.push(elm)
+  }
+  return res
+}
+
+// 1個受け取って1個返すやつ
+const elmOp1 = (func: NumOp1, elm: StackElm): StackElm => {
+  // 数値の場合ただ演算
+  if (typeof elm === 'number') {
+    return func(elm)
+  }
+  // スタックに変換
+  const stack = converElmToStack(elm)
+  stack.reverse()
+  const res = new Stack()
+  while (!stack.isEmpty) {
+    const elm = elmOp1(func, stack.pop())
+    res.push(elm)
+  }
+  return res
+}
+
+// stackを開く
+const spreadStack = (stack: StackElm[]): number[] => {
+  const res: number[] = []
+  const f = (stack: StackElm[], res: number[]) => {
+    stack.reverse()
+    while (stack.length > 0) {
+      const elm = stack.pop()
+      if (elm === undefined) {
+        return Error('impossible error')
+      }
+      if (typeof elm === 'number') {
+        res.push(elm)
+      } else {
+        f(elm.innerStack, res)
+      }
+    }
+  }
+  f(stack, res)
+  return res
+}
+
+// stack を filter して返す
+const filterStack = (filter: IfOp1, stack: StackElm[]): StackElm[] => {
+  const res: StackElm[] = []
+  const f = (filter: IfOp1, stack: StackElm[], res: StackElm[]) => {
+    stack.reverse()
+    while (stack.length > 0) {
+      const elm = stack.pop()
+      if (elm === undefined) {
+        return Error('impossible error')
+      }
+      if (typeof elm === 'number') {
+        if (filter(elm)) {
+          res.push(elm)
+        }
+      } else {
+        f(filter, elm.innerStack, res)
+      }
+    }
+  }
+  f(filter, stack, res)
+  return res
+}
+
 class Stack {
   // 親のスタック
   parentStack: Stack | null
@@ -23,59 +114,43 @@ class Stack {
     this.parentStack = parentStack
   }
 
-  push(num: number): void {
-    this.innerStack.push(num)
+  get isEmpty(): boolean {
+    return this.innerStack.length == 0
   }
 
-  // 数値として pop する
+  push(elm: StackElm): void {
+    this.innerStack.push(elm)
+  }
+
+  // 通常モード時の pop
   popNumber(): number {
-    let elm: StackElm | null = null
-    // 現在見てるstack
-    // eslint-disable-next-line @typescript-eslint/no-this-alias
-    let stack: Stack = this
-    while (!(typeof elm === 'number')) {
-      // pop したい要素
-      elm = stack.innerStack[stack.innerStack.length - 1] ?? null
-      // stack は [] であるので親のstackに戻って [] をpop
-      if (elm === null) {
-        // 起点の stack なら -1
-        if (stack === this) {
-          elm = -1
-        } else {
-          // 自身が起点の場合も -1
-          // 通らないはず？
-          if (stack.parentStack === null) {
-            elm = -1
-          } else {
-            stack = stack.parentStack
-            stack.innerStack.pop()
-          }
-        }
-      } else if (elm instanceof Stack) {
-        stack = elm
+    let elm = this.innerStack.pop() ?? -1
+    // stack の場合、開いてもう1度 pop
+    while (elm instanceof Stack) {
+      elm.reverse()
+      while (!elm.isEmpty) {
+        this.push(elm.pop())
       }
+      elm = this.innerStack.pop() ?? -1
     }
     return elm
   }
 
-  // stack として pop する
-  popStack(): StackElm {
+  // ふつうに pop する スタックモード時
+  pop(): StackElm {
     const elm = this.innerStack.pop() ?? -1
-    if (typeof elm === 'number') {
-      return elm
-    }
     return elm
   }
 
-  // 計算用に、スタックとして取り出す
-  pop(state: StackState): StackElm {
+  // state に応じて pop
+  popByState(state: StackState): StackElm {
     if (state === 'normal') {
       return this.popNumber()
     }
     if (state === 'stack') {
-      return this.popStack()
+      return this.pop()
     }
-    throw new Error()
+    throw Error()
   }
 
   reverse(): void {
@@ -83,7 +158,7 @@ class Stack {
   }
 
   r18(): void {
-    this.innerStack = this.innerStack.filter((num) => num >= 18)
+    this.innerStack = filterStack((num) => num >= 18, this.innerStack)
   }
 
   clear(): void {
@@ -95,15 +170,14 @@ class Stack {
   }
 
   median(): number {
-    throw Error('not implement')
-    // return median(this.innerStack)
+    return median(spreadStack(this.innerStack))
   }
 
   // 上から何番目かのやつ
   sortRank(rank: number): number {
-    throw Error('not implement')
-    // return this.innerStack.sort((a, b) => b - a)?.[rank] ?? -1
+    return spreadStack(this.innerStack).sort((a, b) => b - a)?.[rank] ?? -1
   }
 }
 
-export { Stack }
+export { Stack, elmOp2, elmOp1 }
+export type { NumOp2, NumOp1 }
