@@ -70,6 +70,12 @@ emojiがなければ、(dx, dy) = (-dy, dx) として試す。
 
 4回試してemojiがなければ終了する
 
+## emoji と stack
+
+emoji は codeUnit による Stack として
+
+https://jsprimer.net/basic/string-unicode/
+
 ## コマンド一覧
 
 ### 入出力
@@ -80,8 +86,15 @@ emojiがなければ、(dx, dy) = (-dy, dx) として試す。
 |🔤| Input ASCII | x | 文字入力 ASCII CODEとして受け取る。|stack `[53, 2] -> [41, 53, 2]` input: `ABC` -> `BC`|
 |🔢| Output Number | x | 数値出力 stackのtopを数値として出力する。popする。| stack `[32, 53, 2] -> [53, 2]` output: `32`|
 |🔡| Output ASCII | x | 文字出力 stackのtopをASCII CODEとして出力する。popする。| stack `[41, 53, 2] -> [53, 2]` output: `A`|
+|🔣| output-emoji | x | 文字出力 stackのtopをASCII CODEとして出力する。popする。| stack `[41, 53, 2] -> [53, 2]` output: `A`|
 |🐱| cat | x | 入力をそのままoutputする。 |input:`ABC` output:`ABC`|
 |🐶| dog | x | 入力を反転してoutputする。 |input:`ABC` output:`CBA`|
+
+### 盤面のemojii
+
+| emoji | name | mode | action | example |
+|---|---|---|---|---|
+|👀| pick-emoji | x | (x + dx, y + dy) の emoji の codepoint を、stackとしてpush|
 
 ### 制御
 

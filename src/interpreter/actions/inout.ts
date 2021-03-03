@@ -1,4 +1,6 @@
-import { emojiToClass } from '@/modules/emoji'
+import { emojify } from 'node-emoji'
+
+import { codeUnitToEmoji, emojiToClass } from '@/modules/emoji'
 
 import { Action, EmojiAction } from '../actionTypes'
 import { Interpreter } from '../interpreter'
@@ -19,6 +21,10 @@ const outputNumber: Action = (ip: Interpreter): void => {
 
 const outputChar: Action = (ip: Interpreter): void => {
   ip.output(String.fromCharCode(ip.stack.popNumber()))
+}
+
+const outputEmoji: Action = (ip: Interpreter): void => {
+  ip.output(emojify(codeUnitToEmoji(ip.stack.pop()).emojiStr))
 }
 
 const cat: Action = (ip: Interpreter): void => {
@@ -48,6 +54,10 @@ const inoutActions: EmojiAction[] = [
   {
     emoji: emojiToClass('🔡'),
     action: outputChar,
+  },
+  {
+    emoji: emojiToClass('🔣'),
+    action: outputEmoji,
   },
   {
     emoji: emojiToClass('🐱'),
