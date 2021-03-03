@@ -1,8 +1,6 @@
-import { median } from 'mathjs'
-
 import { StackState } from '@/interpreter/interpreter'
 
-import { filterStack, spreadStack } from './operation'
+import { deepCopy } from './operation'
 
 /** スタックの要素 */
 type StackElm = number | Stack
@@ -18,12 +16,24 @@ class Stack {
     this.parentStack = parentStack
   }
 
+  // innerStack 以外コピーする
+  copyPropertyFrom(stack: Stack): void {
+    this.parentStack = stack.parentStack
+  }
+
   get isEmpty(): boolean {
     return this.innerStack.length == 0
   }
 
+  // push する。 Stack は deepCopyをとる。
   push(elm: StackElm): void {
-    this.innerStack.push(elm)
+    if (elm instanceof Stack) {
+      const stack = deepCopy(elm)
+      stack.parentStack = this
+      this.innerStack.push(stack)
+    } else if (typeof elm === 'number') {
+      this.innerStack.push(elm)
+    }
   }
 
   // 通常モード時の pop
@@ -61,25 +71,12 @@ class Stack {
     this.innerStack = this.innerStack.reverse()
   }
 
-  r18(): void {
-    this.innerStack = filterStack((num) => num >= 18, this.innerStack)
-  }
-
   clear(): void {
     this.innerStack = []
   }
 
   get length(): number {
     return this.innerStack.length
-  }
-
-  median(): number {
-    return median(spreadStack(this.innerStack))
-  }
-
-  // 上から何番目かのやつ
-  sortRank(rank: number): number {
-    return spreadStack(this.innerStack).sort((a, b) => b - a)?.[rank] ?? -1
   }
 }
 

@@ -1,4 +1,5 @@
 import { emojiToClass } from '@/modules/emoji'
+import { filterStack } from '@/modules/operation'
 
 import { Action, EmojiAction } from '../actionTypes'
 import { Interpreter } from '../interpreter'
@@ -38,7 +39,7 @@ const clear: Action = (ip: Interpreter) => {
 }
 
 const r18: Action = (ip: Interpreter) => {
-  ip.stack.r18()
+  ip.stack = filterStack((num: number) => num >= 18, ip.stack)
 }
 
 /**

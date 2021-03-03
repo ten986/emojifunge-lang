@@ -81,7 +81,7 @@ const spreadStack = (stack: StackElm[]): number[] => {
     while (stack.length > 0) {
       const elm = stack.pop()
       if (elm === undefined) {
-        return Error('impossible error')
+        throw Error('impossible error')
       }
       if (typeof elm === 'number') {
         res.push(elm)
@@ -95,27 +95,32 @@ const spreadStack = (stack: StackElm[]): number[] => {
 }
 
 // stack を filter して返す
-const filterStack = (filter: Condition1, stack: StackElm[]): StackElm[] => {
-  const res: StackElm[] = []
-  const f = (filter: Condition1, stack: StackElm[], res: StackElm[]) => {
-    stack.reverse()
-    while (stack.length > 0) {
-      const elm = stack.pop()
-      if (elm === undefined) {
-        return Error('impossible error')
+// なお、これで deepcopyができる
+const filterStack = (filter: Condition1, stack: Stack): Stack => {
+  const res: Stack = new Stack()
+  stack.reverse()
+  while (stack.length > 0) {
+    const elm = stack.pop()
+    if (elm === undefined) {
+      throw Error('impossible error')
+    }
+    if (typeof elm === 'number') {
+      if (filter(elm)) {
+        res.push(elm)
       }
-      if (typeof elm === 'number') {
-        if (filter(elm)) {
-          res.push(elm)
-        }
-      } else {
-        f(filter, elm.innerStack, res)
-      }
+    } else {
+      res.push(filterStack(filter, elm))
     }
   }
-  f(filter, stack, res)
+  // プロパティをコピー
+  res.copyPropertyFrom(stack)
   return res
 }
 
-export { elmOp2, elmOp1, spreadStack, filterStack, op2, op1 }
+// innerStack の deepCopy をして返す
+const deepCopy = (stack: Stack): Stack => {
+  return filterStack(() => true, stack)
+}
+
+export { elmOp2, elmOp1, spreadStack, filterStack, op2, op1, deepCopy }
 export type { NumOp1, NumOp2, Condition1, Condition2 }
