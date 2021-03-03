@@ -4,12 +4,12 @@ import { Action, EmojiAction } from '../actionTypes'
 import { Interpreter } from '../interpreter'
 
 const pushToMailbox: Action = (ip: Interpreter) => {
-  const a = ip.stack.pop()
+  const a = ip.stack.popByState(ip.stackState)
   ip.mailBox.push(a)
 }
 
 const popFromMailbox: Action = (ip: Interpreter) => {
-  const a = ip.mailBox.pop()
+  const a = ip.mailBox.popByState(ip.stackState)
   ip.stack.push(a)
 }
 

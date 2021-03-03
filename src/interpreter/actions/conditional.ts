@@ -1,4 +1,5 @@
 import { emojiToClass } from '@/modules/emoji'
+import { Condition1, Condition2, elmOp1, elmOp2, NumOp1, NumOp2 } from '@/modules/operation'
 
 import { Action, EmojiAction } from '../actionTypes'
 import { Interpreter } from '../interpreter'
@@ -6,7 +7,7 @@ import { Interpreter } from '../interpreter'
 // pop して a > 0
 const setDirIfPositive = (dirX: number, dirY: number): Action => {
   return (ip: Interpreter) => {
-    const a = ip.stack.pop()
+    const a = ip.stack.popNumber()
     if (a > 0) {
       ip.dirX = dirX
       ip.dirY = dirY
@@ -14,13 +15,20 @@ const setDirIfPositive = (dirX: number, dirY: number): Action => {
   }
 }
 
-type Condition2 = (a: number, b: number) => boolean
+const pushCondition = (cond: Condition1): Action => {
+  return (ip: Interpreter) => {
+    const a = ip.stack.popByState(ip.stackState)
+    const f: NumOp1 = (a: number) => (cond(a) ? 1 : 0)
+    ip.stack.push(elmOp1(f, a))
+  }
+}
 
 const pushCondition2 = (cond: Condition2): Action => {
   return (ip: Interpreter) => {
-    const a = ip.stack.pop()
-    const b = ip.stack.pop()
-    ip.stack.push(cond(a, b) ? 1 : 0)
+    const a = ip.stack.popByState(ip.stackState)
+    const b = ip.stack.popByState(ip.stackState)
+    const f: NumOp2 = (a: number, b: number) => (cond(a, b) ? 1 : 0)
+    ip.stack.push(elmOp2(f, a, b))
   }
 }
 
@@ -28,18 +36,9 @@ const equalTo: Condition2 = (a, b) => a == b
 const greaterThan: Condition2 = (a, b) => a > b
 const lessThan: Condition2 = (a, b) => a < b
 
-type Condition = (a: number) => boolean
-
-const pushCondition = (cond: Condition): Action => {
-  return (ip: Interpreter) => {
-    const a = ip.stack.pop()
-    ip.stack.push(cond(a) ? 1 : 0)
-  }
-}
-
-const not: Condition = (a) => a <= 0
-const fair: Condition = (a) => 60 <= a && a < 80
-const passed: Condition = (a) => 60 <= a
+const not: Condition1 = (a) => a <= 0
+const fair: Condition1 = (a) => 60 <= a && a < 80
+const passed: Condition1 = (a) => 60 <= a
 
 /**
  * 条件分岐関連のアクション

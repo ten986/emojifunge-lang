@@ -1,31 +1,20 @@
 import { emojiToClass } from '@/modules/emoji'
+import { NumOp1, NumOp2, op1, op2 } from '@/modules/operation'
 
-import { Action, EmojiAction } from '../actionTypes'
-import { Interpreter } from '../interpreter'
+import { EmojiAction } from '../actionTypes'
 
-type Op2 = (a: number, b: number) => number
+const plus: NumOp2 = (a: number, b: number) => a + b
+const minus: NumOp2 = (a: number, b: number) => a - b
+const mult: NumOp2 = (a: number, b: number) => a * b
+const div: NumOp2 = (a: number, b: number) => Math.floor(a / b)
+const mod: NumOp2 = (a: number, b: number) => a % b
 
-const op2 = (op: Op2): Action => {
-  return (ip: Interpreter) => {
-    const a = ip.stack.pop()
-    const b = ip.stack.pop()
-    ip.stack.push(op(a, b))
-  }
-}
-
-const plus: Op2 = (a: number, b: number) => a + b
-const minus: Op2 = (a: number, b: number) => a - b
-const mult: Op2 = (a: number, b: number) => a * b
-const div: Op2 = (a: number, b: number) => Math.floor(a / b)
-const mod: Op2 = (a: number, b: number) => a % b
-
-const factorial: Action = (ip: Interpreter) => {
-  const a = ip.stack.pop()
+const factorial: NumOp1 = (num: number): number => {
   let res = 1
-  for (let i = 1; i <= a; ++i) {
+  for (let i = 1; i <= num; ++i) {
     res *= i
   }
-  ip.stack.push(res)
+  return res
 }
 
 /**
@@ -54,7 +43,7 @@ const calcActions: EmojiAction[] = [
   },
   {
     emoji: emojiToClass('❗️'),
-    action: factorial,
+    action: op1(factorial),
   },
 ]
 

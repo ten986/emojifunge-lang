@@ -7,6 +7,7 @@ import { emojistrToAction } from './emojiActions'
 
 type EndState = 'normal' | 'end'
 type CommentState = 'normal' | 'commented'
+type StackState = 'normal' | 'stack'
 
 class Interpreter {
   /** ファイルを受け取るボード */
@@ -29,6 +30,7 @@ class Interpreter {
   /** 状態 */
   endState: EndState
   commentState: CommentState
+  stackState: StackState
 
   /** 回数操作 */
   operationNum: Stack
@@ -36,8 +38,11 @@ class Interpreter {
   /** mailbox */
   mailBox: Stack
 
-  /** スタック */
+  /** 現在操作中のスタック */
   stack: Stack
+
+  /** 一番底のスタック */
+  rootStack: Stack
 
   /** アウトプット全体 */
   allOutput: string
@@ -52,12 +57,14 @@ class Interpreter {
     this.dirY = 0
     this.endState = 'normal'
     this.commentState = 'normal'
+    this.stackState = 'normal'
 
     this.input = input
     this.firstInput = input
 
     this.board = new Board(file)
-    this.stack = new Stack()
+    this.rootStack = new Stack()
+    this.stack = this.rootStack
 
     this.mailBox = new Stack()
     this.operationNum = new Stack()
@@ -88,7 +95,7 @@ class Interpreter {
     // 命令実行回数
     let op = 1
     if (this.operationNum.length > 0) {
-      op = this.operationNum.pop() ?? 1
+      op = this.operationNum.popNumber() ?? 1
     }
     for (let i = 0; i < op; ++i) {
       this.exec()
@@ -178,3 +185,4 @@ class Interpreter {
 }
 
 export { Interpreter }
+export type { StackState }

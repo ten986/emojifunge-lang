@@ -1,44 +1,84 @@
-import { median } from 'mathjs'
+import { StackState } from '@/interpreter/interpreter'
+
+import { deepCopy } from './operation'
+
+/** スタックの要素 */
+type StackElm = number | Stack
 
 class Stack {
-  stack: number[]
+  // 親のスタック
+  parentStack: Stack | null
 
-  constructor() {
-    this.stack = []
+  innerStack: StackElm[]
+
+  constructor(parentStack: Stack | null = null) {
+    this.innerStack = []
+    this.parentStack = parentStack
   }
 
-  push(num: number): void {
-    this.stack.push(num)
+  // innerStack 以外コピーする
+  copyPropertyFrom(stack: Stack): void {
+    this.parentStack = stack.parentStack
   }
 
-  pop(): number {
-    return this.stack.pop() ?? -1
+  get isEmpty(): boolean {
+    return this.innerStack.length == 0
+  }
+
+  // push する。 Stack は deepCopyをとる。
+  push(elm: StackElm): void {
+    if (elm instanceof Stack) {
+      const stack = deepCopy(elm)
+      stack.parentStack = this
+      this.innerStack.push(stack)
+    } else if (typeof elm === 'number') {
+      this.innerStack.push(elm)
+    }
+  }
+
+  // 通常モード時の pop
+  popNumber(): number {
+    let elm = this.innerStack.pop() ?? -1
+    // stack の場合、開いてもう1度 pop
+    while (elm instanceof Stack) {
+      elm.reverse()
+      while (!elm.isEmpty) {
+        this.push(elm.pop())
+      }
+      elm = this.innerStack.pop() ?? -1
+    }
+    return elm
+  }
+
+  // ふつうに pop する スタックモード時
+  pop(): StackElm {
+    const elm = this.innerStack.pop() ?? -1
+    return elm
+  }
+
+  // state に応じて pop
+  popByState(state: StackState): StackElm {
+    if (state === 'normal') {
+      return this.popNumber()
+    }
+    if (state === 'stack') {
+      return this.pop()
+    }
+    throw Error()
   }
 
   reverse(): void {
-    this.stack = this.stack.reverse()
-  }
-
-  r18(): void {
-    this.stack = this.stack.filter((num) => num >= 18)
+    this.innerStack = this.innerStack.reverse()
   }
 
   clear(): void {
-    this.stack = []
+    this.innerStack = []
   }
 
   get length(): number {
-    return this.stack.length
-  }
-
-  median(): number {
-    return median(this.stack)
-  }
-
-  // 上から何番目かのやつ
-  sortRank(rank: number): number {
-    return this.stack.sort((a, b) => b - a)?.[rank] ?? -1
+    return this.innerStack.length
   }
 }
 
 export { Stack }
+export type { StackElm }

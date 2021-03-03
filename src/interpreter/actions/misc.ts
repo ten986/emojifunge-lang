@@ -1,4 +1,7 @@
+import { median } from 'mathjs'
+
 import { emojiToClass } from '@/modules/emoji'
+import { spreadStack } from '@/modules/operation'
 
 import { Action, EmojiAction } from '../actionTypes'
 import { Interpreter } from '../interpreter'
@@ -12,12 +15,14 @@ const sleep = (ms: number) => {
 
 const sortRank = (rank: number): Action => {
   return (ip: Interpreter) => {
-    ip.stack.push(ip.stack.sortRank(rank))
+    const num = spreadStack(ip.stack.innerStack).sort((a, b) => b - a)?.[rank] ?? -1
+    ip.stack.push(num)
   }
 }
 
-const median: Action = (ip: Interpreter) => {
-  ip.stack.push(ip.stack.median())
+const pushMedian: Action = (ip: Interpreter) => {
+  const med = median(spreadStack(ip.stack.innerStack))
+  ip.stack.push(med)
 }
 
 const calendar: Action = (ip: Interpreter) => {
@@ -31,7 +36,7 @@ const calendar: Action = (ip: Interpreter) => {
 }
 
 const kazoeageOneesan: Action = (ip: Interpreter) => {
-  const a = ip.stack.pop()
+  const a = ip.stack.popNumber()
   if (a <= 0) {
     ip.stack.push(1)
   }
@@ -87,7 +92,7 @@ const miscActions: EmojiAction[] = [
   },
   {
     emoji: emojiToClass('🀄'),
-    action: median,
+    action: pushMedian,
   },
   {
     emoji: emojiToClass('📅'),

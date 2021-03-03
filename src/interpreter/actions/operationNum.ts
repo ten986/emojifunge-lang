@@ -8,9 +8,9 @@ const speedRun: Action = (ip: Interpreter) => {
 }
 
 const slot: Action = (ip: Interpreter) => {
-  const a = ip.stack.pop()
-  const b = ip.stack.pop()
-  const c = ip.stack.pop()
+  const a = ip.stack.popNumber()
+  const b = ip.stack.popNumber()
+  const c = ip.stack.popNumber()
   if (a == b && b == c) {
     ip.operationNum.push(7)
     ip.operationNum.push(7)

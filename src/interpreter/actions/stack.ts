@@ -1,29 +1,30 @@
 import { emojiToClass } from '@/modules/emoji'
+import { filterStack } from '@/modules/operation'
 
 import { Action, EmojiAction } from '../actionTypes'
 import { Interpreter } from '../interpreter'
 
 const pop: Action = (ip: Interpreter) => {
-  ip.stack.pop()
+  ip.stack.popByState(ip.stackState)
 }
 
 const dup: Action = (ip: Interpreter) => {
-  const a = ip.stack.pop()
+  const a = ip.stack.popByState(ip.stackState)
   ip.stack.push(a)
   ip.stack.push(a)
 }
 
 const swap: Action = (ip: Interpreter) => {
-  const a = ip.stack.pop()
-  const b = ip.stack.pop()
+  const a = ip.stack.popByState(ip.stackState)
+  const b = ip.stack.popByState(ip.stackState)
   ip.stack.push(a)
   ip.stack.push(b)
 }
 
 const swap3: Action = (ip: Interpreter) => {
-  const a = ip.stack.pop()
-  const b = ip.stack.pop()
-  const c = ip.stack.pop()
+  const a = ip.stack.popByState(ip.stackState)
+  const b = ip.stack.popByState(ip.stackState)
+  const c = ip.stack.popByState(ip.stackState)
   ip.stack.push(b)
   ip.stack.push(a)
   ip.stack.push(c)
@@ -38,7 +39,7 @@ const clear: Action = (ip: Interpreter) => {
 }
 
 const r18: Action = (ip: Interpreter) => {
-  ip.stack.r18()
+  ip.stack = filterStack((num: number) => num >= 18, ip.stack)
 }
 
 /**
