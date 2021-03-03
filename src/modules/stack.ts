@@ -16,11 +16,6 @@ class Stack {
     this.parentStack = parentStack
   }
 
-  // innerStack 以外コピーする
-  copyPropertyFrom(stack: Stack): void {
-    this.parentStack = stack.parentStack
-  }
-
   get isEmpty(): boolean {
     return this.innerStack.length == 0
   }

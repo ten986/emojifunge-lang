@@ -97,7 +97,7 @@ const spreadStack = (stack: StackElm[]): number[] => {
 // stack を filter して返す
 // なお、これで deepcopyができる
 const filterStack = (filter: Condition1, stack: Stack): Stack => {
-  const res: Stack = new Stack()
+  const res: Stack = new Stack(stack.parentStack)
   stack.reverse()
   while (stack.length > 0) {
     const elm = stack.pop()
@@ -112,8 +112,6 @@ const filterStack = (filter: Condition1, stack: Stack): Stack => {
       res.push(filterStack(filter, elm))
     }
   }
-  // プロパティをコピー
-  res.copyPropertyFrom(stack)
   return res
 }
 
