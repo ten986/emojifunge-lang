@@ -59,18 +59,18 @@ class Stack {
   }
 
   // stack として pop する
-  popStack(): Stack {
+  popStack(): StackElm {
     const elm = this.innerStack.pop() ?? -1
     if (typeof elm === 'number') {
-      return convertNumberTo1ElmStack(elm)
+      return elm
     }
     return elm
   }
 
   // 計算用に、スタックとして取り出す
-  pop(state: StackState): Stack {
+  pop(state: StackState): StackElm {
     if (state === 'normal') {
-      return convertNumberTo1ElmStack(this.popNumber())
+      return this.popNumber()
     }
     if (state === 'stack') {
       return this.popStack()
