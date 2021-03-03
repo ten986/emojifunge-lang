@@ -1,23 +1,7 @@
 import { emojiToClass } from '@/modules/emoji'
-import { elmOp1, elmOp2, NumOp1, NumOp2 } from '@/modules/stack'
+import { NumOp1, NumOp2, op1, op2 } from '@/modules/operation'
 
-import { Action, EmojiAction } from '../actionTypes'
-import { Interpreter } from '../interpreter'
-
-const op2 = (op: NumOp2): Action => {
-  return (ip: Interpreter) => {
-    const a = ip.stack.popByState(ip.stackState)
-    const b = ip.stack.popByState(ip.stackState)
-    ip.stack.push(elmOp2(op, a, b))
-  }
-}
-
-const op1 = (op: NumOp1): Action => {
-  return (ip: Interpreter) => {
-    const a = ip.stack.popByState(ip.stackState)
-    ip.stack.push(elmOp1(op, a))
-  }
-}
+import { EmojiAction } from '../actionTypes'
 
 const plus: NumOp2 = (a: number, b: number) => a + b
 const minus: NumOp2 = (a: number, b: number) => a - b
