@@ -13,10 +13,14 @@ const convertNumberTo1ElmStack = (num: number): Stack => {
 }
 
 class Stack {
+  // 親のスタック
+  parentStack: Stack | null
+
   innerStack: StackElm[]
 
-  constructor() {
+  constructor(parentStack: Stack | null = null) {
     this.innerStack = []
+    this.parentStack = parentStack
   }
 
   push(num: number): void {
@@ -26,11 +30,28 @@ class Stack {
   // 数値として pop する
   popNumber(): number {
     let elm: StackElm | null = null
+    // 現在見てるstack
     // eslint-disable-next-line @typescript-eslint/no-this-alias
-    let stack: Stack | null = this
+    let stack: Stack = this
     while (!(typeof elm === 'number')) {
-      elm = stack.innerStack.pop() ?? -1
-      if (elm instanceof Stack) {
+      // pop したい要素
+      elm = stack.innerStack[stack.innerStack.length - 1] ?? null
+      // stack は [] であるので親のstackに戻って [] をpop
+      if (elm === null) {
+        // 起点の stack なら -1
+        if (stack === this) {
+          elm = -1
+        } else {
+          // 自身が起点の場合も -1
+          // 通らないはず？
+          if (stack.parentStack === null) {
+            elm = -1
+          } else {
+            stack = stack.parentStack
+            stack.innerStack.pop()
+          }
+        }
+      } else if (elm instanceof Stack) {
         stack = elm
       }
     }
@@ -74,12 +95,14 @@ class Stack {
   }
 
   median(): number {
-    return median(this.innerStack)
+    throw Error('not implement')
+    // return median(this.innerStack)
   }
 
   // 上から何番目かのやつ
   sortRank(rank: number): number {
-    return this.innerStack.sort((a, b) => b - a)?.[rank] ?? -1
+    throw Error('not implement')
+    // return this.innerStack.sort((a, b) => b - a)?.[rank] ?? -1
   }
 }
 
