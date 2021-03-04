@@ -244,6 +244,7 @@ mode: o では、
 |🔄 | turn-counterclockwise | x | (dx, dy) = (dy, -dx) ||
 |🕸️ | spider| x | (dx, dy) = (sign(dx), sign(dy)) ||
 |🔀 | change-rotate| x | 回転方向を(時計回り/反時計回り)に変更する。 ||
+|✴️| warp | x | (top)`a`, `b` を pop し、 (x, y) = (`a`, `b`)||
 
 ### 条件分岐
 

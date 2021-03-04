@@ -46,6 +46,13 @@ const changeRotateState = (ip: Interpreter): void => {
   }
 }
 
+const warp = (ip: Interpreter): void => {
+  const x = ip.stack.popNumber()
+  const y = ip.stack.popNumber()
+  ip.x = x
+  ip.y = y
+}
+
 /**
  * 移動関連のアクション
  */
@@ -113,6 +120,10 @@ const moveActions: EmojiAction[] = [
   {
     emoji: emojiToClass('🔀'),
     action: changeRotateState,
+  },
+  {
+    emoji: emojiToClass('✴️'),
+    action: warp,
   },
 ]
 
