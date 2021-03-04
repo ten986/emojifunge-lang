@@ -28,6 +28,20 @@ emojiを二次元上に配置する言語
 
 root stack についての説明
 
+## ステップ
+
+命令実行回数スタックから 数値として pop
+
+命令実行回数だけ、
+・ポインタにある emoji を実行
+・停止状態なら停止
+
+停止するまでの時間 <= 0 なら、停止
+
+停止するまでの時間をデクリメント
+
+移動ルールにそって移動
+
 ## スタックモード
 
 要素は、スタックもしくは数値である。
@@ -90,7 +104,7 @@ https://jsprimer.net/basic/string-unicode/
 |🔤| input-ascii | x | 入力を ASCII CODE として受け取り、 pushする。|stack `[53, 2] -> [41, 53, 2]` input: `ABC` -> `BC`|
 |🔢| output-number | o | `a` を pop し、数値として出力する。| stack `[32, 53, 2] -> [53, 2]` output: `32`|
 |🔡| output-ascii | o | `a` を pop し、ASCII CODEとして出力する。| stack `[41, 53, 2] -> [53, 2]` output: `A`|
-|🔣| output-emoji | x | `a` を pop し、文字出力 stackのtopを emoji として出力する。| stack `[[8419, 65039, 48], 53, 2] -> [53, 2]` output: `0️⃣`|
+|🔣| output-emoji | x | `a` を pop し、stackのtopを emoji として出力する。| stack `[[8419, 65039, 48], 53, 2] -> [53, 2]` output: `0️⃣`|
 |🐱| cat | x | 入力をそのままoutputする。 |input:`ABC` output:`ABC`|
 |🐶| dog | x | 入力を反転してoutputする。 |input:`ABC` output:`CBA`|
 
@@ -104,7 +118,9 @@ https://jsprimer.net/basic/string-unicode/
 
 | emoji | name | mode | action | example |
 |---|---|---|---|---|
-|🔚| end | x | プログラムを終了する ||
+|🔚 | end | x | プログラムを終了する ||
+|🚥 | signal | x | 停止するまでの時間 = 3 とする（すなわち、ふつう 3命令後に停止する）。 ||
+|⏲️ | timer | x | `a` を 数値として pop し、停止するまでの時間 = `a` とする。 ||
 |⬜️ | empty | x | 何もしない ||
 |⬛️ | wall | x | 壁。プログラムの外側と同じ扱いとなる。 ||
 |🍚 | comment | x | 次の comment まで、壁以外の命令を無視する。 ||

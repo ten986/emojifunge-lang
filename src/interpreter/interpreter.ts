@@ -50,6 +50,9 @@ class Interpreter {
   /** :hoge: -> Action */
   emojistrToAction: Map<string, Action>
 
+  /** 停止までの step 数 */
+  stepToStop: number | null
+
   constructor(file: string, input: string) {
     this.x = 0
     this.y = 0
@@ -72,6 +75,8 @@ class Interpreter {
     this.allOutput = ''
 
     this.emojistrToAction = emojistrToAction
+
+    this.stepToStop = null
   }
 
   /** 終わった？ */
@@ -102,6 +107,15 @@ class Interpreter {
       if (this.isEnd()) {
         return
       }
+    }
+
+    // 停止するまでの時間をデクリメント
+    if (typeof this.stepToStop === 'number') {
+      if (this.stepToStop <= 0) {
+        this.endState = 'end'
+        return
+      }
+      this.stepToStop--
     }
 
     this.move()

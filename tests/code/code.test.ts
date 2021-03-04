@@ -81,6 +81,24 @@ const cases: TestCase[] = [
       },
     ],
   },
+  {
+    pathCode: './stepToStop/1/code',
+    pathInOuts: [
+      {
+        pathInput: './stepToStop/1/in',
+        pathOutput: './stepToStop/1/out',
+      },
+    ],
+  },
+  {
+    pathCode: './stepToStop/2/code',
+    pathInOuts: [
+      {
+        pathInput: './stepToStop/2/in',
+        pathOutput: './stepToStop/2/out',
+      },
+    ],
+  },
 ]
 
 describe.each(cases)('%p', ({ pathCode, pathInOuts }) => {

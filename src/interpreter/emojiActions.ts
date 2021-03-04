@@ -13,6 +13,7 @@ import { programControlActions } from './actions/programControl'
 import { pushNumberActions } from './actions/pushNumber'
 import { randomActions } from './actions/random'
 import { stackActions } from './actions/stackOperation'
+import { stepToStopActions } from './actions/stepToStop'
 import { EmojiAction, EmojistrToActionMap } from './actionTypes'
 
 /** 実行するアクション一覧 */
@@ -32,6 +33,7 @@ const emojiActionsArray: EmojiAction[][] = [
   emojiPickActions,
   nestedStackActions,
   makeStackActions,
+  stepToStopActions,
 ]
 
 /** emoji action の対応を生成取得 */
