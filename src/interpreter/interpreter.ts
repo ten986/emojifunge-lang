@@ -108,9 +108,9 @@ class Interpreter {
     if (this.isEnd()) {
       return
     }
-    // console.log('x:' + this.x + ', y:' + this.y)
-    // console.log('dx:' + this.dirX + ', dy:' + this.dirY)
-    // console.log(this.stack)
+    console.log('x:' + this.x + ', y:' + this.y)
+    console.log('dx:' + this.dirX + ', dy:' + this.dirY)
+    console.log(this.stack.getDebugOutput())
   }
 
   /** 最後まで */

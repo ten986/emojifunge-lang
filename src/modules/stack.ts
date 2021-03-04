@@ -73,6 +73,28 @@ class Stack {
   get length(): number {
     return this.innerStack.length
   }
+
+  getDebugOutput(): string {
+    let str = ''
+    str += '['
+    for (let i = 0; i < this.innerStack.length; ++i) {
+      const elm = this.innerStack[i]
+      if (typeof elm === 'number') {
+        str += elm
+      }
+      if (elm instanceof Stack) {
+        str += '\n'
+        str += '    '
+        str += elm.getDebugOutput()
+        str += '\n'
+      }
+      if (i != this.innerStack.length - 1) {
+        str += ', '
+      }
+    }
+    str += ']'
+    return str
+  }
 }
 
 export { Stack }
