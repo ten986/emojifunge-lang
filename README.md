@@ -26,6 +26,8 @@ emojiを二次元上に配置する言語
 
 操作回数のstackが空ではない時、操作回数のstackからpopして、その回数次の命令を行う
 
+root stack についての説明
+
 ## スタックモード
 
 要素は、スタックもしくは数値である。
@@ -94,7 +96,7 @@ https://jsprimer.net/basic/string-unicode/
 
 | emoji | name | mode | action | example |
 |---|---|---|---|---|
-|👀| pick-emoji | x | (x + dx, y + dy) の emoji の codeunit を、stackとしてpush|
+|👀| pick-emoji | x | (x + dx, y + dy) の emoji の codeunit を、stackとしてpush する。操作回数 stack に 0 を push する。||
 
 ### 制御
 
@@ -158,6 +160,18 @@ https://jsprimer.net/basic/string-unicode/
 |🙃| reverse| x | stackを反転する。 |stack `[7, 4, 6] -> [6, 4, 7]`|
 |🎆| fireworks | x | stack を clear する |stack `[18, 4, 26] -> []`|
 |🔞| R-18| x | stack から、 18未満の数を取り除く|stack `[18, 4, 26] -> [18, 26]`|
+|📧| create-empty-stack| x | 空の stack を作り、pushする。||
+|💌| create-new-stack| o | `a` を 数値として pop し、 `a` 回 pop する。空の stack を作り、空の stack に対し、`a` 回 pop したものを 逆順に push する（すなわち元通りの順番のstackができる）。 この stack を push する。 ||
+
+### ネストスタック操作
+
+| emoji | name | mode | action | example |
+|---|---|---|---|---|
+|📬 | into-nested-stack | x | 操作中の stack の top を、現在の操作中の stack とする。 数値だった場合、1要素の stack に変換してから行う。 ||
+|📫 | exit-nested-stack | x | 現在操作中の stack の親を、現在操作中の stack とする。 親 stack がない場合は、この stack のみを要素とする 新たな stack を作成し、それを親 stack とする。 root stack は、この新たな stack に変更される。 ||
+|📪 | goto-root-stack | x | root stack を、現在操作中の stack とする。 ||
+
+📭 はなに？
 
 ### 記憶領域操作
 

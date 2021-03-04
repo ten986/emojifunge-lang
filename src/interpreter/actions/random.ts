@@ -6,7 +6,7 @@ import { Interpreter } from '../interpreter'
 /** [min, min+range) */
 const pushRandomNumber = (range: number, min: number): Action => {
   return (ip: Interpreter) => {
-    ip.stack.push(Math.floor(Math.random() * range) + min)
+    ip.stack.pushAsNewElm(Math.floor(Math.random() * range) + min)
   }
 }
 

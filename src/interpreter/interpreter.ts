@@ -110,7 +110,7 @@ class Interpreter {
     }
     console.log('x:' + this.x + ', y:' + this.y)
     console.log('dx:' + this.dirX + ', dy:' + this.dirY)
-    console.log(this.stack.getDebugOutput())
+    console.log(this.rootStack.getDebugOutput(this))
   }
 
   /** 最後まで */

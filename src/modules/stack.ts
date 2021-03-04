@@ -1,4 +1,6 @@
-import { StackState } from '@/interpreter/interpreter'
+import { Guid } from 'guid-typescript'
+
+import { Interpreter, StackState } from '@/interpreter/interpreter'
 
 import { deepCopy } from './operation'
 
@@ -11,17 +13,26 @@ class Stack {
 
   innerStack: StackElm[]
 
+  // unique な id
+  id: Guid
+
   constructor(parentStack: Stack | null = null) {
     this.innerStack = []
     this.parentStack = parentStack
+    this.id = Guid.create()
   }
 
   get isEmpty(): boolean {
     return this.innerStack.length == 0
   }
 
+  // スタックの一致判定
+  isEqual(stack: Stack): boolean {
+    return this.id.toString() == stack.id.toString()
+  }
+
   // push する。 Stack は deepCopyをとる。
-  push(elm: StackElm): void {
+  pushAsNewElm(elm: StackElm): void {
     if (elm instanceof Stack) {
       const stack = deepCopy(elm)
       stack.parentStack = this
@@ -31,6 +42,11 @@ class Stack {
     }
   }
 
+  // push する deepCopy もしない
+  pushAsRaw(elm: StackElm): void {
+    this.innerStack.push(elm)
+  }
+
   // 通常モード時の pop
   popNumber(): number {
     let elm = this.innerStack.pop() ?? -1
@@ -38,7 +54,7 @@ class Stack {
     while (elm instanceof Stack) {
       elm.reverse()
       while (!elm.isEmpty) {
-        this.push(elm.pop())
+        this.pushAsNewElm(elm.pop())
       }
       elm = this.innerStack.pop() ?? -1
     }
@@ -74,25 +90,32 @@ class Stack {
     return this.innerStack.length
   }
 
-  getDebugOutput(): string {
+  getDebugOutput(ip: Interpreter, tab = 1): string {
     let str = ''
+    if (this.isEqual(ip.stack)) {
+      str += '*'
+    }
     str += '['
-    for (let i = 0; i < this.innerStack.length; ++i) {
-      const elm = this.innerStack[i]
-      if (typeof elm === 'number') {
-        str += elm
+    if (this.innerStack.length != 0) {
+      str += '\n' + '  '.repeat(tab)
+      for (let i = this.innerStack.length - 1; i >= 0; --i) {
+        const elm = this.innerStack[i]
+        if (typeof elm === 'number') {
+          str += elm
+        }
+        if (elm instanceof Stack) {
+          str += elm.getDebugOutput(ip, tab + 1)
+        }
+        if (i != 0) {
+          str += ', '
+        }
       }
-      if (elm instanceof Stack) {
-        str += '\n'
-        str += '    '
-        str += elm.getDebugOutput()
-        str += '\n'
-      }
-      if (i != this.innerStack.length - 1) {
-        str += ', '
-      }
+      str += '\n' + '  '.repeat(tab - 1)
     }
     str += ']'
+    if (this.isEqual(ip.stack)) {
+      str += '*'
+    }
     return str
   }
 }
