@@ -65,6 +65,9 @@ class Interpreter {
   /** 一番底のスタック */
   rootStack: Stack
 
+  /** ゴミ箱 */
+  garbageCan: Stack
+
   /** アウトプット全体 */
   allOutput: string
 
@@ -101,6 +104,7 @@ class Interpreter {
 
     this.mailBox = new Stack()
     this.operationNum = new Stack()
+    this.garbageCan = new Stack()
 
     this.allOutput = ''
 

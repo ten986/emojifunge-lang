@@ -5,7 +5,8 @@ import { Action, EmojiAction } from '../actionTypes'
 import { Interpreter } from '../interpreter'
 
 const pop: Action = (ip: Interpreter) => {
-  ip.stack.popByState(ip.stackState)
+  const elm = ip.stack.popByState(ip.stackState)
+  ip.garbageCan.pushAsNewElm(elm)
 }
 
 const dup: Action = (ip: Interpreter) => {
@@ -46,6 +47,12 @@ const pushLength: Action = (ip: Interpreter) => {
   ip.stack.pushAsRaw(ip.stack.length)
 }
 
+const pushFromGarbage: Action = (ip: Interpreter) => {
+  const elm = ip.garbageCan.popByState(ip.stackState)
+  ip.stack.pushAsNewElm(elm)
+  ip.garbageCan.clear()
+}
+
 /**
  * スタック関連のアクション
  */
@@ -81,6 +88,10 @@ const stackActions: EmojiAction[] = [
   {
     emoji: emojiToClass('📐'),
     action: pushLength,
+  },
+  {
+    emoji: emojiToClass('🗑️'),
+    action: pushFromGarbage,
   },
 ]
 
