@@ -111,11 +111,12 @@ https://jsprimer.net/basic/string-unicode/
 |🤐 | silent | x | 以降の出力命令を無視する。 ||
 |🤮 | vomit | x | 出力命令を無視をやめる。 ||
 
-### 盤面のemojii
+### 盤面のemoji
 
 | emoji | name | mode | action | example |
 |---|---|---|---|---|
-|👀| pick-emoji | x | (x + dx, y + dy) の emoji の codeunit を、stackとしてpush する。操作回数 stack に 0 を push する。||
+|👀| pick-emoji | x | (x + dx, y + dy) の emoji を push する。操作回数 stack に 0 を push する。||
+|🤳| pick-back-emoji | x | (x - dx, y - dy) の emoji を push する。||
 
 ### 制御
 
