@@ -12,7 +12,7 @@ import { operationNumActions } from './actions/operationNum'
 import { programControlActions } from './actions/programControl'
 import { pushNumberActions } from './actions/pushNumber'
 import { randomActions } from './actions/random'
-import { stackActions } from './actions/stack'
+import { stackActions } from './actions/stackOperation'
 import { EmojiAction, EmojistrToActionMap } from './actionTypes'
 
 /** 実行するアクション一覧 */

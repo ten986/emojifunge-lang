@@ -31,13 +31,12 @@ const elmOp2 = (func: NumOp2, elm1: StackElm, elm2: StackElm): StackElm => {
   // スタックに変換
   const stack1 = converElmToStack(elm1)
   const stack2 = converElmToStack(elm2)
-  stack1.reverse()
-  stack2.reverse()
   const res = new Stack()
   while (!stack1.isEmpty && !stack2.isEmpty) {
     const elm = elmOp2(func, stack1.pop(), stack2.pop())
     res.pushAsNewElm(elm)
   }
+  res.reverse()
   return res
 }
 
@@ -49,12 +48,12 @@ const elmOp1 = (func: NumOp1, elm: StackElm): StackElm => {
   }
   // スタックに変換
   const stack = converElmToStack(elm)
-  stack.reverse()
   const res = new Stack()
   while (!stack.isEmpty) {
     const elm = elmOp1(func, stack.pop())
     res.pushAsNewElm(elm)
   }
+  res.reverse()
   return res
 }
 

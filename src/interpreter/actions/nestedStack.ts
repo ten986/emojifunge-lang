@@ -37,6 +37,24 @@ const gotoRootStack = (ip: Interpreter): void => {
   ip.stack = ip.rootStack
 }
 
+const openStack = (ip: Interpreter): void => {
+  const elm = ip.stack.pop()
+  // stack の場合、開いてもう1度 pop
+  if (elm instanceof Stack) {
+    ip.stack.openStackAndPush(elm)
+  } else if (typeof elm === 'number') {
+    ip.stack.pushAsRaw(elm)
+  }
+}
+
+const changeStackMode = (ip: Interpreter): void => {
+  if (ip.stackState === 'normal') {
+    ip.stackState = 'stack'
+  } else if (ip.stackState === 'stack') {
+    ip.stackState = 'normal'
+  }
+}
+
 /**
  * ネストしたスタック関連のアクション
  */
@@ -52,6 +70,14 @@ const nestedStackActions: EmojiAction[] = [
   {
     emoji: emojiToClass('📪'),
     action: gotoRootStack,
+  },
+  {
+    emoji: emojiToClass('📭'),
+    action: openStack,
+  },
+  {
+    emoji: emojiToClass('📨'),
+    action: changeStackMode,
   },
 ]
 

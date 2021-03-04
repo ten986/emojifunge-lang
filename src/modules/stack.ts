@@ -47,15 +47,20 @@ class Stack {
     this.innerStack.push(elm)
   }
 
+  // elm を開いて push
+  openStackAndPush(elm: Stack): void {
+    elm.reverse()
+    while (!elm.isEmpty) {
+      this.pushAsNewElm(elm.pop())
+    }
+  }
+
   // 通常モード時の pop
   popNumber(): number {
     let elm = this.innerStack.pop() ?? -1
     // stack の場合、開いてもう1度 pop
     while (elm instanceof Stack) {
-      elm.reverse()
-      while (!elm.isEmpty) {
-        this.pushAsNewElm(elm.pop())
-      }
+      this.openStackAndPush(elm)
       elm = this.innerStack.pop() ?? -1
     }
     return elm
