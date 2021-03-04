@@ -88,10 +88,6 @@ class Interpreter {
   stopWatchCount: number
 
   constructor(file: string, input: string) {
-    this.x = 0
-    this.y = 0
-    this.dirX = 1
-    this.dirY = 0
     this.endState = 'normal'
     this.commentState = 'normal'
     this.stackState = 'normal'
@@ -122,6 +118,18 @@ class Interpreter {
     this.stepToStop = null
 
     this.stopWatchCount = 0
+
+    this.x = 0
+    this.y = 0
+    this.dirX = 1
+    this.dirY = 0
+
+    const xys = this.board.getEntryPoint()
+    if (xys.length > 0) {
+      const xy = xys[Math.floor(Math.random() * xys.length)]
+      this.x = xy.x
+      this.y = xy.y
+    }
   }
 
   /** 終わった？ */

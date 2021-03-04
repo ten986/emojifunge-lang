@@ -55,6 +55,10 @@ const programControlActions: EmojiAction[] = [
     action: pass,
   },
   {
+    emoji: emojiToClass('🏁'),
+    action: pass,
+  },
+  {
     emoji: emojiToClass('🏪'),
     action: changeIgnoreEndState,
   },

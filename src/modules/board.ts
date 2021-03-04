@@ -4,12 +4,29 @@ import { Interpreter } from '@/interpreter/interpreter'
 
 import { Emoji } from './emoji'
 
+type XY = {
+  x: number
+  y: number
+}
+
 class Board {
   /** ボード */
   board: string[][]
 
   constructor(file: string) {
     this.board = file.split('\n').map((str) => this.splitEmojiStr(str))
+  }
+
+  getEntryPoint(): XY[] {
+    const res: XY[] = []
+    for (let y = 0; y < this.board.length; ++y) {
+      for (let x = 0; x < this.board?.[y].length ?? 0; ++x) {
+        if (this.getEmoji(x, y)?.eq('🏁')) {
+          res.push({ x, y })
+        }
+      }
+    }
+    return res
   }
 
   /** 絵文字変換用 */
