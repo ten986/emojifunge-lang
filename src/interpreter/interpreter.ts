@@ -17,6 +17,8 @@ type IgnoreEndState = 'normal' | 'ignore'
 type IgnoreOutputState = 'normal' | 'ignore'
 // ストップウォッチ
 type StopWatchState = 'off' | 'on'
+// 乗り物
+type RideState = 'off' | 'bicycle'
 
 class Interpreter {
   /** ファイルを受け取るボード */
@@ -46,6 +48,7 @@ class Interpreter {
   ignoreEndState: IgnoreEndState
   ignoreOutputState: IgnoreOutputState
   stopWatchState: StopWatchState
+  rideState: RideState
 
   /** 回数操作 */
   operationNum: Stack
@@ -82,6 +85,7 @@ class Interpreter {
     this.ignoreEndState = 'normal'
     this.ignoreOutputState = 'normal'
     this.stopWatchState = 'off'
+    this.rideState = 'off'
 
     this.input = input
     this.firstInput = input
@@ -185,7 +189,7 @@ class Interpreter {
       const dy = this.y + this.dirY
 
       // dir の方向に進む
-      if (this.board.existEmoji(dx, dy)) {
+      if (!this.board.isWall(dx, dy, this)) {
         this.x = dx
         this.y = dy
         return

@@ -42,6 +42,10 @@ const r18: Action = (ip: Interpreter) => {
   ip.stack = filterStack((num: number) => num >= 18, ip.stack)
 }
 
+const pushLength: Action = (ip: Interpreter) => {
+  ip.stack.pushAsRaw(ip.stack.length)
+}
+
 /**
  * スタック関連のアクション
  */
@@ -73,6 +77,10 @@ const stackActions: EmojiAction[] = [
   {
     emoji: emojiToClass('🔞'),
     action: r18,
+  },
+  {
+    emoji: emojiToClass('📐'),
+    action: pushLength,
   },
 ]
 

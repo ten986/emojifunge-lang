@@ -26,6 +26,22 @@ const changeIgnoreEndState = (ip: Interpreter): void => {
     ip.ignoreEndState = 'normal'
   }
 }
+
+const rideBicycle = (ip: Interpreter): void => {
+  if (ip.rideState === 'bicycle') {
+    ip.rideState = 'off'
+  } else {
+    ip.rideState = 'bicycle'
+  }
+}
+
+const stopBicycle: Action = (ip: Interpreter) => {
+  if (ip.rideState === 'bicycle') {
+    ip.error('pointer in bicycle stop')
+    ip.endState = 'end'
+  }
+}
+
 /**
  * 制御関連のアクション
  */
@@ -49,6 +65,14 @@ const programControlActions: EmojiAction[] = [
   {
     emoji: emojiToClass('💥'),
     action: error('program crashed successfully'),
+  },
+  {
+    emoji: emojiToClass('🚲'),
+    action: rideBicycle,
+  },
+  {
+    emoji: emojiToClass('🚳'),
+    action: stopBicycle,
   },
 ]
 

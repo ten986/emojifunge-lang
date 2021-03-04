@@ -1,5 +1,7 @@
 import { unemojify } from 'node-emoji'
 
+import { Interpreter } from '@/interpreter/interpreter'
+
 import { Emoji } from './emoji'
 
 class Board {
@@ -21,6 +23,11 @@ class Board {
   existEmoji(x: number, y: number): boolean {
     const emoji = this.getEmoji(x, y)
     return emoji !== undefined && !emoji.eq('⬛️')
+  }
+
+  isWall(x: number, y: number, ip: Interpreter): boolean {
+    const emoji = this.getEmoji(x, y)
+    return emoji === undefined || emoji.eq('⬛️') || (ip.rideState === 'bicycle' && emoji.eq('🚳'))
   }
 
   getEmoji(x: number, y: number): Emoji | undefined {
