@@ -29,6 +29,10 @@ const timeManipulation: Action = (ip: Interpreter) => {
   ip.operationNum.pushAsNewElm(elm)
 }
 
+const infinityLoop: Action = (ip: Interpreter) => {
+  ip.operationNum.pushAsNewElm(Infinity)
+}
+
 /**
  * 操作回数関連のアクション
  */
@@ -48,6 +52,10 @@ const operationNumActions: EmojiAction[] = [
   {
     emoji: emojiToClass('🕰'),
     action: timeManipulation,
+  },
+  {
+    emoji: emojiToClass('➿'),
+    action: infinityLoop,
   },
 ]
 

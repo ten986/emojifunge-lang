@@ -266,6 +266,7 @@ mode: o では、
 |🎰 | slot | x | (top)`a`, `b`, `c` を pop し、`a == b == c`なら、命令実行回数stackに `7`,`7`,`7` をpushする。||
 |💤 | sleep | x | 命令実行回数stackに `0`,`0`,`0` をpushする。||
 |🕰  | time-manipulation | o | 操作中の stack から `a` を pop し、命令実行回数stackに `a` を push する。||
+|➿ | infinity-loop | x | 命令実行回数stackに `Infinity` をpushする。||
 
 ### misc
 
