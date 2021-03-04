@@ -31,6 +31,22 @@ const swap3: Action = (ip: Interpreter) => {
   ip.stack.pushAsNewElm(c)
 }
 
+const swapN: Action = (ip: Interpreter) => {
+  const x = ip.stack.popNumber()
+  const ary = []
+  // x - 1 回 pop
+  for (let i = 0; i < x - 1; ++i) {
+    ary.push(ip.stack.popByState(ip.stackState))
+  }
+  const elm = ip.stack.popByState(ip.stackState)
+
+  // x - 1 回 push
+  for (let i = 0; i < x - 1; ++i) {
+    ip.stack.pushAsNewElm(ary.pop() ?? -1)
+  }
+  ip.stack.pushAsNewElm(elm)
+}
+
 const reverse: Action = (ip: Interpreter) => {
   ip.stack.reverse()
 }
@@ -72,6 +88,10 @@ const stackActions: EmojiAction[] = [
   {
     emoji: emojiToClass('♻️'),
     action: swap3,
+  },
+  {
+    emoji: emojiToClass('🏗'),
+    action: swapN,
   },
   {
     emoji: emojiToClass('🙃'),
