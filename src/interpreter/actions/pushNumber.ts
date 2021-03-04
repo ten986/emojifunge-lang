@@ -89,6 +89,10 @@ const pushNumberActions: EmojiAction[] = [
     emoji: emojiToClass('💯'),
     action: pushNumber(100),
   },
+  {
+    emoji: emojiToClass('➰'),
+    action: pushNumber(Infinity),
+  },
 ]
 
 export { pushNumberActions }

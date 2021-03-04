@@ -80,8 +80,6 @@ emoji は codeUnit による Stack として表現される。
 
 https://jsprimer.net/basic/string-unicode/
 
-
-
 ## コマンド一覧
 
 ### 入出力
@@ -134,6 +132,9 @@ https://jsprimer.net/basic/string-unicode/
 |🅿️| P | x | 80 を push する。||
 |®️| R | x | 82 を push する。||
 |💯| 100| x | 100 を push する。||
+|➰| infinity| x | Infinity を push する。||
+
+備考: infinity に対応する emoji は、変更となる可能性がある。（codegolf中のみなさまへ: 期間中は変更しません）
 
 ### 乱数
 

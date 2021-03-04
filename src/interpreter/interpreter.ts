@@ -1,5 +1,3 @@
-import { unemojify } from 'node-emoji'
-
 import { Board } from '@/modules/board'
 import { Stack } from '@/modules/stack'
 
