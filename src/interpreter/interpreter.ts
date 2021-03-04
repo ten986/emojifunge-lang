@@ -15,6 +15,8 @@ type StackState = 'normal' | 'stack'
 type IgnoreEndState = 'normal' | 'ignore'
 // 出力命令を無視するか
 type IgnoreOutputState = 'normal' | 'ignore'
+// ストップウォッチ
+type StopWatchState = 'off' | 'on'
 
 class Interpreter {
   /** ファイルを受け取るボード */
@@ -43,6 +45,7 @@ class Interpreter {
   stackState: StackState
   ignoreEndState: IgnoreEndState
   ignoreOutputState: IgnoreOutputState
+  stopWatchState: StopWatchState
 
   /** 回数操作 */
   operationNum: Stack
@@ -65,6 +68,9 @@ class Interpreter {
   /** 停止までの step 数 */
   stepToStop: number | null
 
+  /** ストップウォッチのカウント数 */
+  stopWatchCount: number
+
   constructor(file: string, input: string) {
     this.x = 0
     this.y = 0
@@ -75,6 +81,7 @@ class Interpreter {
     this.stackState = 'normal'
     this.ignoreEndState = 'normal'
     this.ignoreOutputState = 'normal'
+    this.stopWatchState = 'off'
 
     this.input = input
     this.firstInput = input
@@ -92,6 +99,8 @@ class Interpreter {
     this.emojistrToAction = emojistrToAction
 
     this.stepToStop = null
+
+    this.stopWatchCount = 0
   }
 
   /** 終わった？ */
@@ -138,6 +147,11 @@ class Interpreter {
       } else {
         this.stepToStop--
       }
+    }
+
+    // ストップウォッチで使うカウンターをインクリメント
+    if (this.stopWatchState === 'on') {
+      this.stopWatchCount++
     }
 
     this.move()

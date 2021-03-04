@@ -35,6 +35,16 @@ const calendar: Action = (ip: Interpreter) => {
   ip.stack.pushAsNewElm(time.getFullYear())
 }
 
+const stopwatch = (ip: Interpreter): void => {
+  if (ip.stopWatchState === 'off') {
+    ip.stopWatchState = 'on'
+    ip.stopWatchCount = 0
+  } else if (ip.stopWatchState === 'on') {
+    ip.stack.pushAsRaw(ip.stopWatchCount)
+    ip.stopWatchState = 'off'
+  }
+}
+
 const kazoeageOneesan: Action = (ip: Interpreter) => {
   const a = ip.stack.popNumber()
   if (a <= 0) {
@@ -101,6 +111,10 @@ const miscActions: EmojiAction[] = [
   {
     emoji: emojiToClass('🤖'),
     action: kazoeageOneesan,
+  },
+  {
+    emoji: emojiToClass('⏱️'),
+    action: stopwatch,
   },
 ]
 

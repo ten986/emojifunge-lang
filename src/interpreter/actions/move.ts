@@ -1,3 +1,5 @@
+import { sign } from 'mathjs'
+
 import { emojiToClass } from '@/modules/emoji'
 
 import { Action, EmojiAction } from '../actionTypes'
@@ -30,6 +32,10 @@ const rotateClockwise: Action = (ip: Interpreter) => {
 /** 左回転 */
 const rotateCounterclockwise: Action = (ip: Interpreter) => {
   ;[ip.dirX, ip.dirY] = [ip.dirY, -ip.dirX]
+}
+
+const spider: Action = (ip: Interpreter) => {
+  ;[ip.dirX, ip.dirY] = [sign(ip.dirX), sign(ip.dirY)]
 }
 
 /**
@@ -91,6 +97,10 @@ const moveActions: EmojiAction[] = [
   {
     emoji: emojiToClass('🔄'),
     action: rotateCounterclockwise,
+  },
+  {
+    emoji: emojiToClass('🕸️'),
+    action: spider,
   },
 ]
 

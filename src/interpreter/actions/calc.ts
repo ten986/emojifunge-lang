@@ -1,3 +1,5 @@
+import { sign } from 'mathjs'
+
 import { emojiToClass } from '@/modules/emoji'
 import { NumOp1, NumOp2, op1, op2 } from '@/modules/operation'
 
@@ -8,6 +10,7 @@ const minus: NumOp2 = (a: number, b: number) => a - b
 const mult: NumOp2 = (a: number, b: number) => a * b
 const div: NumOp2 = (a: number, b: number) => Math.floor(a / b)
 const mod: NumOp2 = (a: number, b: number) => a % b
+const spaceship: NumOp2 = (a: number, b: number) => sign(a - b)
 
 const factorial: NumOp1 = (num: number): number => {
   let res = 1
@@ -51,6 +54,10 @@ const calcActions: EmojiAction[] = [
   {
     emoji: emojiToClass('🈹'),
     action: op2(mod),
+  },
+  {
+    emoji: emojiToClass('🛸'),
+    action: op2(spaceship),
   },
   {
     emoji: emojiToClass('❗️'),

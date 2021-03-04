@@ -169,29 +169,30 @@ https://jsprimer.net/basic/string-unicode/
 
 | emoji | name | mode | action | example |
 |---|---|---|---|---|
-|➕| plus| o | (top)`a`, `b` を pop し、`a+b` を push する。|stack `[7, 4, 6] -> [11, 6]`|
-|➖| minus| o | (top)`a`, `b` を pop し、`a-b` を push する。|stack `[7, 4, 6] -> [3, 6]`|
-|✖️| mul| o | (top)`a`, `b` を pop し、`a*b` を push する。|stack `[7, 4, 6] -> [28, 6]`|
-|➗| div| o | (top)`a`, `b` を pop し、`a/b` を push する。|stack `[7, 4, 6] -> [1, 6]`|
-|🈹| mod| o | (top)`a`, `b` を pop し、`a%b` を push する。|stack `[7, 4, 6] -> [3, 6]`|
-|❗️| fact| o | `a` を pop し、`a` の階乗 を push する。|stack `[7, 4, 6] -> [5040, 4, 6]`|
-|‼️| semifact| o | `a` を pop し、`a` の半階乗 を push する。|stack `[7, 4, 6] -> [105, 4, 6]`|
-|👍| increment | o | `a` を pop し、`a + 1` を push する。|stack `[7, 4, 6] -> [8, 4, 6]`|
-|👎| decrement | o | `a` を pop し、`a - 1` を push する。|stack `[7, 4, 6] -> [8, 4, 6]`|
+|➕ | plus | o | (top)`a`, `b` を pop し、`a+b` を push する。|stack `[7, 4, 6] -> [11, 6]`|
+|➖ | minus | o | (top)`a`, `b` を pop し、`a-b` を push する。|stack `[7, 4, 6] -> [3, 6]`|
+|✖️ | mul | o | (top)`a`, `b` を pop し、`a*b` を push する。|stack `[7, 4, 6] -> [28, 6]`|
+|➗ | div | o | (top)`a`, `b` を pop し、`a/b` を push する。|stack `[7, 4, 6] -> [1, 6]`|
+|🈹 | mod | o | (top)`a`, `b` を pop し、`a%b` を push する。|stack `[7, 4, 6] -> [3, 6]`|
+|🛸 | spaceship-operator | o | (top)`a`, `b` を pop し、`sign(a-b)` を push する。|stack `[7, 4, 6] -> [1, 6]`|
+|❗️ | fact | o | `a` を pop し、`a` の階乗 を push する。|stack `[7, 4, 6] -> [5040, 4, 6]`|
+|‼️ | semifact | o | `a` を pop し、`a` の半階乗 を push する。|stack `[7, 4, 6] -> [105, 4, 6]`|
+|👍 | increment | o | `a` を pop し、`a + 1` を push する。|stack `[7, 4, 6] -> [8, 4, 6]`|
+|👎 | decrement | o | `a` を pop し、`a - 1` を push する。|stack `[7, 4, 6] -> [8, 4, 6]`|
 
 ### スタック操作
 
 | emoji | name | mode | action | example |
 |---|---|---|---|---|
-|🚮| pop| o | popする。値は破棄する。|stack `[7, 4, 6] -> [4, 6]`|
-|💕| dup| o | `a` を pop し、`a`, `a` を push する。 |stack `[7, 4, 6] -> [7, 7, 4, 6]`|
-|💞| swap| o | (top)`a`, `b` を pop し、(top)`b`, `a` を push する。|stack `[7, 4, 6] -> [4, 7, 6]`|
-|♻️| swap3| o | (top)`a`, `b`, `c` を pop し、(top)`c`, `a`, `b` を push する。|stack `[7, 4, 6] -> [6, 7, 4]`|
-|🙃| reverse| x | stackを反転する。 |stack `[7, 4, 6] -> [6, 4, 7]`|
-|🎆| fireworks | x | stack を clear する |stack `[18, 4, 26] -> []`|
-|🔞| R-18| x | stack から、 18未満の数を取り除く|stack `[18, 4, 26] -> [18, 26]`|
-|📧| create-empty-stack| x | 空の stack を作り、pushする。||
-|💌| create-new-stack| o | `a` を 数値として pop し、 `a` 回 pop する。空の stack を作り、空の stack に対し、`a` 回 pop したものを 逆順に push する（すなわち元通りの順番のstackができる）。 この stack を push する。 ||
+|🚮 | pop | o | popする。値は破棄する。|stack `[7, 4, 6] -> [4, 6]`|
+|💕 | dup | o | `a` を pop し、`a`, `a` を push する。 |stack `[7, 4, 6] -> [7, 7, 4, 6]`|
+|💞 | swap | o | (top)`a`, `b` を pop し、(top)`b`, `a` を push する。|stack `[7, 4, 6] -> [4, 7, 6]`|
+|♻️| swap3 | o | (top)`a`, `b`, `c` を pop し、(top)`c`, `a`, `b` を push する。|stack `[7, 4, 6] -> [6, 7, 4]`|
+|🙃 | reverse | x | stackを反転する。 |stack `[7, 4, 6] -> [6, 4, 7]`|
+|🎆 | fireworks | x | stack を clear する |stack `[18, 4, 26] -> []`|
+|🔞 | R-18 | x | stack から、 18未満の数を取り除く|stack `[18, 4, 26] -> [18, 26]`|
+|📧 | create-empty-stack | x | 空の stack を作り、pushする。||
+|💌 | create-new-stack | o | `a` を 数値として pop し、 `a` 回 pop する。空の stack を作り、空の stack に対し、`a` 回 pop したものを 逆順に push する（すなわち元通りの順番のstackができる）。 この stack を push する。 ||
 |📨 | change-stackmode  | x | stackmode の 通常モード と スタックモード を切り替える。|||
 
 ### ネストスタック操作
@@ -228,6 +229,7 @@ https://jsprimer.net/basic/string-unicode/
 |⏬| fast-right | x | dy++ ||
 |🔃| turn-clockwise | x | (dx, dy) = (-dy, dx) ||
 |🔄| turn-counterclockwise | x | (dx, dy) = (dy, -dx) ||
+|🕸️| spider| x | (dx, dy) = (sign(dx), sign(dy)) ||
 
 ### 条件分岐
 
@@ -256,6 +258,7 @@ https://jsprimer.net/basic/string-unicode/
 
 | emoji | name | mode | action | example |
 |---|---|---|---|---|
+|⏱️ | stopwatch | OFFのとき: ONにする。 ONのとき: ONにしてからのステップ数をpushしてOFFにする。 ||
 |🥇 | gold | x | stackの最大値を取得し、pushする。 |stack `[7, 4, 6, 2] -> [7, 7, 4, 6, 2]`|
 |🥈 | silver | x | stackの2番目に大きい値を取得し、pushする。 |stack `[7, 4, 6, 2] -> [6, 7, 4, 6, 2]`|
 |🥉 | bronze | x | stackの3番目に大きい値を取得し、pushする。 |stack `[7, 4, 4, 2] -> [4, 7, 4, 4, 2]`|
