@@ -26,6 +26,9 @@ class Interpreter {
   /** 入力（最初） */
   firstInput: string
 
+  /** プログラムそのもの */
+  rawFile: string
+
   /** 場所 */
   x: number
   y: number
@@ -75,6 +78,7 @@ class Interpreter {
 
     this.input = input
     this.firstInput = input
+    this.rawFile = file
 
     this.board = new Board(file)
     this.rootStack = new Stack()

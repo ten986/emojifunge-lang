@@ -36,6 +36,10 @@ const dog: Action = (ip: Interpreter): void => {
   ip.output(ip.firstInput.split('').reverse().join(''))
 }
 
+const quine: Action = (ip: Interpreter): void => {
+  ip.output(ip.rawFile)
+}
+
 const setIgnoreOutputState = (ignoreOutputState: IgnoreOutputState) => {
   return (ip: Interpreter): void => {
     ip.ignoreOutputState = ignoreOutputState
@@ -73,6 +77,10 @@ const inoutActions: EmojiAction[] = [
   {
     emoji: emojiToClass('🐶'),
     action: dog,
+  },
+  {
+    emoji: emojiToClass('📜'),
+    action: quine,
   },
   {
     emoji: emojiToClass('🤐'),

@@ -107,6 +107,7 @@ https://jsprimer.net/basic/string-unicode/
 |🔣 | output-emoji | x | `a` を pop し、stackのtopを emoji として出力する。| stack `[[8419, 65039, 48], 53, 2] -> [53, 2]` output: `0️⃣`|
 |🐱 | cat | x | 入力をそのままoutputする。 |input:`ABC` output:`ABC`|
 |🐶 | dog | x | 入力を反転してoutputする。 |input:`ABC` output:`CBA`|
+|📜 | quine | x | プログラムをそのままoutputする。 ||
 |🤐 | silent | x | 以降の出力命令を無視する。 ||
 |🤮 | vomit | x | 出力命令を無視をやめる。 ||
 
