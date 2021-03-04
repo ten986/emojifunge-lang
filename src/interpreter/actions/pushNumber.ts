@@ -5,7 +5,7 @@ import { Interpreter } from '../interpreter'
 
 const pushNumber = (num: number): Action => {
   return (ip: Interpreter) => {
-    ip.stack.push(num)
+    ip.stack.pushAsNewElm(num)
   }
 }
 

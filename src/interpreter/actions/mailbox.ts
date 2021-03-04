@@ -5,12 +5,12 @@ import { Interpreter } from '../interpreter'
 
 const pushToMailbox: Action = (ip: Interpreter) => {
   const a = ip.stack.popByState(ip.stackState)
-  ip.mailBox.push(a)
+  ip.mailBox.pushAsNewElm(a)
 }
 
 const popFromMailbox: Action = (ip: Interpreter) => {
   const a = ip.mailBox.popByState(ip.stackState)
-  ip.stack.push(a)
+  ip.stack.pushAsNewElm(a)
 }
 
 /**

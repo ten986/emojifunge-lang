@@ -4,8 +4,10 @@ import { conditionalActions } from './actions/conditional'
 import { emojiPickActions } from './actions/emojiPick'
 import { inoutActions } from './actions/inout'
 import { mailboxActions } from './actions/mailbox'
+import { makeStackActions } from './actions/makeStack'
 import { miscActions } from './actions/misc'
 import { moveActions } from './actions/move'
+import { nestedStackActions } from './actions/nestedStack'
 import { operationNumActions } from './actions/operationNum'
 import { programControlActions } from './actions/programControl'
 import { pushNumberActions } from './actions/pushNumber'
@@ -28,6 +30,8 @@ const emojiActionsArray: EmojiAction[][] = [
   miscActions,
   commentActions,
   emojiPickActions,
+  nestedStackActions,
+  makeStackActions,
 ]
 
 /** emoji action の対応を生成取得 */

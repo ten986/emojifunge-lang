@@ -6,7 +6,7 @@ import { Stack, StackElm } from './stack'
 // 1 -> [1]
 const convertNumberTo1ElmStack = (num: number): Stack => {
   const stack = new Stack()
-  stack.push(num)
+  stack.pushAsNewElm(num)
   return stack
 }
 
@@ -36,7 +36,7 @@ const elmOp2 = (func: NumOp2, elm1: StackElm, elm2: StackElm): StackElm => {
   const res = new Stack()
   while (!stack1.isEmpty && !stack2.isEmpty) {
     const elm = elmOp2(func, stack1.pop(), stack2.pop())
-    res.push(elm)
+    res.pushAsNewElm(elm)
   }
   return res
 }
@@ -53,7 +53,7 @@ const elmOp1 = (func: NumOp1, elm: StackElm): StackElm => {
   const res = new Stack()
   while (!stack.isEmpty) {
     const elm = elmOp1(func, stack.pop())
-    res.push(elm)
+    res.pushAsNewElm(elm)
   }
   return res
 }
@@ -62,14 +62,14 @@ const op2 = (op: NumOp2): Action => {
   return (ip: Interpreter) => {
     const a = ip.stack.popByState(ip.stackState)
     const b = ip.stack.popByState(ip.stackState)
-    ip.stack.push(elmOp2(op, a, b))
+    ip.stack.pushAsNewElm(elmOp2(op, a, b))
   }
 }
 
 const op1 = (op: NumOp1): Action => {
   return (ip: Interpreter) => {
     const a = ip.stack.popByState(ip.stackState)
-    ip.stack.push(elmOp1(op, a))
+    ip.stack.pushAsNewElm(elmOp1(op, a))
   }
 }
 
@@ -106,10 +106,10 @@ const filterStack = (filter: Condition1, stack: Stack): Stack => {
     }
     if (typeof elm === 'number') {
       if (filter(elm)) {
-        res.push(elm)
+        res.pushAsNewElm(elm)
       }
     } else {
-      res.push(filterStack(filter, elm))
+      res.pushAsNewElm(filterStack(filter, elm))
     }
   }
   return res

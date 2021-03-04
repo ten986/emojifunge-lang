@@ -19,7 +19,7 @@ const pushCondition = (cond: Condition1): Action => {
   return (ip: Interpreter) => {
     const a = ip.stack.popByState(ip.stackState)
     const f: NumOp1 = (a: number) => (cond(a) ? 1 : 0)
-    ip.stack.push(elmOp1(f, a))
+    ip.stack.pushAsNewElm(elmOp1(f, a))
   }
 }
 
@@ -28,7 +28,7 @@ const pushCondition2 = (cond: Condition2): Action => {
     const a = ip.stack.popByState(ip.stackState)
     const b = ip.stack.popByState(ip.stackState)
     const f: NumOp2 = (a: number, b: number) => (cond(a, b) ? 1 : 0)
-    ip.stack.push(elmOp2(f, a, b))
+    ip.stack.pushAsNewElm(elmOp2(f, a, b))
   }
 }
 

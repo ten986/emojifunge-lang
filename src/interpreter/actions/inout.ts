@@ -6,12 +6,12 @@ import { Action, EmojiAction } from '../actionTypes'
 import { Interpreter } from '../interpreter'
 
 const inputNumber: Action = (ip: Interpreter): void => {
-  ip.stack.push(+(ip.input.match(/-?\d+/) || [0])[0] || 0)
+  ip.stack.pushAsNewElm(+(ip.input.match(/-?\d+/) || [0])[0] || 0)
   ip.input = ip.input.replace(/^[^]*?\d+/, '')
 }
 
 const inputChar: Action = (ip: Interpreter): void => {
-  ip.stack.push(ip.input ? ip.input.charCodeAt(0) : -1)
+  ip.stack.pushAsNewElm(ip.input ? ip.input.charCodeAt(0) : -1)
   ip.input = ip.input.slice(1)
 }
 

@@ -10,24 +10,24 @@ const pop: Action = (ip: Interpreter) => {
 
 const dup: Action = (ip: Interpreter) => {
   const a = ip.stack.popByState(ip.stackState)
-  ip.stack.push(a)
-  ip.stack.push(a)
+  ip.stack.pushAsNewElm(a)
+  ip.stack.pushAsNewElm(a)
 }
 
 const swap: Action = (ip: Interpreter) => {
   const a = ip.stack.popByState(ip.stackState)
   const b = ip.stack.popByState(ip.stackState)
-  ip.stack.push(a)
-  ip.stack.push(b)
+  ip.stack.pushAsNewElm(a)
+  ip.stack.pushAsNewElm(b)
 }
 
 const swap3: Action = (ip: Interpreter) => {
   const a = ip.stack.popByState(ip.stackState)
   const b = ip.stack.popByState(ip.stackState)
   const c = ip.stack.popByState(ip.stackState)
-  ip.stack.push(b)
-  ip.stack.push(a)
-  ip.stack.push(c)
+  ip.stack.pushAsNewElm(b)
+  ip.stack.pushAsNewElm(a)
+  ip.stack.pushAsNewElm(c)
 }
 
 const reverse: Action = (ip: Interpreter) => {

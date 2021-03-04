@@ -4,7 +4,7 @@ import { Action, EmojiAction } from '../actionTypes'
 import { Interpreter } from '../interpreter'
 
 const speedRun: Action = (ip: Interpreter) => {
-  ip.operationNum.push(2)
+  ip.operationNum.pushAsNewElm(2)
 }
 
 const slot: Action = (ip: Interpreter) => {
@@ -12,16 +12,16 @@ const slot: Action = (ip: Interpreter) => {
   const b = ip.stack.popNumber()
   const c = ip.stack.popNumber()
   if (a == b && b == c) {
-    ip.operationNum.push(7)
-    ip.operationNum.push(7)
-    ip.operationNum.push(7)
+    ip.operationNum.pushAsNewElm(7)
+    ip.operationNum.pushAsNewElm(7)
+    ip.operationNum.pushAsNewElm(7)
   }
 }
 
 const sleep: Action = (ip: Interpreter) => {
-  ip.operationNum.push(0)
-  ip.operationNum.push(0)
-  ip.operationNum.push(0)
+  ip.operationNum.pushAsNewElm(0)
+  ip.operationNum.pushAsNewElm(0)
+  ip.operationNum.pushAsNewElm(0)
 }
 
 /**

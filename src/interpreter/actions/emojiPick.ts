@@ -13,7 +13,8 @@ const pickEmoji: Action = (ip: Interpreter) => {
   }
   const stack = new Stack(ip.stack)
   stack.innerStack = emoji.codeUnit
-  ip.stack.push(stack)
+  ip.stack.pushAsNewElm(stack)
+  ip.operationNum.pushAsNewElm(0)
 }
 
 /**
