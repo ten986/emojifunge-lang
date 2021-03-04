@@ -1,3 +1,5 @@
+import { unemojify } from 'node-emoji'
+
 import { Board } from '@/modules/board'
 import { Stack } from '@/modules/stack'
 
@@ -108,9 +110,9 @@ class Interpreter {
     if (this.isEnd()) {
       return
     }
-    console.log('x:' + this.x + ', y:' + this.y)
-    console.log('dx:' + this.dirX + ', dy:' + this.dirY)
-    console.log(this.rootStack.getDebugOutput(this))
+    // console.log('x:' + this.x + ', y:' + this.y)
+    // console.log('dx:' + this.dirX + ', dy:' + this.dirY)
+    // console.log(this.rootStack.getDebugOutput(this))
   }
 
   /** 最後まで */

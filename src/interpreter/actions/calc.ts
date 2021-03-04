@@ -17,6 +17,9 @@ const factorial: NumOp1 = (num: number): number => {
   return res
 }
 
+const increment: NumOp1 = (a: number) => a + 1
+const decrement: NumOp1 = (a: number) => a - 1
+
 /**
  * 計算関連のアクション
  */
@@ -44,6 +47,14 @@ const calcActions: EmojiAction[] = [
   {
     emoji: emojiToClass('❗️'),
     action: op1(factorial),
+  },
+  {
+    emoji: emojiToClass('👍'),
+    action: op1(increment),
+  },
+  {
+    emoji: emojiToClass('👎'),
+    action: op1(decrement),
   },
 ]
 

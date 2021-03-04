@@ -80,6 +80,8 @@ emoji は codeUnit による Stack として表現される。
 
 https://jsprimer.net/basic/string-unicode/
 
+
+
 ## コマンド一覧
 
 ### 入出力
@@ -150,6 +152,8 @@ https://jsprimer.net/basic/string-unicode/
 |➗| div| o | (top)`a`, `b` を pop し、`a/b` を push する。|stack `[7, 4, 6] -> [1, 6]`|
 |🈹| mod| o | (top)`a`, `b` を pop し、`a%b` を push する。|stack `[7, 4, 6] -> [3, 6]`|
 |❗️| fact| o | `a` を pop し、`a`  の階乗 を push する。|stack `[7, 4, 6] -> [5040, 4, 6]`|
+|👍| increment | o | `a` を pop し、`a + 1` を push する。|stack `[7, 4, 6] -> [8, 4, 6]`|
+|👎| decrement | o | `a` を pop し、`a - 1` を push する。|stack `[7, 4, 6] -> [8, 4, 6]`|
 
 ### スタック操作
 
