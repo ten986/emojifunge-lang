@@ -46,6 +46,10 @@ const programControlActions: EmojiAction[] = [
     emoji: emojiToClass('⬛️'),
     action: error('pointer in wall'),
   },
+  {
+    emoji: emojiToClass('💥'),
+    action: error('program crashed successfully'),
+  },
 ]
 
 export { programControlActions }

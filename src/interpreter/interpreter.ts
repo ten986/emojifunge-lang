@@ -5,10 +5,16 @@ import { rotateClockwise } from './actions/move'
 import { Action } from './actionTypes'
 import { emojistrToAction } from './emojiActions'
 
+// 終了するか
 type EndState = 'normal' | 'end'
+// コメント中か
 type CommentState = 'normal' | 'commented'
+// スタックの操作方法
 type StackState = 'normal' | 'stack'
+// 終了を無視するか
 type IgnoreEndState = 'normal' | 'ignore'
+// 出力命令を無視するか
+type IgnoreOutputState = 'normal' | 'ignore'
 
 class Interpreter {
   /** ファイルを受け取るボード */
@@ -33,6 +39,7 @@ class Interpreter {
   commentState: CommentState
   stackState: StackState
   ignoreEndState: IgnoreEndState
+  ignoreOutputState: IgnoreOutputState
 
   /** 回数操作 */
   operationNum: Stack
@@ -64,6 +71,7 @@ class Interpreter {
     this.commentState = 'normal'
     this.stackState = 'normal'
     this.ignoreEndState = 'normal'
+    this.ignoreOutputState = 'normal'
 
     this.input = input
     this.firstInput = input
@@ -89,8 +97,10 @@ class Interpreter {
 
   /** 出力 */
   output(str: string): void {
-    this.allOutput += str
-    process.stdout.write(str)
+    if (this.ignoreOutputState != 'ignore') {
+      this.allOutput += str
+      process.stdout.write(str)
+    }
   }
 
   /** 出力 */
@@ -207,4 +217,4 @@ class Interpreter {
 }
 
 export { Interpreter }
-export type { StackState }
+export type { StackState, IgnoreOutputState }

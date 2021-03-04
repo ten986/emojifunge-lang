@@ -100,13 +100,15 @@ https://jsprimer.net/basic/string-unicode/
 
 | emoji | name | mode | action | example |
 |---|---|---|---|---|
-|ℹ️| input-number | x | 入力を数値として受け取り、 pushする。空白などの直前まで受け取る。 | stack `[53, 2] -> [32, 53, 2]` input: `32 54 AA` -> ` 54 AA`|
-|🔤| input-ascii | x | 入力を ASCII CODE として受け取り、 pushする。|stack `[53, 2] -> [41, 53, 2]` input: `ABC` -> `BC`|
-|🔢| output-number | o | `a` を pop し、数値として出力する。| stack `[32, 53, 2] -> [53, 2]` output: `32`|
-|🔡| output-ascii | o | `a` を pop し、ASCII CODEとして出力する。| stack `[41, 53, 2] -> [53, 2]` output: `A`|
-|🔣| output-emoji | x | `a` を pop し、stackのtopを emoji として出力する。| stack `[[8419, 65039, 48], 53, 2] -> [53, 2]` output: `0️⃣`|
-|🐱| cat | x | 入力をそのままoutputする。 |input:`ABC` output:`ABC`|
-|🐶| dog | x | 入力を反転してoutputする。 |input:`ABC` output:`CBA`|
+|ℹ️ | input-number | x | 入力を数値として受け取り、 pushする。空白などの直前まで受け取る。 | stack `[53, 2] -> [32, 53, 2]` input: `32 54 AA` -> ` 54 AA`|
+|🔤 | input-ascii | x | 入力を ASCII CODE として受け取り、 pushする。|stack `[53, 2] -> [41, 53, 2]` input: `ABC` -> `BC`|
+|🔢 | output-number | o | `a` を pop し、数値として出力する。| stack `[32, 53, 2] -> [53, 2]` output: `32`|
+|🔡 | output-ascii | o | `a` を pop し、ASCII CODEとして出力する。| stack `[41, 53, 2] -> [53, 2]` output: `A`|
+|🔣 | output-emoji | x | `a` を pop し、stackのtopを emoji として出力する。| stack `[[8419, 65039, 48], 53, 2] -> [53, 2]` output: `0️⃣`|
+|🐱 | cat | x | 入力をそのままoutputする。 |input:`ABC` output:`ABC`|
+|🐶 | dog | x | 入力を反転してoutputする。 |input:`ABC` output:`CBA`|
+|🤐 | silent | x | 以降の出力命令を無視する。 ||
+|🤮 | vomit | x | 出力命令を無視をやめる。 ||
 
 ### 盤面のemojii
 
@@ -125,6 +127,7 @@ https://jsprimer.net/basic/string-unicode/
 |⬜️ | empty | x | 何もしない ||
 |⬛️ | wall | x | 壁。プログラムの外側と同じ扱いとなる。 ||
 |🍚 | comment | x | 次の comment まで、壁以外の命令を無視する。 ||
+|💥 | crash | x | プログラムをクラッシュする。 ||
 
 ### 定数
 

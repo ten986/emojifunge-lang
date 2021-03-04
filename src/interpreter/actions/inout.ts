@@ -4,7 +4,7 @@ import { codeUnitToEmoji, emojiToClass } from '@/modules/emoji'
 import { ForeachOp1, foreachOp1 } from '@/modules/operation'
 
 import { Action, EmojiAction } from '../actionTypes'
-import { Interpreter } from '../interpreter'
+import { IgnoreOutputState, Interpreter } from '../interpreter'
 
 const inputNumber: Action = (ip: Interpreter): void => {
   ip.stack.pushAsNewElm(+(ip.input.match(/-?\d+/) || [0])[0] || 0)
@@ -34,6 +34,12 @@ const cat: Action = (ip: Interpreter): void => {
 
 const dog: Action = (ip: Interpreter): void => {
   ip.output(ip.firstInput.split('').reverse().join(''))
+}
+
+const setIgnoreOutputState = (ignoreOutputState: IgnoreOutputState) => {
+  return (ip: Interpreter): void => {
+    ip.ignoreOutputState = ignoreOutputState
+  }
 }
 
 /**
@@ -67,6 +73,14 @@ const inoutActions: EmojiAction[] = [
   {
     emoji: emojiToClass('🐶'),
     action: dog,
+  },
+  {
+    emoji: emojiToClass('🤐'),
+    action: setIgnoreOutputState('ignore'),
+  },
+  {
+    emoji: emojiToClass('🤮'),
+    action: setIgnoreOutputState('normal'),
   },
 ]
 
