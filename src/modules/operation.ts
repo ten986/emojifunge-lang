@@ -21,6 +21,7 @@ type NumOp2 = (a: number, b: number) => number
 type NumOp1 = (a: number) => number
 type Condition2 = (a: number, b: number) => boolean
 type Condition1 = (a: number) => boolean
+type ForeachOp1 = (a: number, ip: Interpreter) => void
 
 // 2個受け取って1個返すやつ
 const elmOp2 = (func: NumOp2, elm1: StackElm, elm2: StackElm): StackElm => {
@@ -72,7 +73,17 @@ const op1 = (op: NumOp1): Action => {
   }
 }
 
-// stackを開く
+const foreachOp1 = (op: ForeachOp1): Action => {
+  return (ip: Interpreter) => {
+    const a = ip.stack.popByState(ip.stackState)
+    elmOp1((x) => {
+      op(x, ip)
+      return 0
+    }, a)
+  }
+}
+
+// stackを再起的に開く
 const spreadStack = (stack: StackElm[]): number[] => {
   const res: number[] = []
   const f = (stack: StackElm[], res: number[]) => {
@@ -119,5 +130,5 @@ const deepCopy = (stack: Stack): Stack => {
   return filterStack(() => true, stack)
 }
 
-export { elmOp2, elmOp1, spreadStack, filterStack, op2, op1, deepCopy }
-export type { NumOp1, NumOp2, Condition1, Condition2 }
+export { elmOp2, elmOp1, spreadStack, filterStack, op2, op1, deepCopy, foreachOp1 }
+export type { NumOp1, NumOp2, Condition1, Condition2, ForeachOp1 }

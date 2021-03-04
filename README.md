@@ -74,7 +74,9 @@ emojiがなければ、(dx, dy) = (-dy, dx) として試す。
 
 ## emoji と stack
 
-emoji は codeUnit による Stack として
+emoji は codeUnit による Stack として表現される。
+例えば、0️⃣ の codeUnit は [48, 65039, 8419] であり、
+プログラム上では、 [8419, 65039, 48] という逆順のstackで表現される。
 
 https://jsprimer.net/basic/string-unicode/
 
@@ -84,11 +86,11 @@ https://jsprimer.net/basic/string-unicode/
 
 | emoji | name | mode | action | example |
 |---|---|---|---|---|
-|ℹ️| input-number | x | 数値入力 入力を数値として受け取る。空白などの直前まで受け取る。  | stack `[53, 2] -> [32, 53, 2]` input: `32 54 AA` -> ` 54 AA`|
-|🔤| input-ascii | x | 文字入力 ASCII CODEとして受け取る。|stack `[53, 2] -> [41, 53, 2]` input: `ABC` -> `BC`|
-|🔢| output-number | x | 数値出力 stackのtopを数値として出力する。popする。| stack `[32, 53, 2] -> [53, 2]` output: `32`|
-|🔡| output-ascii | x | 文字出力 stackのtopをASCII CODEとして出力する。popする。| stack `[41, 53, 2] -> [53, 2]` output: `A`|
-|🔣| output-emoji | x | 文字出力 stackのtopをASCII CODEとして出力する。popする。| stack `[41, 53, 2] -> [53, 2]` output: `A`|
+|ℹ️| input-number | x | 入力を数値として受け取り、 pushする。空白などの直前まで受け取る。 | stack `[53, 2] -> [32, 53, 2]` input: `32 54 AA` -> ` 54 AA`|
+|🔤| input-ascii | x | 入力を ASCII CODE として受け取り、 pushする。|stack `[53, 2] -> [41, 53, 2]` input: `ABC` -> `BC`|
+|🔢| output-number | o | `a` を pop し、数値として出力する。| stack `[32, 53, 2] -> [53, 2]` output: `32`|
+|🔡| output-ascii | o | `a` を pop し、ASCII CODEとして出力する。| stack `[41, 53, 2] -> [53, 2]` output: `A`|
+|🔣| output-emoji | x | `a` を pop し、文字出力 stackのtopを emoji として出力する。| stack `[[8419, 65039, 48], 53, 2] -> [53, 2]` output: `0️⃣`|
 |🐱| cat | x | 入力をそのままoutputする。 |input:`ABC` output:`ABC`|
 |🐶| dog | x | 入力を反転してoutputする。 |input:`ABC` output:`CBA`|
 

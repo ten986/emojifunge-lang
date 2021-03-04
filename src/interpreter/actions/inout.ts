@@ -1,6 +1,7 @@
 import { emojify } from 'node-emoji'
 
 import { codeUnitToEmoji, emojiToClass } from '@/modules/emoji'
+import { ForeachOp1, foreachOp1 } from '@/modules/operation'
 
 import { Action, EmojiAction } from '../actionTypes'
 import { Interpreter } from '../interpreter'
@@ -15,12 +16,12 @@ const inputChar: Action = (ip: Interpreter): void => {
   ip.input = ip.input.slice(1)
 }
 
-const outputNumber: Action = (ip: Interpreter): void => {
-  ip.output(ip.stack.popNumber().toString())
+const outputNumber: ForeachOp1 = (num: number, ip: Interpreter): void => {
+  ip.output(num.toString())
 }
 
-const outputChar: Action = (ip: Interpreter): void => {
-  ip.output(String.fromCharCode(ip.stack.popNumber()))
+const outputChar: ForeachOp1 = (num: number, ip: Interpreter): void => {
+  ip.output(String.fromCharCode(num))
 }
 
 const outputEmoji: Action = (ip: Interpreter): void => {
@@ -49,11 +50,11 @@ const inoutActions: EmojiAction[] = [
   },
   {
     emoji: emojiToClass('🔢'),
-    action: outputNumber,
+    action: foreachOp1(outputNumber),
   },
   {
     emoji: emojiToClass('🔡'),
-    action: outputChar,
+    action: foreachOp1(outputChar),
   },
   {
     emoji: emojiToClass('🔣'),
