@@ -25,6 +25,12 @@ const playRecord = (ip: Interpreter): void => {
   }
 }
 
+const exec = (ip: Interpreter): void => {
+  const emoji = codeUnitToEmoji(ip.stack.pop())
+
+  ip.execEmoji(emoji)
+}
+
 /**
  * 録画関連のアクション
  */
@@ -36,6 +42,10 @@ const recodingActions: EmojiAction[] = [
   {
     emoji: emojiToClass('📽️'),
     action: playRecord,
+  },
+  {
+    emoji: emojiToClass('💻'),
+    action: exec,
   },
 ]
 
