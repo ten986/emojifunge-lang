@@ -236,9 +236,9 @@ mode: o では、
 |↖️ | up-left | x | (dx, dy) = (-1, -1)||
 |↙️ | down-left | x | (dx, dy) = (-1, 1)||
 |⏩ | fast-right | x | dx++ ||
-|⏪ | fast-right | x | dx-- ||
-|⏫ | fast-right | x | dy-- ||
-|⏬ | fast-right | x | dy++ ||
+|⏪ | fast-left | x | dx-- ||
+|⏫ | fast-up | x | dy-- ||
+|⏬ | fast-down | x | dy++ ||
 |🔃 | turn-clockwise | x | (dx, dy) = (-dy, dx) ||
 |🔄 | turn-counterclockwise | x | (dx, dy) = (dy, -dx) ||
 |🕸️ | spider| x | (dx, dy) = (sign(dx), sign(dy)) ||
@@ -268,6 +268,13 @@ mode: o では、
 |💤 | sleep | x | 命令実行回数stackに `0`,`0`,`0` をpushする。||
 |🕰  | time-manipulation | o | 操作中の stack から `a` を pop し、命令実行回数stackに `a` を push する。||
 |➿ | infinity-loop | x | 命令実行回数stackに `Infinity` をpushする。||
+
+# 録画
+
+| emoji | name | mode | action | example |
+|---|---|---|---|---|
+|🎥| record | 録画中でないとき: 録画中とする。（録画stack に実行したemojiをpushする。）録画中の時: 録画を停止する。録画stack を逆順にする。（録画した順番通りに再生するため。） ||
+|📽️| play-record | 録画stack がemptyになるまで、録画stack から スタックして pop し、emoji を実行する。 ||
 
 ### misc
 

@@ -12,6 +12,7 @@ import { operationNumActions } from './actions/operationNum'
 import { programControlActions } from './actions/programControl'
 import { pushNumberActions } from './actions/pushNumber'
 import { randomActions } from './actions/random'
+import { recodingActions } from './actions/recoding'
 import { stackActions } from './actions/stackOperation'
 import { stepToStopActions } from './actions/stepToStop'
 import { EmojiAction, EmojistrToActionMap } from './actionTypes'
@@ -34,6 +35,7 @@ const emojiActionsArray: EmojiAction[][] = [
   nestedStackActions,
   makeStackActions,
   stepToStopActions,
+  recodingActions,
 ]
 
 /** emoji action の対応を生成取得 */

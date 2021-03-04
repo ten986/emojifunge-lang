@@ -108,9 +108,9 @@ const spreadStack = (stack: StackElm[]): number[] => {
 // なお、これで deepcopyができる
 const filterStack = (filter: Condition1, stack: Stack): Stack => {
   const res: Stack = new Stack(stack.parentStack)
-  stack.reverse()
-  while (stack.length > 0) {
-    const elm = stack.pop()
+  // bottom から順番に（TODO: 実装依存だな〜）
+  for (let i = 0; i < stack.length; ++i) {
+    const elm = stack.innerStack[i]
     if (elm === undefined) {
       throw Error('impossible error')
     }

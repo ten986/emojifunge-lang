@@ -1,4 +1,5 @@
 import { Board } from '@/modules/board'
+import { Emoji } from '@/modules/emoji'
 import { Stack } from '@/modules/stack'
 
 import { rotateClockwise, rotateCounterclockwise } from './actions/move'
@@ -21,6 +22,8 @@ type StopWatchState = 'off' | 'on'
 type RideState = 'off' | 'bicycle'
 // 回転方向
 type RotateState = 'clockwise' | 'counterclockwise'
+// 録画
+type RecordingState = 'off' | 'recoding'
 
 class Interpreter {
   /** ファイルを受け取るボード */
@@ -52,6 +55,7 @@ class Interpreter {
   stopWatchState: StopWatchState
   rideState: RideState
   rotateState: RotateState
+  recordingState: RecordingState
 
   /** 回数操作 */
   operationNum: Stack
@@ -67,6 +71,9 @@ class Interpreter {
 
   /** ゴミ箱 */
   garbageCan: Stack
+
+  /** 録画 */
+  recordingStack: Stack
 
   /** アウトプット全体 */
   allOutput: string
@@ -93,6 +100,7 @@ class Interpreter {
     this.stopWatchState = 'off'
     this.rideState = 'off'
     this.rotateState = 'clockwise'
+    this.recordingState = 'off'
 
     this.input = input
     this.firstInput = input
@@ -105,6 +113,7 @@ class Interpreter {
     this.mailBox = new Stack()
     this.operationNum = new Stack()
     this.garbageCan = new Stack()
+    this.recordingStack = new Stack()
 
     this.allOutput = ''
 
@@ -172,6 +181,7 @@ class Interpreter {
     }
     // console.log('x:' + this.x + ', y:' + this.y)
     // console.log('dx:' + this.dirX + ', dy:' + this.dirY)
+    // console.log('rootStack')
     // console.log(this.rootStack.getDebugOutput(this))
   }
 
@@ -226,6 +236,17 @@ class Interpreter {
       this.error('emoji not found')
       this.endState = 'end'
       return
+    }
+
+    this.execEmoji(emoji)
+  }
+
+  execEmoji(emoji: Emoji): void {
+    // 録画状況
+    if (this.recordingState === 'recoding') {
+      const stack = new Stack(this.recordingStack)
+      stack.innerStack = emoji.codeUnit
+      this.recordingStack.pushAsNewElm(stack)
     }
 
     // コメント
