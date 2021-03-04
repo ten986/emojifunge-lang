@@ -1,7 +1,7 @@
 import { Board } from '@/modules/board'
 import { Stack } from '@/modules/stack'
 
-import { rotateClockwise } from './actions/move'
+import { rotateClockwise, rotateCounterclockwise } from './actions/move'
 import { Action } from './actionTypes'
 import { emojistrToAction } from './emojiActions'
 
@@ -19,6 +19,8 @@ type IgnoreOutputState = 'normal' | 'ignore'
 type StopWatchState = 'off' | 'on'
 // 乗り物
 type RideState = 'off' | 'bicycle'
+// 回転方向
+type RotateState = 'clockwise' | 'counterclockwise'
 
 class Interpreter {
   /** ファイルを受け取るボード */
@@ -49,6 +51,7 @@ class Interpreter {
   ignoreOutputState: IgnoreOutputState
   stopWatchState: StopWatchState
   rideState: RideState
+  rotateState: RotateState
 
   /** 回数操作 */
   operationNum: Stack
@@ -86,6 +89,7 @@ class Interpreter {
     this.ignoreOutputState = 'normal'
     this.stopWatchState = 'off'
     this.rideState = 'off'
+    this.rotateState = 'clockwise'
 
     this.input = input
     this.firstInput = input
@@ -195,12 +199,16 @@ class Interpreter {
         return
       }
 
-      // 右回転
-      rotateClockwise(this)
+      // 状態により回転
+      if (this.rotateState === 'clockwise') {
+        rotateClockwise(this)
+      } else if (this.rotateState === 'counterclockwise') {
+        rotateCounterclockwise(this)
+      }
       retryCount++
     }
 
-    // 移動できずに終了
+    // 移動できずに終了（終了無視状態でも構わず終了）
     this.endState = 'end'
   }
 

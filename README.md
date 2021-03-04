@@ -26,7 +26,9 @@ emojiを二次元上に配置する言語
 
 操作回数のstackが空ではない時、操作回数のstackからpopして、その回数次の命令を行う
 
-root stack についての説明
+初期状態では、回転方向は時計回りである。
+
+最初の 操作stack はroot stack である。
 
 ## ステップ
 
@@ -83,8 +85,9 @@ min(スタックの要素数) - 1 番目 より 後の要素は破棄される�
 移動先を、(x, y) = (x+dx, y+dy)
 移動先にemojiがあれば移動する
 
-emojiがなければ、(dx, dy) = (-dy, dx) として試す。
-右回りに試すと思えば良い
+emojiがなければ、回転方向に応じて、
+時計回りでは (dx, dy) = (-dy, dx) として、
+反時計回りでは (dx, dy) = (dy, -dx) とし試す。
 
 4回試してemojiがなければ正常終了する TODO: 正常終了？
 
@@ -117,8 +120,8 @@ https://jsprimer.net/basic/string-unicode/
 
 | emoji | name | mode | action | example |
 |---|---|---|---|---|
-|👀| pick-emoji | x | (x + dx, y + dy) の emoji を push する。操作回数 stack に 0 を push する。||
-|🤳| pick-back-emoji | x | (x - dx, y - dy) の emoji を push する。||
+|👀 | pick-emoji | x | (x + dx, y + dy) の emoji を push する。操作回数 stack に 0 を push する。||
+|🤳 | pick-back-emoji | x | (x - dx, y - dy) の emoji を push する。||
 
 ### 制御
 
@@ -139,26 +142,26 @@ https://jsprimer.net/basic/string-unicode/
 
 | emoji | name | mode | action | example |
 |---|---|---|---|---|
-|0️⃣| 0| x | 0 を push する。|stack `[53, 2] -> [0, 53, 2]`|
-|1️⃣| 1| x | 1 を push する。||
-|2️⃣| 2| x | 2 を push する。||
-|3️⃣| 3| x | 3 を push する。||
-|4️⃣| 4| x | 4 を push する。||
-|5️⃣| 5| x | 5 を push する。||
-|6️⃣| 6| x | 6 を push する。||
-|7️⃣| 7| x | 7 を push する。||
-|8️⃣| 8| x | 8 を push する。||
-|9️⃣| 9| x | 9 を push する。||
-|🔟| 10| x | 10 を push する。||
-|🅰️| A | x | 65 を push する。||
-|🅱️| B | x | 66 を push する。||
-|©️| C | x | 67 を push する。||
-|🅾️| O | x | 77 を push する。||
-|Ⓜ️| M | x | 79 を push する。||
-|🅿️| P | x | 80 を push する。||
-|®️| R | x | 82 を push する。||
-|💯| 100| x | 100 を push する。||
-|➰| infinity| x | Infinity を push する。||
+|0️⃣ | 0 | x | 0 を push する。|stack `[53, 2] -> [0, 53, 2]`|
+|1️⃣ | 1 | x | 1 を push する。||
+|2️⃣ | 2 | x | 2 を push する。||
+|3️⃣ | 3 | x | 3 を push する。||
+|4️⃣ | 4 | x | 4 を push する。||
+|5️⃣ | 5 | x | 5 を push する。||
+|6️⃣ | 6 | x | 6 を push する。||
+|7️⃣ | 7 | x | 7 を push する。||
+|8️⃣ | 8 | x | 8 を push する。||
+|9️⃣ | 9 | x | 9 を push する。||
+|🔟 | 10 | x | 10 を push する。||
+|🅰️ | A  | x | 65 を push する。||
+|🅱️ | B  | x | 66 を push する。||
+|©️ | C  | x | 67 を push する。||
+|🅾️ | O  | x | 77 を push する。||
+|Ⓜ️ | M  | x | 79 を push する。||
+|🅿️ | P  | x | 80 を push する。||
+|®️ | R  | x | 82 を push する。||
+|💯 | 100 | x | 100 を push する。||
+|➰ | infinity | x | Infinity を push する。||
 
 備考: infinity に対応する emoji は、変更となる可能性がある。（codegolf中のみなさまへ: 期間中は変更しません）
 
@@ -166,8 +169,8 @@ https://jsprimer.net/basic/string-unicode/
 
 | emoji | name | mode | action | example |
 |---|---|---|---|---|
-|🎲| dice | x | 1 - 6 のランダムな値をpush||
-|🤞| judgement | x | 0 - 1 のランダムな値をpush||
+|🎲 | dice | x | 1 - 6 のランダムな値をpush||
+|🤞 | judgement | x | 0 - 1 のランダムな値をpush||
 
 ### 計算
 
@@ -213,51 +216,52 @@ https://jsprimer.net/basic/string-unicode/
 
 | emoji | name | mode | action | example |
 |---|---|---|---|---|
-|📥| mailbox-in| o | `a` を pop し、stackとは異なるstack(mailbox)にpushする。||
-|📤| mailbox-out| o | mailbox から　`a` を pop し、stackにpushする。||
+|📥 | mailbox-in| o | `a` を pop し、stackとは異なるstack(mailbox)にpushする。||
+|📤 | mailbox-out| o | mailbox から　`a` を pop し、stackにpushする。||
 
 ### 移動
 
 | emoji | name | mode | action | example |
 |---|---|---|---|---|
-|➡️| right | x | (dx, dy) = (1, 0)||
-|⬅️| left | x | (dx, dy) = (-1, 0)||
-|⬆️| up | x | (dx, dy) = (0, -1)||
-|⬇️| down | x | (dx, dy) = (0, 1)||
-|↗️| up-right | x | (dx, dy) = (1, -1)||
-|↘️| down-right | x | (dx, dy) = (1, 1)||
-|↖️| up-left | x | (dx, dy) = (-1, -1)||
-|↙️| down-left | x | (dx, dy) = (-1, 1)||
-|⏩| fast-right | x | dx++ ||
-|⏪| fast-right | x | dx-- ||
-|⏫| fast-right | x | dy-- ||
-|⏬| fast-right | x | dy++ ||
-|🔃| turn-clockwise | x | (dx, dy) = (-dy, dx) ||
-|🔄| turn-counterclockwise | x | (dx, dy) = (dy, -dx) ||
-|🕸️| spider| x | (dx, dy) = (sign(dx), sign(dy)) ||
+|➡️ | right | x | (dx, dy) = (1, 0)||
+|⬅️ | left | x | (dx, dy) = (-1, 0)||
+|⬆️ | up | x | (dx, dy) = (0, -1)||
+|⬇️ | down | x | (dx, dy) = (0, 1)||
+|↗️ | up-right | x | (dx, dy) = (1, -1)||
+|↘️ | down-right | x | (dx, dy) = (1, 1)||
+|↖️ | up-left | x | (dx, dy) = (-1, -1)||
+|↙️ | down-left | x | (dx, dy) = (-1, 1)||
+|⏩ | fast-right | x | dx++ ||
+|⏪ | fast-right | x | dx-- ||
+|⏫ | fast-right | x | dy-- ||
+|⏬ | fast-right | x | dy++ ||
+|🔃 | turn-clockwise | x | (dx, dy) = (-dy, dx) ||
+|🔄 | turn-counterclockwise | x | (dx, dy) = (dy, -dx) ||
+|🕸️ | spider| x | (dx, dy) = (sign(dx), sign(dy)) ||
+|🔀 | change-rotate| x | 回転方向を(時計回り/反時計回り)に変更する。 ||
 
 ### 条件分岐
 
 | emoji | name | mode | action | example |
 |---|---|---|---|---|
-|↪️| right-if-true| x | `a` を pop し、`a > 0` なら right||
-|↩️| left-if-true| x | `a` を pop し、`a > 0` なら left||
-|⤴️| up-if-true| x | `a` を pop し、`a > 0` なら up||
-|⤵️| down-if-true| x | `a` を pop し、`a > 0` なら down||
-|📏| equal-to | o | (top)`a`, `b` を pop し、 `a == b ? 1 : 0` を push|stack `[7, 4, 6] -> [0, 6]`|
-|📈| greater-than | o | (top)`a`, `b` を pop し、 `a > b ? 1 : 0` を push|stack `[7, 4, 6] -> [1, 6]`|
-|📉| less-than | o | (top)`a`, `b` を pop し、 `a < b ? 1 : 0` を push|stack `[7, 4, 6] -> [0, 6]`|
-|❕| not| o | `a` を pop し、`a > 0 ? 0 : 1` を push する。|stack `[7, 4, 6] -> [3, 6]`|
-|🉑| fair | o | `a` を pop し、 `60 <= a < 80 ? 1 : 0` を push|stack `[7, 4, 6] -> [0, 4, 6]`|
-|🈴| passed | o | `a` を pop し、 `60 <= a ? 1 : 0` を push|stack `[7, 4, 6] -> [0, 4, 6]`|
+|↪️ | right-if-true| x | `a` を pop し、`a > 0` なら right||
+|↩️ | left-if-true| x | `a` を pop し、`a > 0` なら left||
+|⤴️ | up-if-true| x | `a` を pop し、`a > 0` なら up||
+|⤵️ | down-if-true| x | `a` を pop し、`a > 0` なら down||
+|📏 | equal-to | o | (top)`a`, `b` を pop し、 `a == b ? 1 : 0` を push|stack `[7, 4, 6] -> [0, 6]`|
+|📈 | greater-than | o | (top)`a`, `b` を pop し、 `a > b ? 1 : 0` を push|stack `[7, 4, 6] -> [1, 6]`|
+|📉 | less-than | o | (top)`a`, `b` を pop し、 `a < b ? 1 : 0` を push|stack `[7, 4, 6] -> [0, 6]`|
+|❕ | not| o | `a` を pop し、`a > 0 ? 0 : 1` を push する。|stack `[7, 4, 6] -> [3, 6]`|
+|🉑 | fair | o | `a` を pop し、 `60 <= a < 80 ? 1 : 0` を push|stack `[7, 4, 6] -> [0, 4, 6]`|
+|🈴 | passed | o | `a` を pop し、 `60 <= a ? 1 : 0` を push|stack `[7, 4, 6] -> [0, 4, 6]`|
 
 ### 回数操作
 
 | emoji | name | mode | action | example |
 |---|---|---|---|---|
-|🏃‍♀️| speedrun | x | 次の命令を2回行う。操作回数stackに `2` をpushする。||
-|🎰| slot | x | (top)`a`, `b`, `c` を pop し、`a == b == c`なら、操作回数stackに `7`,`7`,`7` をpushする。||
-|💤| sleep | x | 操作回数stackに `0`,`0`,`0` をpushする。||
+|🏃‍♀️ | speedrun | x | 次の命令を2回行う。操作回数stackに `2` をpushする。||
+|🎰 | slot | x | (top)`a`, `b`, `c` を pop し、`a == b == c`なら、操作回数stackに `7`,`7`,`7` をpushする。||
+|💤 | sleep | x | 操作回数stackに `0`,`0`,`0` をpushする。||
 
 ### misc
 

@@ -38,6 +38,14 @@ const spider: Action = (ip: Interpreter) => {
   ;[ip.dirX, ip.dirY] = [sign(ip.dirX), sign(ip.dirY)]
 }
 
+const changeRotateState = (ip: Interpreter): void => {
+  if (ip.rotateState === 'clockwise') {
+    ip.rotateState = 'counterclockwise'
+  } else if (ip.rotateState === 'counterclockwise') {
+    ip.rotateState = 'clockwise'
+  }
+}
+
 /**
  * 移動関連のアクション
  */
@@ -101,6 +109,10 @@ const moveActions: EmojiAction[] = [
   {
     emoji: emojiToClass('🕸️'),
     action: spider,
+  },
+  {
+    emoji: emojiToClass('🔀'),
+    action: changeRotateState,
   },
 ]
 
