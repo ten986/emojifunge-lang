@@ -24,6 +24,11 @@ const sleep: Action = (ip: Interpreter) => {
   ip.operationNum.pushAsNewElm(0)
 }
 
+const timeManipulation: Action = (ip: Interpreter) => {
+  const elm = ip.stack.popByState(ip.stackState)
+  ip.operationNum.pushAsNewElm(elm)
+}
+
 /**
  * 操作回数関連のアクション
  */
@@ -39,6 +44,10 @@ const operationNumActions: EmojiAction[] = [
   {
     emoji: emojiToClass('💤'),
     action: sleep,
+  },
+  {
+    emoji: emojiToClass('🕰'),
+    action: timeManipulation,
   },
 ]
 

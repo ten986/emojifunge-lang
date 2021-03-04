@@ -28,6 +28,11 @@ const outputEmoji: Action = (ip: Interpreter): void => {
   ip.output(emojify(codeUnitToEmoji(ip.stack.pop()).emojiStr))
 }
 
+// 巻き戻し
+const rewindInput: Action = (ip: Interpreter): void => {
+  ip.input = ip.firstInput
+}
+
 const cat: Action = (ip: Interpreter): void => {
   ip.output(ip.firstInput)
 }
@@ -69,6 +74,10 @@ const inoutActions: EmojiAction[] = [
   {
     emoji: emojiToClass('🔣'),
     action: outputEmoji,
+  },
+  {
+    emoji: emojiToClass('🎦'),
+    action: rewindInput,
   },
   {
     emoji: emojiToClass('🐱'),
