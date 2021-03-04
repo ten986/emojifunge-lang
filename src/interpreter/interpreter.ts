@@ -8,6 +8,7 @@ import { emojistrToAction } from './emojiActions'
 type EndState = 'normal' | 'end'
 type CommentState = 'normal' | 'commented'
 type StackState = 'normal' | 'stack'
+type IgnoreEndState = 'normal' | 'ignore'
 
 class Interpreter {
   /** ファイルを受け取るボード */
@@ -31,6 +32,7 @@ class Interpreter {
   endState: EndState
   commentState: CommentState
   stackState: StackState
+  ignoreEndState: IgnoreEndState
 
   /** 回数操作 */
   operationNum: Stack
@@ -61,6 +63,7 @@ class Interpreter {
     this.endState = 'normal'
     this.commentState = 'normal'
     this.stackState = 'normal'
+    this.ignoreEndState = 'normal'
 
     this.input = input
     this.firstInput = input
@@ -112,10 +115,15 @@ class Interpreter {
     // 停止するまでの時間をデクリメント
     if (typeof this.stepToStop === 'number') {
       if (this.stepToStop <= 0) {
-        this.endState = 'end'
-        return
+        if (this.ignoreEndState != 'ignore') {
+          this.endState = 'end'
+          return
+        } else {
+          this.stepToStop = null
+        }
+      } else {
+        this.stepToStop--
       }
-      this.stepToStop--
     }
 
     this.move()

@@ -4,7 +4,9 @@ import { Action, EmojiAction } from '../actionTypes'
 import { Interpreter } from '../interpreter'
 
 const endProgram: Action = (ip: Interpreter) => {
-  ip.endState = 'end'
+  if (ip.ignoreEndState != 'ignore') {
+    ip.endState = 'end'
+  }
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -17,6 +19,13 @@ const error = (str: string): Action => {
   }
 }
 
+const changeIgnoreEndState = (ip: Interpreter): void => {
+  if (ip.ignoreEndState === 'normal') {
+    ip.ignoreEndState = 'ignore'
+  } else if (ip.ignoreEndState === 'ignore') {
+    ip.ignoreEndState = 'normal'
+  }
+}
 /**
  * 制御関連のアクション
  */
@@ -28,6 +37,10 @@ const programControlActions: EmojiAction[] = [
   {
     emoji: emojiToClass('⬜️'),
     action: pass,
+  },
+  {
+    emoji: emojiToClass('🏪'),
+    action: changeIgnoreEndState,
   },
   {
     emoji: emojiToClass('⬛️'),
