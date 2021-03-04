@@ -17,6 +17,14 @@ const factorial: NumOp1 = (num: number): number => {
   return res
 }
 
+const semifactorial: NumOp1 = (num: number): number => {
+  let res = 1
+  for (let i = num; i >= 1; i -= 2) {
+    res *= i
+  }
+  return res
+}
+
 const increment: NumOp1 = (a: number) => a + 1
 const decrement: NumOp1 = (a: number) => a - 1
 
@@ -47,6 +55,10 @@ const calcActions: EmojiAction[] = [
   {
     emoji: emojiToClass('❗️'),
     action: op1(factorial),
+  },
+  {
+    emoji: emojiToClass('‼️'),
+    action: op1(semifactorial),
   },
   {
     emoji: emojiToClass('👍'),
