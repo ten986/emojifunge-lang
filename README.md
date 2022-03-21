@@ -189,7 +189,7 @@ emoji は codeUnit による スタック として表現される。
 
 ### 乱数
 
-`x ~ y` は、`x` 以上 `y` 未満を指す。
+`x ~ y` は、`x` 以上 `y` 以下を指す。
 
 | emoji | name | mode | action | example |
 |---|---|---|---|---|
