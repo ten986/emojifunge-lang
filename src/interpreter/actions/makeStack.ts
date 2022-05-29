@@ -5,13 +5,13 @@ import { EmojiAction } from '../actionTypes'
 import { Interpreter } from '../interpreter'
 
 const createEmptyStack = (ip: Interpreter): void => {
-  const stack = new Stack()
+  const stack = new Stack(ip.stack)
   ip.stack.pushAsRaw(stack)
 }
 
 const createNewStack = (ip: Interpreter): void => {
   const num = ip.stack.popNumber()
-  const stack = new Stack()
+  const stack = new Stack(ip.stack)
   for (let i = 0; i < num; ++i) {
     const elm = ip.stack.popByState(ip.stackState)
     stack.pushAsRaw(elm)
