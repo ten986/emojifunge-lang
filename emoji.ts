@@ -1,55 +1,84 @@
 import * as fs from 'fs'
-// import { argv } from 'process'
+import { emojify, unemojify } from 'node-emoji'
+import { argv } from 'process'
 
-// // プログラム
-// const path = argv[2]
-// const board = fs.readFileSync(path).toString()
+// プログラム
+const path = argv[2]
+const board = fs.readFileSync(path).toString()
 
-// 入力
-const input = fs.readFileSync(0).toString().trim()
+const splitEmojiStr = (str: string): string[] => {
+  return unemojify(str)
+    .split(/[::]+/)
+    .filter((str) => str)
+}
 
 const emojinum = ['0️⃣', '1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣', '🔟']
 
-let str = ''
+const emojiBoard: string[][] = board.split('\n').map((str) => splitEmojiStr(str))
 
-let cnt = 0
+// console.log(emojiBoard[0][0])
 
-for (let i = 0; i < input.length; ++i) {
-  str += '0️⃣'
-  cnt++
-  let num = input[i].charCodeAt(0)
-  console.log(num)
-  const nums: number[] = []
-  while (num > 0) {
-    nums.push(num % 10)
-    num = Math.floor(num / 10)
+let res = ''
+
+for (let i = 0; ; i++) {
+  const emojiStr = emojiBoard?.[i]?.[0]
+  if (emojiStr === undefined) {
+    break
   }
-
-  for (let j = nums.length - 1; j >= 0; --j) {
-    str += emojinum[nums[j]] + '➕'
-    cnt += 2
-    if (j != 0) {
-      str += '🔟✖️'
-      cnt += 2
+  for (let j = 0; ; j++) {
+    const emojiStr = emojiBoard?.[i]?.[j]
+    if (emojiStr === undefined) {
+      break
     }
+    const emoji = emojify(':' + emojiStr + ':', () => {
+      throw Error('failure to get codeUnit')
+    })
+
+    let str = ''
+
+    let cnt = 0
+
+    for (let i = 0; i < emoji.length; ++i) {
+      str += '0️⃣'
+      cnt++
+      let num = emoji[i].charCodeAt(0)
+
+      const nums: number[] = []
+      while (num > 0) {
+        nums.push(num % 10)
+        num = Math.floor(num / 10)
+      }
+
+      for (let j = nums.length - 1; j >= 0; --j) {
+        str += emojinum[nums[j]] + '➕'
+        cnt += 2
+        if (j != 0) {
+          str += '🔟✖️'
+          cnt += 2
+        }
+      }
+    }
+
+    str += emojinum[emoji.length]
+    cnt += 1
+
+    str += '💌'
+    cnt += 1
+
+    res += str
   }
+  res += '📧'
 }
 
-str += emojinum[input.length]
-cnt += 1
+console.log(res)
+// console.log(cnt)
 
-str += '💌🔣'
-cnt += 2
+// let whitestr = ''
 
-console.log(str)
-console.log(cnt)
-
-let whitestr = ''
-
-for (let i = 0; i < cnt; ++i) {
-  whitestr += '⬜️'
-}
-console.log(whitestr)
+// for (let i = 0; i < cnt; ++i) {
+//   whitestr += '⬜️'
+// }
+// console.log(whitestr)
 
 // const codeUnit = (emoji: string): number[] => {
 //   const res: number[] = []
