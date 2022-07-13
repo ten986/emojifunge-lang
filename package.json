@@ -63,5 +63,8 @@
     "@types/mathjs": "6.0.11",
     "mathjs": "9.2.0"
   },
+  "publishConfig": {
+    "@ten986:registry": "https://npm.pkg.github.com"
+  },
   "private": true
 }
