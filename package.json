@@ -11,7 +11,7 @@
     "fix:prettier": "npm run lint:prettier -- --write",
     "lint": "run-p lint:*",
     "lint:eslint": "eslint --ext js,ts .",
-    "lint:prettier": "prettier -l \"**/*.{json,md,yml}\"",
+    "lint:prettier": "prettier -l \"**/*.{json,yml}\"",
     "lint:type": "tsc --noEmit",
     "test:unit": "jest",
     "dev": "ts-node -r tsconfig-paths/register src/index.ts",
