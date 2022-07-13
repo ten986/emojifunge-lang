@@ -1,6 +1,6 @@
 {
   "name": "@ten986/emojifunge-lang",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "emojifunge",
   "main": "index.js",
   "scripts": {
