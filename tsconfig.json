@@ -14,7 +14,8 @@
     "baseUrl": "./src",
     "paths": {
       "@/*": ["./*"]
-    }
+    },
+    "declaration": true,
   },
   "include": ["src", "tests"]
 }
