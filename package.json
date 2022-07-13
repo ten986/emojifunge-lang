@@ -66,6 +66,5 @@
   },
   "publishConfig": {
     "@ten986:registry": "https://npm.pkg.github.com"
-  },
-  "private": true
+  }
 }
