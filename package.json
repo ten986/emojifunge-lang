@@ -1,5 +1,5 @@
 {
-  "name": "emojifunge-lang",
+  "name": "@ten986/emojifunge-lang",
   "version": "1.0.0",
   "description": "emojifunge",
   "main": "index.js",
@@ -20,7 +20,8 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ten986/emojifunge-lang.git"
+    "url": "https://github.com/ten986/emojifunge-lang.git",
+    "directory": "emojifunge-lang"
   },
   "keywords": [],
   "author": "",
