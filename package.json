@@ -8,7 +8,7 @@
     "/dist"
   ],
   "scripts": {
-    "build": "tsc --project tsconfig.json && tsc-alias -p tsconfig.json",
+    "build": "tsc --project tsconfig.json && resolve-tspaths -o dist/src",
     "test": "run-s lint test:*",
     "fix": "run-p fix:*",
     "fix:eslint": "npm run lint:eslint -- --fix",
@@ -36,11 +36,11 @@
   "homepage": "https://github.com/ten986/emojifunge-lang#readme",
   "devDependencies": {
     "@types/jest": "26.0.20",
+    "@types/mathjs": "6.0.11",
     "@types/node": "14.14.31",
     "@types/node-emoji": "1.8.1",
     "@typescript-eslint/eslint-plugin": "4.15.2",
     "@typescript-eslint/parser": "4.15.2",
-    "@types/mathjs": "6.0.11",
     "eslint": "7.21.0",
     "eslint-config-prettier": "8.1.0",
     "eslint-import-resolver-typescript": "2.4.0",
@@ -52,6 +52,7 @@
     "lint-staged": "10.5.4",
     "npm-run-all": "4.1.5",
     "prettier": "2.2.1",
+    "resolve-tspaths": "0.7.0",
     "rimraf": "^3.0.2",
     "ts-jest": "26.5.2",
     "ts-node": "9.1.1",
@@ -64,10 +65,10 @@
     "npm": ">= 6.12"
   },
   "dependencies": {
+    "guid-typescript": "1.0.9",
     "mathjs": "9.2.0",
     "node-emoji": "1.10.0",
-    "typescript": "^4.2.2",
-    "guid-typescript": "1.0.9"
+    "typescript": "^4.2.2"
   },
   "publishConfig": {
     "@ten986:registry": "https://npm.pkg.github.com"
