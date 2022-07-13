@@ -8,7 +8,7 @@
   "prettier.disableLanguages": ["javascript", "typescript"],
   "typescript.tsdk": "node_modules/typescript/lib",
   "path-autocomplete.pathMappings": {
-    "@": "${folder}/src",
+    "@": "${folder}/src"
   },
   // 入出力で改行が鍵になるので設定
   // ts とかはどうせ eslint で改行が入る
