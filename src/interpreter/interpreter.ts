@@ -90,7 +90,13 @@ class Interpreter {
   /** 標準出力する設定か */
   isOutStd: boolean
 
-  constructor(file: string, input: string, isOutStd?: boolean) {
+  /** ステップ数 */
+  stepNum: number
+
+  /** 強制停止するステップ数 */
+  stepToAbort: number | undefined
+
+  constructor(file: string, input: string, isOutStd?: boolean, stepToAbort?: number) {
     this.endState = 'normal'
     this.commentState = 'normal'
     this.stackState = 'normal'
@@ -122,6 +128,9 @@ class Interpreter {
     this.stepToStop = null
 
     this.stopWatchCount = 0
+
+    this.stepNum = 0
+    this.stepToAbort = stepToAbort
 
     this.x = 0
     this.y = 0
@@ -190,6 +199,10 @@ class Interpreter {
     this.move()
     if (this.isEnd()) {
       return
+    }
+    this.stepNum++
+    if (this.stepToAbort && this.stepNum >= this.stepToAbort) {
+      this.endState == 'end'
     }
     // console.log('x:' + this.x + ', y:' + this.y)
     // console.log('dx:' + this.dirX + ', dy:' + this.dirY)
