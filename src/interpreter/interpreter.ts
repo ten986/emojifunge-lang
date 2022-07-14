@@ -87,7 +87,10 @@ class Interpreter {
   /** ストップウォッチのカウント数 */
   stopWatchCount: number
 
-  constructor(file: string, input: string) {
+  /** 標準出力する設定か */
+  isOutStd: boolean
+
+  constructor(file: string, input: string, isOutStd?: boolean) {
     this.endState = 'normal'
     this.commentState = 'normal'
     this.stackState = 'normal'
@@ -101,6 +104,7 @@ class Interpreter {
     this.input = input
     this.firstInput = input
     this.rawFile = file
+    this.isOutStd = isOutStd ?? true
 
     this.board = new Board(file)
     this.rootStack = new Stack()
@@ -141,7 +145,7 @@ class Interpreter {
   output(str: string): void {
     if (this.ignoreOutputState != 'ignore') {
       this.allOutput += str
-      process.stdout.write(str)
+      if (this.isOutStd) process.stdout.write(str)
     }
   }
 
