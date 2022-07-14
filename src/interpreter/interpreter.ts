@@ -202,7 +202,7 @@ class Interpreter {
     }
     this.stepNum++
     if (this.stepToAbort && this.stepNum >= this.stepToAbort) {
-      this.endState == 'end'
+      this.endState = 'end'
     }
     // console.log('x:' + this.x + ', y:' + this.y)
     // console.log('dx:' + this.dirX + ', dy:' + this.dirY)
