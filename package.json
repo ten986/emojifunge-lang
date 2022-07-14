@@ -1,6 +1,6 @@
 {
   "name": "@ten986/emojifunge-lang",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "emojifunge",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
